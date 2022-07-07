@@ -1,0 +1,65 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta name ="viewport" content ="width=device-width, initial-scale=1.0"> 
+    <title> Contact Form To Email</title> 
+    <link rel ="stylesheet" href ="style.css">
+</head>
+
+<body>
+    <nav>
+    <div id="navbar">
+      <a href="#home">Home</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </div> 
+      </nav>
+    
+    <div style="padding:15px 15px 2500px;font-size:30px">
+      <form onsubmit = "sendEmail(); reset(); return True ;" >
+        <h3> Sign Up Here</h3>
+        <input type ="text" id="name" placeholder="Based God" required></input> 
+        <input type = "text" id="email" placeholder ="wackemail@gmail.com" required> 
+        <input type = "text" id="phoneNumber" placeholder ="777-777-7777" required> 
+        <textarea id="message" rows = "1" placeholder ="How can we assist you"></textarea> 
+      <button type ="submit">Submit</button>
+      </form> 
+    
+    
+    </div>
+    
+    <script>
+    // When the user scrolls down 20px from the top of the document, slide down the navbar
+    window.onscroll = function() {scrollFunction()};
+    
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("navbar").style.top = "0";
+      } else {
+        document.getElementById("navbar").style.top = "-50px";
+      }
+    }
+    </script>  
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script> 
+
+    <script> 
+        function sendEmail(){  
+          Email.send({
+              Host : "smtp.gmail.com",
+              Username : "whiteranger86@gmail.com",
+              Password : "",
+              To : 'whiteranger86@gmail.com',
+              From : document.getElementById("email").value,
+              Subject : "New User Contact Form",
+              Body : "Name:" + document.getElementById("name").value +  
+              "<br> Email:" +domcument.getElementById("email").value +  
+              "<br> Phone no:" +domcument.getElementById("phoneNumber").value +  
+              "<br> Message:" +domcument.getElementById("message").value
+          }).then(
+            message => alert("Message Sent, Look out for the email!")
+          ); 
+        } 
+    </script>    
+</body> 
+</html>

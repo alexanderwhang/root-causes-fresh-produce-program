@@ -1,0 +1,139 @@
+
+/* 06/12 STILL TO DO:
+      - line height changes depending on num contacts and height of parent
+      - center info text dynamically (not hard coded)
+      - make hover on group icon nicer
+      - maybe replace "Home" with a clickable root causes logo?
+      - find way to represent status in preview
+
+      */
+/*
+* {
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: "Tiro Tamil", sans-serif;
+  background-color: rgb(186, 214, 178);
+}
+
+/* navigation bar and text styling */
+/*
+nav{
+  background-color: rgb(157, 179, 150);
+  width:100%;
+  padding: 5px 2%;
+  text-align: center;
+  z-index: 10;
+}
+
+nav a{
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  padding: 5px 2%;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+*/
+/* makes nav text change color when hovering */
+nav a:hover{
+  color: rgb(219, 255, 217);
+}
+
+/*styling for top of page*/
+#pts{
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+/* styling icon that takes you back to main contact list */
+.attribution{
+  display: inline-block;
+}
+
+.icon{
+  max-width: 50px;
+}
+
+.attribution a:hover{
+  background-color: rgb(219, 255, 217);;
+}
+
+/* .contact is styling the display of a contact name and their tabs of info */
+.contact{
+  text-align: center;
+  z-index: 10;
+}
+
+.contact a{
+  color:black;
+  display: inline-block;
+  padding: 15px 10%;
+  text-decoration: none;
+  padding-bottom: 0.5;
+  margin-top: 1rem;
+  vertical-align: middle;
+  border: 2px solid rgb(157, 179, 150);
+}
+
+.contact a:hover{
+  background-color: rgb(219, 255, 217);
+}
+
+/* parent div for main section*/
+.main_display{
+  position: relative;
+  height: 40vh;
+  margin: 0 auto;
+  margin-top: 1rem;
+  border :1.5px solid rgb(157, 179, 150);
+  width: 90%;
+}
+
+/* styles the *eventually* scrollable participant preview */
+.group {
+  text-align: center;
+  padding: 10px;
+  position: absolute;
+  top: 0px;
+  background-color: rgb(157, 179, 150);
+  color: white;
+  height:100%;
+  line-height: 32px;
+}
+
+/* centers the basic info of a contact */
+.indiv {
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+  padding-top: 2.5rem;
+}
+
+.indiv p{
+  line-height: 2;
+}
+
+/* styling headers */
+
+/* current displayed contact header */
+h2{
+  text-align: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0.5rem 2rem;
+  font-size: 25px;
+  background-color: rgb(157, 179, 150);
+  color: white;
+  }
+
+  /* indicates that user is still in participant management */
+h3{
+  margin: 2rem;
+  margin-left: 1rem;
+  display: inline-block;
+} 
+

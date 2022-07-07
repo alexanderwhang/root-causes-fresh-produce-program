@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@100&family=Yeseva+One&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <link href="caller.css" type="text/css" rel="stylesheet"/> 
+    <script
+      type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"
+    ></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        var $tabs = $("#participant_table");
+        $("tbody.t_sortable")
+          .sortable({
+            connectWith: ".t_sortable",
+            items: "> tr:not(:first)",
+            appendTo: $tabs,
+            helper: "clone",
+            zIndex: 999990,
+          })
+          .disableSelection();
+
+        var $tab_items = $(".nav-tabs > li", $tabs).droppable({
+          accept: ".t_sortable tr",
+          hoverClass: "ui-state-hover",
+          drop: function (event, ui) {
+            return false;
+          },
+        });
+      });
+    </script>
+    <style type="text/css">
+      .tables_ui {
+        /* display: inline-block; */
+        margin: 2px 2%;
+        border-spacing: 0;
+      }
+      .tables_ui ul li {
+        min-width: 200px;
+      }
+      .dragging li.ui-state-hover {
+        min-width: 240px;
+      }
+      .dragging .ui-state-hover a {
+        color: green !important;
+        font-weight: bold;
+      }
+      .tables_ui th,
+      td {
+        text-align: right;
+        padding: 2px 4px;
+        border: 1px solid;
+      }
+      .t_sortable tr,
+      .ui-sortable-helper {
+        cursor: move;
+      }
+      .t_sortable tr:first-child {
+        cursor: default;
+      }
+      .ui-sortable-placeholder {
+        background: yellow;
+      }
+    </style>
+</head>
+
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <!--nav bar-->
+    <div class="dropdown">
+      <nav>
+          <img class="logo" src="images/logo.png">
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="participants.html">Participants</a></li>
+              <li><a href="#">Volunteers</a>
+                  <ul>
+                      <li><a href="caller.html">Callers</a></li>
+                      <li><a href="#">Drivers</a></li>
+                  </ul>
+              </li>
+              <li><a href="#">Analytics</a></li>
+              <li><a href="#">Account</a></li>
+          </ul>
+      </nav>
+  </div>
+    
+      <header id="calls">
+      <!--page title-->
+      <h2> Caller Management </h2>
+      </header>
+      
+      <!--main display-->
+      <div class="main">
+        <!--displays volunteer pool-->
+
+        <div class="vol_side">
+          <h3> Volunteer Pool </h3> 
+          <div class="vol_tables">
+          <div class="vol_table">
+          <!-- <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search for names.."> -->
+          <table class="tables_ui" id="t_draggable1">
+            <thead>
+                  
+                <tr class="vol_name">
+                    <th colspan="6"> Andre Mendel</th>
+                </tr>
+              <tr> 
+                <th>First Name</th>  
+                <th>Last Name</th>  
+                <th>Email</th>  
+                <th>Address</th> 
+                <th>Phone Number</th> 
+                <th>Language</th>     
+              </tr>
+              </thead>
+              <tbody class="t_sortable"></tbody>
+          </table>  
+          </div>
+          <div class="vol_table">
+          <table class="tables_ui" id="t_draggable1">
+            <tbody class="t_sortable">
+                <tr class="vol_name">
+                    <th colspan="6"> Manya Bastian</th>
+                </tr>
+              <tr> 
+                <th>First Name</th>  
+                <th>Last Name</th>  
+                <th>Email</th>  
+                <th>Address</th> 
+                <th>Phone Number</th> 
+                <th>Language</th>     
+              </tr>
+              </tbody>
+          </table>
+          </div>
+        </div>
+          </div>
+        </div>
+    
+        <!--displays participants who need calls-->
+        <div class="pt_side" style="overflow-x:auto;">
+          <h3> Participants </h3>  
+          <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search for names..">
+          <div class="tableContainer" style="overflow-y:auto;">
+          <table class="tables_ui" id="t_draggable2">
+            <tbody class="t_sortable">
+
+              <tr> 
+                <th colspan="6">First Name</th>  
+                
+              </tr>  
+              
+          <div class="tableContainer" >
+            <table class="tables_ui" id="participant_table">
+              
+              <thead id= "col_headers"> 
+                <th>First Name</th>  
+                <th>Last Name</th>  
+                <th>Email</th>  
+                <th>Address</th> 
+                <th>Phone Number</th> 
+                <th>Language</th> 
+              </thead>  
+
+              <tbody class="t_sortable">
+                <tr style="background-color:#FF0000">
+                  <td>Bobby</td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com </td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td>English</td>
+                </tr> 
+                <tr style="background-color:green"> 
+                  <td>Bobby</td>
+                  <td>Fischer</td>
+                  <td>BobbyFischer@gmail.com</td>
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757 </td>
+                  <td>English</td>
+                </tr> 
+                <tr style="background-color:green">
+                  <td>Bobby </td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com </td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td>English</td>
+                </tr> 
+                <tr>
+                  <td>Bobby</td>
+                  <td>Fischer</td>
+                  <td>BobbyFischer@gmail.com</td>
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td>English</td>
+                </tr>
+                <tr>
+                  <td>Bobby</td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com</td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td>English</td>
+                </tr>
+                <tr> 
+                  <td>Bobby </td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com </td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td> English</td>
+                </tr>
+                <tr>
+                  <td>Bobby </td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com </td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td> Englis</td>
+                </tr>
+                <tr>
+                  <td>Bobby </td>
+                  <td>Fischer</td> 
+                  <td>BobbyFischer@gmail.com </td> 
+                  <td>Rakavik Island</td>
+                  <td>777-555-5757</td>
+                  <td> English</td>
+                </tr>
+                  
+              </tbody>
+            </table>  
+          </div>
+        </div>
+
+        <script>
+function myFunction1() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput1");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("t_draggable1");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+function myFunction2() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput2");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("participant_table");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+     
+         <!--buttons that help assign calls-->
+        <div class="buttons">
+            <p> Generate Assignments </p>
+            <p> Confirm Assignments </p>
+        </div>
+  
+      </div>
+    </body>
+</html>

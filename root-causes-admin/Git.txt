@@ -1,0 +1,16 @@
+- Creating a branch: git branch [name of NEW branch]
+- Check the current branches: git branch
+    - The branch you are on will be highlighted with a * before it
+    - ** To exit out this window: type " :q "
+- Delete a branch: git branch -d [name of EXISTING branch]
+- Switching branches: git checkout [name of EXISTING branch]
+- Shortcut to create AND connect to that new branch: git checkout -b [name of NEW branch]
+- When you make changes to a branch, make sure to save them 
+    - git add .
+    - git commit -m "commit message"
+- How to merge branches
+    - ** Make sure that you are in the branch that you want to make changes to
+    - git merge [name of branch]
+    - ^ the changes in the "[name of branch]" will be put into the current branch that you are on
+- Merge conflicts (occur when two or more people are making changes to the same part of the file):
+    - Go to the file that has the conflict and choose which changes to keep, then add, commit, and push again

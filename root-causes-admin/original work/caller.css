@@ -1,0 +1,188 @@
+body{
+  background:#f9f8e1;
+  font-family:'Raleway', sans-serif;
+  margin:0;
+  padding:0;
+  /*font-family: "Tiro Tamil", sans-serif; */
+  /*background-color: rgb(186, 214, 178); */
+}
+  
+  /* navigation bar and text styling */
+  /*
+  nav{
+    background-color: rgb(157, 179, 150);
+    width:100%;
+    padding: 5px 2%;
+    text-align: center;
+    z-index: 10;
+  }
+  
+  nav a{
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 2%;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  nav a:hover{
+    color: rgb(219, 255, 217);
+  }
+  */
+.dropdown{
+    margin:0 auto;
+}
+
+nav{
+    height:60px;
+    background:#00743e;
+    box-shadow:0 10px 15px rgba(0,0,0,0.1);
+}
+
+.logo{
+    padding:5px 0 0 80px;
+    width:50px;
+    height:auto;
+}
+
+nav ul{
+    padding:0;
+    margin:0;
+    float:right;
+    margin-right:30px; /*650*/
+}
+
+nav ul li{
+    background:#00743e;
+    position:relative;
+    list-style:none;
+    display:inline-block;
+}
+
+nav ul li a{
+    display:block;
+    padding:0 15px;
+    color:white;
+    text-decoration:none;
+    line-height:60px;
+    font-size:20px;
+}
+
+nav ul li a:hover{
+    background:#009a4b;
+}
+
+nav ul ul{
+    position:absolute;
+    top:60px;
+    display:none;
+}
+
+nav ul li:hover > ul{
+    display:block;
+}
+
+nav ul ul li{
+    width:134px;
+    float:none;
+    display:list-item;
+    position:relative;
+}
+  /* tag for caller management*/
+  #calls{
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  
+  /*parent of main display*/
+  .main{
+    width: 100%
+  }
+  
+  /*styling volunteer pool*/
+  .vol_side{
+    border: 3px solid #00743e;
+    display: inline-block;
+    padding: 1rem;
+    height: 50vh;
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .vol_side h3{
+    text-align: center;
+  }
+  
+  /*styling participant side*/
+  .pt_side{
+    border: 3px solid #00743e;
+    /* display: inline-block; */
+    padding: 1rem;
+    height: 50vh;
+    width: 95%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  
+  .buttons p{
+    border: 1.5px solid black;
+    width: 100px;
+    text-align: center;
+  } 
+  tr:hover {background-color: chocolate;} 
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  height: 50px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.vol_tables{
+    display: flex;
+
+}
+.vol_table{
+    width: 40%; 
+    padding: 20px 30px;
+    flex: 50%;
+}
+
+.vol_name{
+    background-color:#00743e;
+    color: white;
+}
+.vol_name th{
+   text-align: center;
+}
+
+#col_headers{
+    background-color: #00743e;
+    color: white;
+}
+
+.tableContainer {
+  overflow: hidden;
+  overflow-y: auto;
+  height: 280px;
+}
+.tableContainer thead th {
+  position: sticky;
+  top: 0;
+  
+  background: #00743e;
+  padding: 8px;
+  border: 1px solid black;
+}
+
+h2{
+  margin-left: 1rem;
+}
