@@ -5,6 +5,7 @@ from flask_cors import CORS
 from sqlalchemy.orm import join
 from sqlalchemy import Column, ForeignKey, Integer, Table
 from sqlalchemy.orm import declarative_base, relationship
+import json
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -164,6 +165,8 @@ class Volunteer(db.Model):
         self.email = credit
         self.email = email
 
+    children = relationship("DriverLog")
+
 def format_volunteer(volunteer):
     return {
         "id": volunteer.volunteer_id,
@@ -177,6 +180,45 @@ def format_volunteer(volunteer):
         "email": volunteer.email,
         "phone": volunteer.phone
     }
+
+class DriverLog(db.Model):
+    __tablename__ = 'driver_log_preferences'
+    __table_args__ = {"schema": "RC"}
+
+    driver_log_preferences_id = db.Column(db.Integer, primary_key=True)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    date_available = db.Column(db.Date, nullable=False)
+    time_available = db.Column(db.TIMESTAMP, nullable=False)
+    deliver_more_preference = db.Column(db.Boolean, nullable=False)
+    live_outside_durham = db.Column(db.Boolean, nullable=False)
+    route_preference = db.Column(db.Text, nullable=False)
+    comments = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"Driver ID: {self.volunteer_id}, Date Available: {self.date_available}"
+
+    def __init__(self, volunteer_id, date_available, time_available, deliver_more_preference, live_outside_durham, route_preference, comments):
+        self.volunteer_id = volunteer_id
+        self.date_available = date_available
+        self.time_available = time_available
+        self.deliver_more_preference = deliver_more_preference
+        self.live_outside_durham = live_outside_durham
+        self.route_preference = route_preference
+        self.comments = comments
+
+def format_driver(driver):
+    # json_str = json.dumps({driver.time_available,}, default=str)
+    return {
+        "driver_log_preferences_id": driver.driver_log_preferences_id,
+        "volunteer_id": driver.volunteer_id,
+        "date_available": driver.date_available,
+        "time_available": json.dumps({driver.time_available,}, default=str),
+        "deliver_more_preference": driver.deliver_more_preference,
+        "live_outside_durham": driver.live_outside_durham,
+        "route_preference": driver.route_preference,
+        "comments": driver.comments
+    }
+
 
 
 @app.route('/')
@@ -368,6 +410,25 @@ def update_volunteer(id):
     volunteer.update(dict(credit=credit))
     db.session.commit()
     return {'volunteer': format_volunteer(volunteer.one())}
+
+# GET ALL DRIVERS
+@app.route('/volunteers/drivers', methods = ['GET'])
+def get_drivers():
+    volunteers = DriverLog.query.order_by(DriverLog.date_available.asc()).all()
+    volunteer_list = []
+    for volunteer in volunteers:
+        volunteer_list.append(format_driver(volunteer))
+    return {'volunteers': volunteer_list}
+
+# GET AVAILABLE DRIVERS BY DATE
+@app.route('/volunteers/drivers/<date>', methods = ['GET'])
+def get_drivers_by_date(date):
+    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter=True).filter(DriverLog.date_available==date).all()
+    volunteer_list = []
+    for volunteer in volunteers:
+        volunteer_list.append(format_volunteer(volunteer))
+    
+    return {'volunteers': volunteer_list}
 
 if __name__ == '__main__':
     app.run()
