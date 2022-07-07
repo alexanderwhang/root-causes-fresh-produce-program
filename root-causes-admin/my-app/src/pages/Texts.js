@@ -1,8 +1,8 @@
 import "./Texts.css";
 import React from "react";
-import axios from "axios";
+// import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
-import { FooterContainer } from '../containers/footer';
+// import { FooterContainer } from '../containers/footer';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';

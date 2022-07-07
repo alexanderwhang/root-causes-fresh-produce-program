@@ -439,10 +439,11 @@ def update_volunteer(id):
 # GET ALL DRIVERS
 @app.route('/volunteers/drivers', methods = ['GET'])
 def get_drivers():
-    volunteers = DriverLog.query.order_by(DriverLog.date_available.asc()).all()
+    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter = False, full = False).all()
     volunteer_list = []
     for volunteer in volunteers:
-        volunteer_list.append(format_driver(volunteer))
+        volunteer_list.append(format_volunteer(volunteer))
+    
     return {'volunteers': volunteer_list}
 
 # GET AVAILABLE DRIVERS BY DATE

@@ -1,46 +1,46 @@
 import "./App.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { useState } from "react";
 import React from "react";
 import axios from "axios";
 import { Table } from "./Table";
-import { Vol_data } from "./vol_data";
+// import { Vol_data } from "./vol_data";
 import Navbar from "./components/Navbar/Navbar";
 import { Driver } from "./pages/Driver.js";
 import { Texts } from "./pages/Texts.js";
 import { Home } from "./home";
 import TextField from "@mui/material/TextField";
-import {
-  accordionSummaryclassNamees,
-  imageListclassNamees,
-} from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
+// import {
+//   accordionSummaryclassNamees,
+//   imageListclassNamees,
+// } from "@mui/material";
+// import Skeleton from "@mui/material/Skeleton";
+// import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import NativeSelect from "@mui/material/NativeSelect";
-import { green } from "@mui/material/colors";
+// import NativeSelect from "@mui/material/NativeSelect";
+// import { green } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
-import Chip from "@mui/material/Chip";
+// import Divider from "@mui/material/Divider";
+// import Chip from "@mui/material/Chip";
 import { FooterContainer } from "./containers/footer";
-import Ellipse from "./symbols/Ellipse.svg";
+// import Ellipse from "./symbols/Ellipse.svg";
 import SvgEllipse from "./symbolComponents/Ellipse";
 import { DragPractice } from "./practice.js";
 import { PracticeUsers } from "./practiceUsers";
 import { useEffect, useState } from "react";
-import ListSubheader from "@mui/material/ListSubheader";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
+// import ListSubheader from "@mui/material/ListSubheader";
+// import List from "@mui/material/List";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemText from "@mui/material/ListItemText";
+// import Collapse from "@mui/material/Collapse";
+// import ExpandLess from "@mui/icons-material/ExpandLess";
+// import ExpandMore from "@mui/icons-material/ExpandMore";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -659,8 +659,9 @@ export function SMSTexts() {
 
 export function VolInfo() {
   const [volunteersList, setVolunteerList] = useState([]);
+  const [driversList, setDriversList] = useState([]);
 
-  // GET
+  // GET ALL VOLUNTEERS
   const fetchVolunteers = async () => {
     const data = await axios.get(`${baseUrl}/volunteers`);
     const { volunteers } = data.data;
@@ -668,8 +669,17 @@ export function VolInfo() {
     console.log("DATA: ", data);
   };
 
+  // GET DRIVERS
+  const fetchDrivers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers/drivers`);
+    const { drivers } = data.data;
+    setDriversList(drivers);
+    console.log("DATA: ", data);
+  };
+
   useEffect(() => {
     fetchVolunteers();
+    fetchDrivers();
   }, []);
 
   const Root = styled("div")(({ theme }) => ({
@@ -795,15 +805,22 @@ export function VolInfo() {
                   <th>First Time? </th>
                   <th>Availability </th>
                 </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
+                {driversList.map((driver) => {
+                return (
+                  <tr key={driver.id}>
+                    <td>
+                      {" "}
+                      {driver.first_name} {driver.last_name}{" "}
+                    </td>
+                    <td>{driver.phone}</td>
+                    <td>{driver.email}</td>
+                    <td>{driver.language}</td>
+                    <td> {boolMap.get(driver.first_time)}</td>
+                    <td>{boolMap.get(driver.hipaa)}</td>
+                    <td>{boolMap.get(driver.credit)}</td>
+                  </tr>
+                );
+              })}
               </tbody>
             </table>
           </div>
@@ -829,6 +846,7 @@ export function VolInfo() {
                   <td>...</td>
                   <td>...</td>
                 </tr>
+                
               </tbody>
             </table>
           </div>
