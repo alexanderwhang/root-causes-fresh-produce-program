@@ -21,6 +21,7 @@ const baseUrl = "http://127.0.0.1:5000";
 
 export function Driver() {
   const [participantsList, setParticipantsList] = useState([]);
+  const [volunteersList, setVolunteersList] = useState([]);
   const [open, setOpen] = React.useState(true);
 
   const headers = [{ label: "Address", key: "address" }];
@@ -34,18 +35,11 @@ export function Driver() {
     setOpen(!open);
   };
 
-  let numDrivers = 0;
+  let numDrivers = volunteersList.length;
   let numParticipants = participantsList.length;
 
-  {
-    Vol_data.map((vol) => {
-      if (vol.type === "Driver") {
-        numDrivers++;
-      }
-    });
-  }
 
-  // GET
+  // GET PARTICIPANTS
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants/group/A/status/1`); // GET PATIENTS READY FOR DELIVERY (GREEN)
     const { participants } = data.data;
@@ -53,9 +47,20 @@ export function Driver() {
     console.log("DATA: ", data);
   };
 
+  // GET DRIVERS
+  const fetchVolunteers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers/drivers/2022-07-09`); // GET PATIENTS READY FOR DELIVERY (GREEN)
+    const { volunteers } = data.data;
+    setVolunteersList(volunteers);
+    console.log("DATA: ", data);
+  };
+
   useEffect(() => {
     fetchParticipants();
+    fetchVolunteers();
   }, []);
+
+
 
   let statusMap = new Map([
     [0, "grey"],
@@ -102,13 +107,12 @@ export function Driver() {
                 <th>Language</th>
                 {/* might want distance and time columns */}
               </tr>
-              {Vol_data.map((vol) => {
-                if (vol.type === "Driver")
+              {volunteersList.map((vol) => {
                   return (
-                    <tr key={vol.id}>
-                      <td> {vol.firstName}</td>
-                      <td>{vol.lastName}</td>
-                      <td>{vol.phoneNumber}</td>
+                    <tr key={vol.volunteer_id}>
+                      <td> {vol.first_name}</td>
+                      <td>{vol.last_name}</td>
+                      <td>{vol.phone}</td>
                       <td>{vol.language}</td>
                     </tr>
                   );
