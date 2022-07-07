@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { useState } from "react";
-import {Link} from "react-router-dom"
+// import { useState } from "react";
+// import {Link} from "react-router-dom"
 import { MenuItems } from "./MenuItems"
 import { Button2 } from "../Button2"
 import smalllogo from "./small-logo.jpg"
@@ -36,7 +36,7 @@ class Navbar extends Component {
         return(
             <nav className="NavbarItems">
                 <a className="navbar-logo" href="/">
-                    <img className="navbar-logo" src={smalllogo} />
+                    <img className="navbar-logo" alt="Root Causes Logo" src={smalllogo} />
                 </a>
                 {/* <img className="navbar-logo" src={smalllogo} /> */}
                 <div className="menu-icon" onClick={this.handleClick}>

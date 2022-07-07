@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./components/Navbar/Navbar";
-import { FooterContainer } from './containers/footer'
+// import { FooterContainer } from './containers/footer'
 // import './home.css'
 
 

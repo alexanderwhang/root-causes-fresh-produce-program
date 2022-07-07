@@ -25,7 +25,7 @@ import Button from "@mui/material/Button";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+// import { styled } from "@mui/material/styles";
 // import Divider from "@mui/material/Divider";
 // import Chip from "@mui/material/Chip";
 import { FooterContainer } from "./containers/footer";
@@ -71,22 +71,22 @@ export function Participants() {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
-  const keys = [
-    "status",
-    "first_name",
-    "last_name",
-    "address",
-    "phone_number",
-    "email",
-    "language",
-    "group",
-  ];
+  // const keys = [
+  //   "status",
+  //   "first_name",
+  //   "last_name",
+  //   "address",
+  //   "phone_number",
+  //   "email",
+  //   "language",
+  //   "group",
+  // ];
 
-  const search = (data) => {
-    return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query.toLowerCase()))
-    );
-  };
+  // const search = (data) => {
+  //   return data.filter((item) =>
+  //     keys.some((key) => item[key].toLowerCase().includes(query.toLowerCase()))
+  //   );
+  // };
 
   return (
     <div>
@@ -172,11 +172,11 @@ export function Callers() {
   };
 
   let users = []
-  {volunteersList.map((vol) => {
+  volunteersList.map((vol) => {
     return (
       users.push({title: vol.id, items: []})
     );
-  })}
+  })
   
   users.push({title: "pts", items: participantsList})
   console.log(users)
@@ -184,7 +184,7 @@ export function Callers() {
   const [peoples, setPeople] = useState(PracticeUsers);
   const CreateAssignment = () => {
     const participantsList = PracticeUsers[PracticeUsers.length - 1].items;
-    let Lans = [];
+    // let Lans = [];
 
     let DistributedUsers = [];
 
@@ -329,13 +329,13 @@ interface TabPanelProps {
 }
 
 export function Individual({ match }) {
-  const Root = styled("div")(({ theme }) => ({
-    width: "100%",
-    ...theme.typography.body2,
-    "& > :not(style) + :not(style)": {
-      marginTop: theme.spacing(2),
-    },
-  }));
+  // const Root = styled("div")(({ theme }) => ({
+  //   width: "100%",
+  //   ...theme.typography.body2,
+  //   "& > :not(style) + :not(style)": {
+  //     marginTop: theme.spacing(2),
+  //   },
+  // }));
 
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -396,11 +396,9 @@ export function Individual({ match }) {
   ]);
 
   const [status, setStatus] = React.useState(0);
-  let pt_id;
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value);
-    pt_id = event.target.id;
   };
 
   // function handleSubmitStatus(event) {
@@ -682,13 +680,13 @@ export function VolInfo() {
     fetchDrivers();
   }, []);
 
-  const Root = styled("div")(({ theme }) => ({
-    width: "100%",
-    ...theme.typography.body2,
-    "& > :not(style) + :not(style)": {
-      marginTop: theme.spacing(2),
-    },
-  }));
+  // const Root = styled("div")(({ theme }) => ({
+  //   width: "100%",
+  //   ...theme.typography.body2,
+  //   "& > :not(style) + :not(style)": {
+  //     marginTop: theme.spacing(2),
+  //   },
+  // }));
 
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -723,24 +721,24 @@ export function VolInfo() {
     setValue(newValue);
   };
 
-  const keys = [
-    "firstName",
-    "lastName",
-    "phoneNumber",
-    "email",
-    "language",
-    "type",
-    // "hippa",
-    // "credit"
-  ];
+  // const keys = [
+  //   "firstName",
+  //   "lastName",
+  //   "phoneNumber",
+  //   "email",
+  //   "language",
+  //   "type",
+  //   // "hippa",
+  //   // "credit"
+  // ];
 
-  const search = (data) => {
-    return data.filter((item) =>
-      keys.some((key) =>
-        item[key].toLowerCase().includes(value.query.toLowerCase())
-      )
-    );
-  };
+  // const search = (data) => {
+  //   return data.filter((item) =>
+  //     keys.some((key) =>
+  //       item[key].toLowerCase().includes(value.query.toLowerCase())
+  //     )
+  //   );
+  // };
 
   let boolMap = new Map([
     [true, "Y"],

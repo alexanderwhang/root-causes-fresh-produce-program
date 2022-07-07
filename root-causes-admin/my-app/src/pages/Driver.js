@@ -1,7 +1,7 @@
 import "./Driver.css";
 import React from "react";
 import axios from "axios";
-import { Table } from "../Table";
+// import { Table } from "../Table";
 import { Vol_data } from "../vol_data";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from "../containers/footer";
@@ -69,27 +69,27 @@ export function Driver() {
     [3, "salmon"],
   ]);
 
-  const [file, setFile] = useState();
+  // const [file, setFile] = useState();
 
-  function handleChange(event) {
-    setFile(event.target.files[0]);
-  }
+  // function handleChange(event) {
+  //   setFile(event.target.files[0]);
+  // }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const url = "http://localhost:3000/uploadFile";
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileName", file.name);
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    axios.post(url, formData, config).then((response) => {
-      console.log(response.data);
-    });
-  }
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   const url = "http://localhost:3000/uploadFile";
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("fileName", file.name);
+  //   const config = {
+  //     headers: {
+  //       "content-type": "multipart/form-data",
+  //     },
+  //   };
+  //   axios.post(url, formData, config).then((response) => {
+  //     console.log(response.data);
+  //   });
+  // }
   return (
     <div className="drivers">
       <Navbar />

@@ -1,13 +1,13 @@
 import React from "react";
-import { Individual } from "./App";
+// import { Individual } from "./App";
 import {useNavigate} from "react-router-dom";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import NativeSelect from "@mui/material/NativeSelect";
+// import Box from "@mui/material/Box";
+// import InputLabel from "@mui/material/InputLabel";
+// import FormControl from "@mui/material/FormControl";
+// import NativeSelect from "@mui/material/NativeSelect";
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import Ellipse from './symbols/Ellipse.svg';
+// import Link from '@mui/material/Link';
+// import Ellipse from './symbols/Ellipse.svg';
 import SvgEllipse from './symbolComponents/Ellipse';
 import {useEffect, useState} from 'react';
 import axios from "axios"
@@ -32,11 +32,11 @@ export const Table = ({data}) => {
 
   const navigate = useNavigate();
 
-  const [value, setValue] = React.useState("no-color");
+  // const [value, setValue] = React.useState("no-color");
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   let statusMap = new Map ([
     [0, "grey"],

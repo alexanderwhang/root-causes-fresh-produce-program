@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {App,Participants,Individual,SMSTexts, VolInfo,Callers,Drivers,Analytics} from './App'; 
+import {App,Participants,Individual,SMSTexts, VolInfo,Callers,Drivers} from './App'; 
 import reportWebVitals from './reportWebVitals'; 
-import {BrowserRouter,Routes,Route,Switch} from "react-router-dom";  
-import { GlobalStyles } from './global-styles'
-import { PracticeUsers } from './practiceUsers';
+import {BrowserRouter,Routes,Route} from "react-router-dom";  
+// import { GlobalStyles } from './global-styles'
+// import { PracticeUsers } from './practiceUsers';
 
 
 
