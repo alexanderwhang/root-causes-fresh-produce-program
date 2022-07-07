@@ -151,6 +151,9 @@ class Volunteer(db.Model):
     credit = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(320), nullable=False)
 
+    children = relationship("DriverLog")
+    children = relationship("DeliveryAssignment")
+
     def __repr__(self):
         return f"Volunteer: {self.first_name} {self.last_name}"
 
@@ -164,8 +167,6 @@ class Volunteer(db.Model):
         self.hipaa = hipaa
         self.email = credit
         self.email = email
-
-    children = relationship("DriverLog")
 
 def format_volunteer(volunteer):
     return {
@@ -219,12 +220,36 @@ def format_driver(driver):
         "comments": driver.comments
     }
 
+class DeliveryAssignment(db.Model):
+    __tablename__ = 'delivery_assignment'
+    __table_args__ = {"schema": "RC"}
 
+    delivery_list_id = db.Column(db.Integer, primary_key=True)
+    participant_id = db.Column(db.Integer, nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    assignment_date = db.Column(db.Text, nullable=False)        #should be date?
+
+    def __repr__(self):
+        return f"Driver ID #{self.volunteer_id} delivering to Participant ID#{self.participant_id} on Date {self.assignment_date}"
+
+    def __init__(self, delivery_list_id, participant_id, volunteer_id, assignment_date):
+        self.participant_id = participant_id
+        self.volunteer_id = volunteer_id
+        self.assignment_date = assignment_date
+
+def format_delivery(delivery):
+    return {
+        "delivery_list_id": delivery.delivery_list_id,
+        "participant_id": delivery.participant_id,
+        "volunteer_id": delivery.volunteer_id,
+        "assignment_date": delivery.assignment_date,
+    }
 
 @app.route('/')
 def hello():
     return 'Backend connected to host'
 
+############# PARTCIPANTS ##############
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
@@ -430,49 +455,14 @@ def get_drivers_by_date(date):
     
     return {'volunteers': volunteer_list}
 
+# GET ALL DELIVERIES
+@app.route('/deliveries', methods = ['GET'])
+def get_deliveries():
+    deliveries = DeliveryAssignment.query.order_by(DeliveryAssignment.assignment_date.asc()).all()
+    delivery_list = []
+    for delivery in deliveries:
+        delivery_list.append(format_delivery(delivery))
+    return {'deliveries': delivery_list}
+
 if __name__ == '__main__':
     app.run()
-
-
-
-
-    # class Participant(db.Model):
-#     __tablename__ = 'mock_participant_page'
-    
-#     id = db.Column(db.Integer, primary_key=True)
-#     first_name = db.Column(db.String(100), nullable=False)
-#     last_name = db.Column(db.String(100), nullable=False)
-#     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     address = db.Column(db.String(300), nullable=False)
-#     email = db.Column(db.String(100), nullable=True)
-#     phone_number = db.Column(db.String(15), nullable=True)
-#     language = db.Column(db.String(100), nullable=True)
-#     status = db.Column(db.Integer, nullable=True, default=0)
-#     group = db.Column(db.String(1), nullable=True)
-
-#     def __repr__(self):
-#         return f"Participant: {self.first_name} {self.last_name}"
-
-#     def __init__(self, first_name, last_name, address, email, phone_number, language, status, group):
-#         self.first_name = first_name
-#         self.last_name = last_name
-#         self.address = address
-#         self.email = email
-#         self.phone_number = phone_number
-#         self.language = language
-#         self.status = status
-#         self.group = group
-
-# def format_participant(participant):
-#     return {
-#         "id": participant.id,
-#         "first_name": participant.first_name,
-#         "last_name": participant.last_name,
-#         "updated_at": participant.updated_at,
-#         "address": participant.address,
-#         "email": participant.email,
-#         "phone_number": participant.phone_number,
-#         "language": participant.language,
-#         "status": participant.status,
-#         "group": participant.group
-#     }
