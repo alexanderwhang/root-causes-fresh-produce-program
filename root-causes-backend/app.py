@@ -155,6 +155,7 @@ class Volunteer(db.Model):
     hipaa = db.Column(db.Boolean, nullable=False)
     credit = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(320), nullable=False)
+    password = db.Column(db.String(320), nullable=False)
 
     children = relationship("DriverLog")
     children = relationship("DeliveryAssignment")
@@ -162,7 +163,7 @@ class Volunteer(db.Model):
     def __repr__(self):
         return f"Volunteer: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email):
+    def __init__(self, first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password):
         self.first_name = first_name
         self.last_name = last_name
         self.phone = phone
@@ -172,6 +173,7 @@ class Volunteer(db.Model):
         self.hipaa = hipaa
         self.email = credit
         self.email = email
+        self.password = password
 
 def format_volunteer(volunteer):
     return {
@@ -184,7 +186,8 @@ def format_volunteer(volunteer):
         "hipaa": volunteer.hipaa,
         "credit": volunteer.credit,
         "email": volunteer.email,
-        "phone": volunteer.phone
+        "phone": volunteer.phone,
+        "password": volunteer.password
     }
 
 class DriverLog(db.Model):
@@ -477,8 +480,32 @@ def get_deliveries():
 
 #VOLUNTEER APP
 
-# REGISTER PAGE –– CREATE VOLUNTEER USER, adds new row to volunteer table 
-
+# REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
+@app.route('/profile', methods = ['GET', 'POST'])
+def create_volunteer():
+    email = request.form['email']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    password = request.form['password']
+    phone = request.form['phone']
+    language = request.form['language']
+    affiliation = request.form['affiliation']
+    first_time = request.form['first_time']
+    hipaa = request.form['hipaa']
+    credit = request.form['credit']
+        
+    if email:
+        existing_volunteer = Volunteer.query.filter(
+            Volunteer.email == email
+        ).first()
+        if existing_volunteer:
+            return make_response(
+                f'{email} is already registered! Please login here instead: http://127.0.0.1:3000/'
+            )
+        new_volunteer = Volunteer(email=email, first_name=first_name, last_name=last_name, password=password, phone=phone, language=language, affiliation=affiliation, first_time=first_time, credit=credit, hipaa=hipaa)
+        db.session.add(new_volunteer)
+        db.session.commit()
+    return redirect('http://127.0.0.1:3000/')
 
 
 #LOGIN PAGE
