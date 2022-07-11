@@ -45,8 +45,6 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem"; 
 import { Users } from "./users";
 
-//HELLO WORLD
-const test = ":/";
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
 
