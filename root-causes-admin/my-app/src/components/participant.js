@@ -152,6 +152,124 @@ function Participant(props) {
           </form>
         </FormControl>
       </Box>
+      <Box sx={{ maxWidth: 200 }}>
+                    <FormControl fullWidth>
+                    <InputLabel id="simple-select-label">Language</InputLabel>
+                  <Select
+                    labelId="simple-select-label"
+                    id="simple-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+            <MenuItem value={0}>English</MenuItem>
+            <MenuItem value={1}>Spanish</MenuItem>
+          </Select>
+        </FormControl>
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+      </Box>
+      <Box sx={{ maxWidth: 200 }}>
+                    <FormControl fullWidth>
+                    <InputLabel id="simple-select-label">Group</InputLabel>
+                  <Select
+                    labelId="simple-select-label"
+                    id="simple-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+            <MenuItem value={0}>A</MenuItem>
+            <MenuItem value={1}>B</MenuItem>
+          </Select>
+        </FormControl>
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+      </Box>
+      <Box sx={{ maxWidth: 200 }}>
+                    <FormControl fullWidth>
+                    <InputLabel id="simple-select-label">Household Size</InputLabel>
+                  <Select
+                    labelId="simple-select-label"
+                    id="simple-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+            <MenuItem value={0}>1</MenuItem>
+            <MenuItem value={1}>2</MenuItem>
+            <MenuItem value={2}>3</MenuItem>
+            <MenuItem value={3}>4</MenuItem>
+            <MenuItem value={4}>5</MenuItem>
+            <MenuItem value={5}>6</MenuItem>
+            <MenuItem value={6}>7</MenuItem>
+            <MenuItem value={7}>8</MenuItem>
+            <MenuItem value={8}>9</MenuItem>
+            <MenuItem value={9}>10</MenuItem>
+            <MenuItem value={10}>10+</MenuItem>
+          </Select>
+        </FormControl>
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+      </Box>
+      <Box sx={{ maxWidth: 200 }}>
+                    <FormControl fullWidth>
+                    <InputLabel id="simple-select-label">Pronouns</InputLabel>
+                  <Select
+                    labelId="simple-select-label"
+                    id="simple-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+            <MenuItem value={0}>she/her/hers</MenuItem>
+            <MenuItem value={1}>he/him/his</MenuItem>
+            <MenuItem value={2}>they/them/theirs</MenuItem>
+            <MenuItem value={3}>Other</MenuItem>
+            <MenuItem value={4}>Prefer Not to Share</MenuItem>
+          </Select>
+        </FormControl>
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+      </Box>
+      <Box sx={{ maxWidth: 200 }}>
+                    <FormControl fullWidth>
+                    <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
+                  <Select
+                    labelId="simple-select-label"
+                    id="simple-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+            <MenuItem value={0}>Hispanic or Latino or Spanish Origin of any race</MenuItem>
+            <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
+            <MenuItem value={2}>Asian</MenuItem>
+            <MenuItem value={3}>Native Hawaiian or Other Pacific Islander</MenuItem>
+            <MenuItem value={4}>Black or African American</MenuItem>
+            <MenuItem value={5}>White</MenuItem>
+            <MenuItem value={6}>Other</MenuItem>
+          </Select>
+        </FormControl>
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+      </Box>
+      
     </div>
   );
 }
