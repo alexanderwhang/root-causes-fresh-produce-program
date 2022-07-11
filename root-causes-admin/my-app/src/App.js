@@ -1,4 +1,5 @@
 import "./App.css";
+import Participant from "./components/participant";
 import { useNavigate } from "react-router-dom";
 // import { useState } from "react";
 import React from "react";
@@ -482,71 +483,9 @@ export function Individual({ match }) {
                   </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                  <table className="personal_info">
-                    <tr>
-                      <th>Status</th>
-                      <th>Address</th>
-                      <th>Email</th>
-                      <th>Phone Number</th>
-                      <th>Language</th>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div
-                          style={{
-                            color: `${statusMap.get(participant.status)}`,
-                          }}
-                        >
-                          <SvgEllipse />
-                        </div>
-                      </td>
-                      <td>{participant.address}</td>
-                      <td>{participant.email}</td>
-                      <td>{participant.phone}</td>
-                      <td>{participant.language}</td>
-                    </tr>
-                    <tr>
-                      <th>Group</th>
-                      <th>Household Size</th>
-                      <th>Pronouns</th>
-                      <th>Age</th>
-                      <th>Race/Ethnicity</th>
-                    </tr>
-                    <tr>
-                      <td>{participant.group}</td>
-                      <td>5</td>
-                      <td>she/her/hers</td>
-                      <td>56</td>
-                      <td>Caucasian</td>
-                    </tr>
-                  </table>
-                  <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                      <form onSubmit={handleSubmitStatus} id={participant.id}>
-                        <input type="hidden" name="id" value={participant.id} />
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          defaultValue={{
-                            label: "test",
-                            value: participant.status,
-                          }}
-                          labelId="select-status-label"
-                          id="select-status"
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                        <Button type="submit" value={participant.id}>
-                          Submit
-                        </Button>
-                      </form>
-                    </FormControl>
-                  </Box>
+                  <Participant participant={participant} />
+                
+                  
                   {/* ); */}
                   {/* <table className="personal_info">
           <tr>

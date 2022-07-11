@@ -6,6 +6,7 @@ from sqlalchemy.orm import join
 from sqlalchemy import Column, ForeignKey, Integer, Table
 from sqlalchemy.orm import declarative_base, relationship
 import json
+import pdb
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -345,19 +346,19 @@ def update_participant(id):
     participant = Participant.query.filter_by(id=id)
     statusObj = Status.query.filter_by(participant_id=id)
 
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    address = request.json['address']
-    email = request.json['email']
-    phone_number = request.json['phone_number']
-    language = request.json['language']
-    status = request.json['status']
-    group = request.json['group']
+    first_name = request.json['participant']['first_name']
+    last_name = request.json['participant']['last_name']
+    # address = request.json['participant']['address']
+    email = request.json['participant']['email']
+    phone = request.json['participant']['phone']
+    language = request.json['participant']['language']
+    status = request.json['participant']['status']
+    group = request.json['participant']['group']
     participant.update(dict(first_name=first_name))
     participant.update(dict(last_name=last_name))
-    participant.update(dict(address=address))
+    # participant.update(dict(address=address))
     participant.update(dict(email=email))
-    participant.update(dict(phone_number=phone_number))
+    participant.update(dict(phone=phone))
     participant.update(dict(language=language))
     # participant.update(dict(status=status))
     participant.update(dict(group=group))
@@ -415,15 +416,15 @@ def delete_volunteer(id):
 def update_volunteer(id):
     volunteer = Volunteer.query.filter_by(volunteer_id=id)
     #first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone = request.json['phone_number']
-    language = request.json['language']
-    affiliation = request.json['affiliation']
-    first_time = request.json['first_time']
-    hipaa = request.json['hipaa']
-    credit = request.json['credit']
+    first_name = request.json['particpant']['first_name']
+    last_name = request.json['particpant']['last_name']
+    email = request.json['particpant']['email']
+    phone = request.json['particpant']['phone_number']
+    language = request.json['particpant']['language']
+    affiliation = request.json['particpant']['affiliation']
+    first_time = request.json['particpant']['first_time']
+    hipaa = request.json['particpant']['hipaa']
+    credit = request.json['particpant']['credit']
     volunteer.update(dict(first_name=first_name))
     volunteer.update(dict(last_name=last_name))
     volunteer.update(dict(email=email))
