@@ -33,8 +33,11 @@ export function VolInfoPage() {
   };
 
   useEffect(() => {
-    fetchDrivers();
     fetchVolunteers();
+  }, []);
+
+  useEffect(() => {
+    fetchDrivers();
   }, []);
 
   const Root = styled("div")(({ theme }) => ({
@@ -160,21 +163,17 @@ export function VolInfoPage() {
                   <th>First Time? </th>
                   <th>Availability </th>
                 </tr>
-                <div>
-                  {driversList.map((driver) => {
-                    return <div key={driver.id}>
-                        <tr>
-                            <td>{driver.first_name} {driver.last_name}</td>
+                  {/* {volunteersList.map((driver) => {
+                    return <tr key={driver.id}>
                             <td>{driver.phone}</td>
                             <td>{driver.email}</td>
                             <td>{driver.language}</td>
-                            <td>{driver.hipaa}</td>
-                            <td>{driver.first_time}</td>
+                            <td> {boolMap.get(driver.first_time)}</td>
+                            <td>{boolMap.get(driver.hipaa)}</td>
+                            <td>{boolMap.get(driver.credit)}</td>
                             <td>...</td>
-                        </tr>
-                    </div>;
-                  })}
-                </div>
+                        </tr>;
+                  })} */}
 
                 <tr>
                   <td>...</td>
