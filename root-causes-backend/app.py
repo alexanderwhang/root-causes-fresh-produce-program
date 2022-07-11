@@ -508,7 +508,7 @@ def register_volunteer():
     return redirect('http://127.0.0.1:3000/')
 
 
-#LOGIN PAGE
+#LOGIN PAGE -- test
 @app.route('/', methods = ['GET', 'POST'])
 def login():
     email = request.form.get('email')
