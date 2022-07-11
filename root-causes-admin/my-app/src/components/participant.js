@@ -1,10 +1,12 @@
 import React from "react";
+import './Participant.css'
 import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
+import TextField from '@mui/material/TextField';
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -153,7 +155,27 @@ function Participant(props) {
           </form>
         </FormControl>
       </Box>
-      {/* LANGUAGE */}
+      {/* EMAIL */}
+      <TextField className="email"
+          id="filled-email-input"
+          label="Email"
+          type="email"
+        />
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
+        <TextField
+          id="filled-password-input"
+          label="Phone Number"
+          type="phone-number"
+        />
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
       <Box sx={{ maxWidth: 200 }}>
                     <FormControl fullWidth>
                     <InputLabel id="simple-select-label">Language</InputLabel>
@@ -246,6 +268,19 @@ function Participant(props) {
           </Button>
         </div>
       </Box>
+      <TextField
+          id="outlined-number"
+          label="Age"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <div>
+          <Button>
+            Submit
+          </Button>
+        </div>
       <Box sx={{ maxWidth: 200 }}>
                     <FormControl fullWidth>
                     <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
