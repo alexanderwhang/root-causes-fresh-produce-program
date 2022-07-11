@@ -1,5 +1,7 @@
-
-export const Users=[{
+import React from "react";
+import axios from "axios"; 
+import { useEffect, useState } from "react";
+{/*export const Users=[{
     "key": 1,
     "status": "green",
     "firstName": "Gelya",
@@ -202,5 +204,48 @@ export const Users=[{
     "group": "A."
   }
   ] 
+*/} 
+const baseUrl = "http://127.0.0.1:5000";   
+let users = [];
+
+
+export function Users(){  
+  const [participantsList, setParticipantsList] = useState([]);
+  const [volunteersList, setVolunteersList] = useState([]);
+
+  // GET PARTICIPANTS
+  const fetchParticipants = async () => {
+    const data = await axios.get(`${baseUrl}/participants/status/3`);
+    const { participants } = data.data;
+    setParticipantsList(participants);
+    console.log("DATA: ", data); 
+    
+  };
+
+  useEffect(() => {
+    fetchParticipants();
+    fetchVolunteers();
+  }, []);
+
+  // GET VOLUNTEERS
+  const fetchVolunteers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers`);
+    const { volunteers } = data.data;
+    setVolunteersList(volunteers);
+    console.log("DATA: ", data);
+  };
+
+   
+   volunteersList.map((vol) => {
+    return (
+      users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language}) 
+    );
+  }); 
+  console.log(users)
+  
+  users.push({index:users.length+1,title: "Participants", items: participantsList,language:null});  
+  console.log(users)
+  return (users);
+}
   
   

@@ -42,12 +42,14 @@ import { useEffect, useState } from "react";
 // import ExpandLess from "@mui/icons-material/ExpandLess";
 // import ExpandMore from "@mui/icons-material/ExpandMore";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import MenuItem from "@mui/material/MenuItem"; 
+import { Users } from "./users";
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
 
-//commands to run for it to work:
+//commands to run for it to work: 
+//npm i react-scripts
 // npm install axios --save
 //npm install @mui/material @emotion/react @emotion/styled
 //npm install --save styled-components
@@ -147,54 +149,25 @@ export function Participants() {
 }
 
 export function Callers() {
-  const [participantsList, setParticipantsList] = useState([]);
-  const [volunteersList, setVolunteersList] = useState([]);
-
-  // GET PARTICIPANTS
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/status/3`);
-    const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA: ", data);
-  };
-
-  useEffect(() => {
-    fetchParticipants();
-    fetchVolunteers();
-  }, []);
-
-  // GET VOLUNTEERS
-  const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers`);
-    const { volunteers } = data.data;
-    setVolunteersList(volunteers);
-    console.log("DATA: ", data);
-  };
-
-  let users = []
-  volunteersList.map((vol) => {
-    return (
-      users.push({title: vol.id, items: []})
-    );
-  })
-  
-  users.push({title: "pts", items: participantsList})
-  console.log(users)
-  
-  const [peoples, setPeople] = useState(PracticeUsers);
+  let users =Users();
+  let participantsList= users[users.length-1].items;
+  let [peoples, setPeople] = useState(users);  
+  console.log(peoples) 
   const CreateAssignment = () => {
-    const participantsList = PracticeUsers[PracticeUsers.length - 1].items;
-    // let Lans = [];
-
     let DistributedUsers = [];
-
     //Splits the participants into chunks for volunteers
     function splitParticipants(data, chunkSize) {
       let ret = [];
-      for (let i = 0; i < data.length; i += chunkSize) {
-        const chunk = data.slice(i, i + chunkSize);
-        ret.push(chunk);
-      }
+      for (let i = 0; i < data.length; i += chunkSize) { 
+        if(data==undefined){ 
+          ret.push([])
+        } 
+        else{
+        const chunk = data.slice(i, i + chunkSize); 
+        ret.push(chunk); 
+        }
+      } 
+      
       return ret;
     }
 
@@ -212,7 +185,7 @@ export function Callers() {
         let volunteer = data[j];
 
         for (const [key, value] of languagesSpoken.entries()) {
-          if (key === volunteer.primaryLan) {
+          if (key === volunteer.language) {
             value.push(volunteer);
           }
         }
@@ -244,12 +217,12 @@ export function Callers() {
       //break up the participants into chunks
       const participantChunks = splitParticipants(
         participants,
-        Math.ceil(participants.length / volunteers.length)
+        Math.ceil(participants.length /volunteers.length)
       );
       //iterate through each volunteer based on language
       //set each volunteer to a chunks
       for (let i = 0; i < volunteers.length; i++) {
-        let volunteer = volunteers[i];
+        let volunteer = volunteers[i]; 
         volunteer.items = participantChunks[i];
         ret.push(volunteer);
       }
@@ -264,10 +237,10 @@ export function Callers() {
       let ret = [];
       let Participants = {
         index: null,
-        title: "Participants",
+        title: "pts",
         items: [],
-        primaryLan: null,
-        secondaryLan: null,
+        language: null
+
       };
       let languages = vol.keys();
       for (const key of languages) {
@@ -280,13 +253,20 @@ export function Callers() {
         } else {
           //returns all the volunteers
           let temp = partToVol(volunteers.get(key), participants.get(key));
+          
 
-          for (let i = 0; i < temp.length; i++) {
+          for (let i = 0; i < temp.length; i++) { 
             ret.push(temp[i]);
           }
         }
       }
-      Participants.index = ret.length + 1;
+      Participants.index = ret.length + 1; 
+      for(let i =0;i<ret.length;i++){ 
+          let volunteer=ret[i]; 
+          if(volunteer.items===null){  
+            volunteer.items =[]; 
+          }
+      }
       ret.push(Participants);
       for (let k = 0; k < ret.length; k++) {
         let person = ret[k];
@@ -297,12 +277,15 @@ export function Callers() {
     }
 
     let participants = participantToLanguages(participantsList);
-    let volunteers = volunteersToLanguages(PracticeUsers);
+    let volunteers = volunteersToLanguages(users);
 
-    DistributedUsers = matchVolstoParts(participants, volunteers);
-    setPeople(DistributedUsers);
-    PracticeUsers = DistributedUsers;
-  };
+    DistributedUsers = matchVolstoParts(participants, volunteers);  
+   
+    setPeople(DistributedUsers);  
+    peoples = DistributedUsers; 
+    console.log(peoples)
+  }; 
+  console.log(peoples);
   return (
     <div>
       <DragPractice data={peoples} />

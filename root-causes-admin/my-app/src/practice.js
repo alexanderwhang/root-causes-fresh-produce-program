@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useRef } from "react";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar"; 
+import { Users } from "./users";
 // import { FooterContainer } from './containers/footer';
 
 
@@ -65,8 +66,9 @@ return (
     <Navbar />  
     <h2>Caller Management</h2>
     <header className="caller-header"> 
-    <div className="drag-n-drop"> 
-    {list.map((grp,grpI)=>( 
+    <div className="drag-n-drop">  
+    {list.map((grp,grpI)=>(  
+       
     
     
         <div key={grp.index}  
@@ -85,11 +87,11 @@ return (
             className={dragging?getStyles({grpI,itemI}):"dnd-item"}>    
             
             <ul class="ptInfo"> 
-                <li id="ptName">{item.firstName} {item.lastName} </li> 
+                <li id="ptName">{item.first_name} {item.last_name} </li> 
                 <li>{item.email} </li>
                 {/* <li>{item.lastName}</li>  */}
                 {/* <li>{item.address}</li>  */}
-                <li>{item.phoneNumber} </li> 
+                <li>{item.phone} </li> 
                 {/* <li>{item.email}</li>  */}
                 <li>{item.language} </li> 
                 {/* <li>{item.status}</li> */}
