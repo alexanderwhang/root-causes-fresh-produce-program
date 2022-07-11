@@ -16,6 +16,7 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { CSVLink } from "react-csv";
+import ParseExcel from "../components/ParseExcel.js"
 
 const baseUrl = "http://127.0.0.1:5000";
 
@@ -167,7 +168,9 @@ export function Driver() {
             Download Addresses
           </CSVLink>
         </Button>
-        <Button type="submit" variant="contained">
+        {/* <Button type="submit" variant="contained"> */}
+        <Button variant="contained">
+          <ParseExcel/>
           Upload Routes
         </Button>
         {/* </form> */}
@@ -189,15 +192,14 @@ export function Driver() {
               return (
                 <div key={vol.id}>
                   <ListItemButton key={vol.id} onClick={handleClick}>
-                    <ListItemText> Route {vol.route} </ListItemText>
+                    <ListItemText> Route {vol.route} -  {vol.firstName} {vol.lastName} </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          {" "}
-                          {vol.firstName} {vol.lastName}{" "}
+                          Start Time, Duration, Addresses
                         </ListItemText>
                       </ListItemButton>
                     </List>

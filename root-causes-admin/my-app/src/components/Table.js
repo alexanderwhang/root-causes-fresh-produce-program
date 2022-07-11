@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 // import Link from '@mui/material/Link';
 // import Ellipse from './symbols/Ellipse.svg';
-import SvgEllipse from './symbolComponents/Ellipse';
+import SvgEllipse from '../symbolComponents/Ellipse';
 import {useEffect, useState} from 'react';
 import axios from "axios"
 
