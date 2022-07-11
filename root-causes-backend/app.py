@@ -482,7 +482,7 @@ def get_deliveries():
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
-def create_volunteer():
+def register_volunteer():
     email = request.form['email']
     first_name = request.form['first_name']
     last_name = request.form['last_name']
