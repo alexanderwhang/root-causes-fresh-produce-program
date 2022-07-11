@@ -1,0 +1,190 @@
+/* FONTS
+font-family: 'Delius', cursive;
+font-family: 'Raleway', sans-serif; 
+*/
+
+*{
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+body{
+    margin-top: 60px;
+}
+
+table, th, td {
+  border: 1px solid;
+  width: 100%;
+  color: #009c4b;
+  font-size: 1.1em;
+  margin-bottom: 60px;
+}
+
+td {
+  padding: 15px 0;
+}
+
+.raleway_font{
+    font-family: 'Raleway', sans-serif;
+ }
+
+ h1 {
+    font-family: 'Raleway', sans-serif;
+    color: #00743e;
+    font-weight: 800;
+ }
+
+ h3 {
+    font-family: 'Raleway', sans-serif;
+ }
+
+ p{
+    font-family: 'Raleway', sans-serif;
+ }
+
+ fieldset{
+     margin-bottom: 20px;
+ }
+
+.input{
+    border-radius: 10px;
+    border-color:  rgb(237, 237, 237);
+    padding: 8px;
+    margin: 8px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: rgb(247, 246, 246);
+    width: 90%;
+}
+
+.button {
+    background-color: #00743e;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 16px;
+    width: 90%;
+    }
+
+.button:hover {
+    background-color:#72bc44;
+}
+
+#language{
+    width: 30%;
+}
+
+#affiliation{
+    width: 60%;
+}
+
+/* Nav bar */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f9f8e1;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  
+  }
+
+  .title{
+      display: none;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 80%;
+  }
+
+  li a:hover {
+    background-color: #f7c86d;
+  }
+
+  .active {
+    background-color: #00743e;
+  }
+  .active a {
+      color: white;
+  }
+  img {
+    width: 100%;
+    position: top center;
+  }
+
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+#picText {
+  background-color: rgba(0, 116, 62, 0.75); 
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+  font-size: 3em;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+@media screen and (min-width: 600px) {
+    .input{
+        width: 200px;
+    }
+    .button{
+        width: 100px;
+    }
+    #language{
+        width: 100px;
+    }
+    #affiliation{
+        width: 200px;
+    }
+    fieldset{
+        margin-top: 30px;
+    }
+    /* Nav bar */
+    ul {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 50px;
+        z-index: 1;
+      }
+    li a{
+        font-size: initial;
+    }
+
+    .title{
+        display: flex;
+        float: right;
+        margin-right: 10%;
+        font-size: smaller;
+    }
+
+}
