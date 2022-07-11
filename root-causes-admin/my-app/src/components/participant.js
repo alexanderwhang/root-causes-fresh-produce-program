@@ -125,6 +125,7 @@ function Participant(props) {
           <td>Hispanic or Latino</td>
         </tr>
       </table>
+      {/* STATUS */}
       <Box sx={{ maxWidth: 200 }}>
         <FormControl fullWidth>
           <form onSubmit={handleSubmitStatus} id={props.participant.id}>
@@ -152,6 +153,7 @@ function Participant(props) {
           </form>
         </FormControl>
       </Box>
+      {/* LANGUAGE */}
       <Box sx={{ maxWidth: 200 }}>
                     <FormControl fullWidth>
                     <InputLabel id="simple-select-label">Language</InputLabel>
@@ -162,8 +164,8 @@ function Participant(props) {
                     label="Status"
                     onChange={handleStatusChange}
                   >
-            <MenuItem value={0}>English</MenuItem>
-            <MenuItem value={1}>Spanish</MenuItem>
+            <MenuItem value={"English"}>English</MenuItem>
+            <MenuItem value={"Spanish"}>Spanish</MenuItem>
           </Select>
         </FormControl>
         <div>
@@ -182,8 +184,8 @@ function Participant(props) {
                     label="Status"
                     onChange={handleStatusChange}
                   >
-            <MenuItem value={0}>A</MenuItem>
-            <MenuItem value={1}>B</MenuItem>
+            <MenuItem value={"A"}>A</MenuItem>
+            <MenuItem value={"B"}>B</MenuItem>
           </Select>
         </FormControl>
         <div>
