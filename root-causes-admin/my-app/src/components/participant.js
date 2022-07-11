@@ -122,7 +122,7 @@ function Participant(props) {
           <td>5</td>
           <td>she/her/hers</td>
           <td>56</td>
-          <td>White</td>
+          <td>Hispanic or Latino</td>
         </tr>
       </table>
       <Box sx={{ maxWidth: 200 }}>
@@ -254,7 +254,7 @@ function Participant(props) {
                     label="Status"
                     onChange={handleStatusChange}
                   >
-            <MenuItem value={0}>Hispanic or Latino or Spanish Origin of any race</MenuItem>
+            <MenuItem value={0}>Hispanic or Latino</MenuItem>
             <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
             <MenuItem value={2}>Asian</MenuItem>
             <MenuItem value={3}>Native Hawaiian or Other Pacific Islander</MenuItem>
