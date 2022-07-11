@@ -122,7 +122,7 @@ function Participant(props) {
           <td>5</td>
           <td>she/her/hers</td>
           <td>56</td>
-          <td>Caucasian</td>
+          <td>White</td>
         </tr>
       </table>
       <Box sx={{ maxWidth: 200 }}>
