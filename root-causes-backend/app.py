@@ -509,6 +509,28 @@ def register_volunteer():
 
 
 #LOGIN PAGE
+@app.route('/', methods = ['GET', 'POST'])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    existing_volunteer = Volunteer.query.filter_by(email=email).first()
+
+    if not existing_volunteer:
+        return make_response(
+                f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
+        )
+        return redirect('http://127.0.0.1:3000/profile')
+
+    if existing_volunteer and not (existing_volunteer.password==password):
+        return make_response(
+                f'{email} password is incorrect.'
+        )
+        return redirect('http://127.0.0.1:3000/profile')
+    
+    if existing_volunteer and (existing_volunteer.password==password):
+        return make_response(
+                f'{email} successfully logged in!'
+            )
 
 
 
