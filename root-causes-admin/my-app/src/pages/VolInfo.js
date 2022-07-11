@@ -33,8 +33,8 @@ export function VolInfoPage() {
   };
 
   useEffect(() => {
-    fetchVolunteers();
     fetchDrivers();
+    fetchVolunteers();
   }, []);
 
   const Root = styled("div")(({ theme }) => ({
@@ -160,6 +160,22 @@ export function VolInfoPage() {
                   <th>First Time? </th>
                   <th>Availability </th>
                 </tr>
+                <div>
+                  {driversList.map((driver) => {
+                    return <div key={driver.id}>
+                        <tr>
+                            <td>{driver.first_name} {driver.last_name}</td>
+                            <td>{driver.phone}</td>
+                            <td>{driver.email}</td>
+                            <td>{driver.language}</td>
+                            <td>{driver.hipaa}</td>
+                            <td>{driver.first_time}</td>
+                            <td>...</td>
+                        </tr>
+                    </div>;
+                  })}
+                </div>
+
                 <tr>
                   <td>...</td>
                   <td>...</td>
