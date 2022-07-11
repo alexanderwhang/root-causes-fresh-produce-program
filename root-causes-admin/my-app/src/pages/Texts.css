@@ -1,0 +1,19 @@
+.sending{
+    margin-left: 150px;
+}
+
+.submitButton{
+    margin-top: 1rem;
+    margin-left: 50px;
+    margin-bottom: 2.5rem;
+}
+
+.messageBox{
+    margin-left: -6px;
+    margin-top: 1rem;
+}
+
+.confirmMessage{
+    margin-top: 0.5rem;
+    margin-left: 20px;
+}
