@@ -134,6 +134,18 @@
     margin-bottom: 1.5rem;
     align-items: center;
   }
+
+ #upload{
+    background-color: #00743e;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 0.7rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    margin-left: 0.5rem;
+    align-items: center;
+  }
   
   .driver_buttons button:hover{
     background-color: #009a4b;
