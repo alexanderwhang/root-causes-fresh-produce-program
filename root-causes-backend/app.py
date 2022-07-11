@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
@@ -7,6 +7,10 @@ from sqlalchemy import Column, ForeignKey, Integer, Table
 from sqlalchemy.orm import declarative_base, relationship
 import json
 import pdb
+from flask_marshmallow import Marshmallow
+from datetime import datetime
+import psycopg2
+from sqlalchemy.dialects.postgresql import ARRAY
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -465,6 +469,23 @@ def get_deliveries():
     for delivery in deliveries:
         delivery_list.append(format_delivery(delivery))
     return {'deliveries': delivery_list}
+
+
+
+#...
+
+
+#VOLUNTEER APP
+
+# REGISTER PAGE –– CREATE VOLUNTEER USER, adds new row to volunteer table 
+
+
+
+#LOGIN PAGE
+
+
+
+
 
 if __name__ == '__main__':
     app.run()
