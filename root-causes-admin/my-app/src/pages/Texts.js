@@ -22,7 +22,7 @@ export default function BasicSelect() {
     <Box sx={{ maxWidth: 200 }}>
       <FormControl fullWidth>
         <InputLabel id="simple-select-label">Filter</InputLabel>
-        <Select
+        <Select className="filter"
           labelId="simple-select-label"
           id="simple-select"
           value={status}

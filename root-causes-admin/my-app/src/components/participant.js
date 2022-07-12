@@ -175,11 +175,11 @@ function Participant(props) {
 
   return (
     <div>
-      <div className="editButton">
-        <Button variant="outlined" size="small" onClick={editInfo}>
-          Edit
-        </Button>
-      </div>
+        <div className="editButton">
+          <Button variant="outlined" size="small" onClick={editInfo}>
+            Edit
+          </Button>
+        </div>
       <table className="personal_info">
         <tr>
           <th>Status</th>
