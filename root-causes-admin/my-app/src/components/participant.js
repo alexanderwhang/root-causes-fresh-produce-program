@@ -61,6 +61,7 @@ function Participant(props) {
   const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
 
 
+  
   //HANDLE CHANGE
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value);

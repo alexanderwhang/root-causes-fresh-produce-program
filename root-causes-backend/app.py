@@ -86,7 +86,7 @@ def format_participant(participant):
         "email": participant.email,
         "phone": participant.phone,
         "language": participant.language,
-        "pronoun": participant.pronouns,
+        "pronouns": participant.pronouns,
         "group": participant.group,
         "household_size": participant.household_size,
         "street": address.street,
