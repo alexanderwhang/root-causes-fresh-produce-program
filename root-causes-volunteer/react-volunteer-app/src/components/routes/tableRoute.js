@@ -122,8 +122,8 @@ function Row(props) {
             />
             <input type="hidden" name="id" value={row.id} />
           <br />
-          <Button className="submitImage"
-            style={{backgroundColor: "#00743e", marginTop: "10px" }}
+          <Button id="note_submit"
+            style={{marginTop: "10px"}}
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -204,8 +204,8 @@ function Row(props) {
                         <input type="hidden" name="id" value={row.id} />
                         <input style={{ marginRight: '15px' }} type= "text" name="routes_notes" placeholder="Enter notes here..." />
                       <br />
-                      <Button
-                          style={{backgroundColor: "#00743e", marginTop: "10px", marginRight: "5px"}}
+                      <Button id = "note_submit"
+                          style={{marginTop: "10px", marginRight: "5px"}}
                           type="submit"
                           variant="contained"
                           sx={{ mt: 3, mb: 2 }}
@@ -215,9 +215,9 @@ function Row(props) {
                       </Button>
                       <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
-                        <Button
+                        <Button id = "note_delete"
                             name = "delete"
-                            style={{backgroundColor: "#fc2848", marginTop: "10px"}}
+                            style={{marginTop: "10px"}}
                             type="submit"
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}

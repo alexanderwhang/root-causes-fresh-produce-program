@@ -11,14 +11,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import Radio from '@mui/material/Radio';
-// import RadioGroup from '@mui/material/RadioGroup';
-// import FormControl from '@mui/material/FormControl';
-// import FormLabel from '@mui/material/FormLabel';
-// import InputLabel from '@mui/material/InputLabel';
-// import MenuItem from '@mui/material/MenuItem';
-// import Select from '@mui/material/Select';
-// import PhoneInput from 'react-phone-number-input/input';
 import Button from '@mui/material/Button';
 import '../styleSheets/tableRoute.css';
 import PeopleIcon from '@mui/icons-material/People';
@@ -66,11 +58,11 @@ export default function EitherOr() {
             </Avatar>
   
             <Typography component="h1" variant="h5">
-              Are you Admin or Volunteer?
+              <b> Admin or Volunteer? </b>
             </Typography>
 
             <Typography component="h1" variant="h5">
-              Select which role you are to be taken to the appropriate site. 
+              Select your role:
             </Typography>
             
             <div id="btn-group">
