@@ -51,6 +51,9 @@ function Participant(props) {
   const handleHouseSizeChange = (event: SelectChangeEvent) => {
     setHouseSize(event.target.value);
   };
+  const handlePronounChange = (event: SelectChangeEvent) => {
+    setPronouns(event.target.value);
+  };
 
   //HANDLE SUBMIT
   const handleSubmit = async (e) => {
@@ -106,9 +109,25 @@ function Participant(props) {
     //   console.log(`Participant id: ${e.target.id}`);
     // }
   };
+  const [edit_form_status, setEdit] = React.useState(true)
+
+  const editInfo = () => {
+    if (edit_form_status){
+      setEdit(false);
+    }
+      
+    else if (!edit_form_status){
+      setEdit(true);
+    }
+  };
 
   return (
     <div>
+      <div className="editButton">
+        <Button variant="outlined" size="small" onClick={editInfo}>
+          Edit
+        </Button>
+      </div>
       <table className="personal_info">
         <tr>
           <th>Status</th>
@@ -147,13 +166,12 @@ function Participant(props) {
           <td>Hispanic or Latino</td>
         </tr>
       </table>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} hidden={edit_form_status}>
         {/* STATUS */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="select-status-label">Status</InputLabel>
             <Select
-              defaultValue={props.participant.status}
               labelId="select-status-label"
               id="select-status"
               value={status}
@@ -174,40 +192,33 @@ function Participant(props) {
           label="Email"
           type="email"
         />
-        <div>
-        </div>
+        <div></div>
         {/* PHONE  NUMBER */}
         <TextField
           id="filled-password-input"
           label="Phone Number"
           type="phone-number"
         />
-        <div>
-        </div>
+        <div></div>
         {/* ADDRESS */}
         <TextField id="filled-password-input" label="Street" type="street" />
-        <div>
-        </div>
+        <div></div>
         <TextField id="filled-password-input" label="City" type="city" />
-        <div>
-        </div>
+        <div></div>
         <TextField id="filled-password-input" label="State" type="state" />
-        <div>
-        </div>
+        <div></div>
         <TextField
           id="filled-password-input"
           label="Zip Code"
           type="zip-code"
         />
-        <div>
-        </div>
+        <div></div>
         <TextField
           id="filled-password-input"
           label="Apartment Number"
           type="apartment-number"
         />
-        <div>
-        </div>
+        <div></div>
         {/* LANGUAGE */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -223,8 +234,7 @@ function Participant(props) {
               <MenuItem value={"Spanish"}>Spanish</MenuItem>
             </Select>
           </FormControl>
-          <div>
-          </div>
+          <div></div>
         </Box>
         {/* GROUP */}
         <Box sx={{ maxWidth: 200 }}>
@@ -241,8 +251,7 @@ function Participant(props) {
               <MenuItem value={"B"}>B</MenuItem>
             </Select>
           </FormControl>
-          <div>
-          </div>
+          <div></div>
         </Box>
         {/* HOUSEHOLD SIZE */}
         <Box sx={{ maxWidth: 200 }}>
@@ -268,28 +277,28 @@ function Participant(props) {
               {/* <MenuItem value={11}>10+</MenuItem> */}
             </Select>
           </FormControl>
-          <div>
-          </div>
+          <div></div>
         </Box>
+        {/* PRONOUNS */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Pronouns</InputLabel>
             <Select
               labelId="simple-select-label"
               id="simple-select"
-              value={status}
-              label="Status"
-              onChange={handleStatusChange}
+              value={pronouns}
+              label="Pronouns"
+              onChange={handlePronounChange}
             >
-              <MenuItem value={0}>she/her/hers</MenuItem>
-              <MenuItem value={1}>he/him/his</MenuItem>
-              <MenuItem value={2}>they/them/theirs</MenuItem>
-              <MenuItem value={3}>Other</MenuItem>
-              <MenuItem value={4}>Prefer Not to Share</MenuItem>
+              <MenuItem value={"she/her/hers"}>she/her/hers</MenuItem>
+              <MenuItem value={"he/him/his"}>he/him/his</MenuItem>
+              <MenuItem value={"they/them/theirs"}>they/them/theirs</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
+              <MenuItem value={"Prefer Not to Share"}>
+                Prefer Not to Share
+              </MenuItem>
             </Select>
           </FormControl>
-          <div>
-          </div>
         </Box>
         <TextField
           id="outlined-number"
@@ -299,8 +308,7 @@ function Participant(props) {
             shrink: true,
           }}
         />
-        <div>
-        </div>
+        <div></div>
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
@@ -322,8 +330,7 @@ function Participant(props) {
               <MenuItem value={6}>Other</MenuItem>
             </Select>
           </FormControl>
-          <div>
-          </div>
+          <div></div>
         </Box>
         <Button type="submit">Submit</Button>
       </form>
