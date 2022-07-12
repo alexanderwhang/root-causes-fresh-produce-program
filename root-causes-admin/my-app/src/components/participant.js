@@ -1,12 +1,12 @@
 import React from "react";
-import './Participant.css'
+import "./Participant.css";
 import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,6 @@ import MenuItem from "@mui/material/MenuItem";
 
 // const baseUrl = "http://127.0.0.1:5000";
 const baseUrl = "http://localhost:5000";
-
 
 function Participant(props) {
   let statusMap = new Map([
@@ -29,42 +28,59 @@ function Participant(props) {
   console.log(props);
 
   const [status, setStatus] = React.useState(props.participant.status);
+  const [group, setGroup] = React.useState(props.participant.group);
+  const [language, setLanguage] = React.useState(props.participant.language);
+  const [houseSize, setHouseSize] = React.useState(props.participant.house_size);
+  const [pronouns, setPronouns] = React.useState(props.participant.pronouns);
   
-//   const [participantsList, setParticipantsList] = useState([]);
-    const [statusColor, setStatusColor] = useState(props.participant.status);
 
 
+  
+
+  //   const [participantsList, setParticipantsList] = useState([]);
+  const [statusColor, setStatusColor] = useState(props.participant.status);
+
+  //HANDLE CHANGE
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value);
   };
+  const handleLanguageChange = (event: SelectChangeEvent) => {
+    setLanguage(event.target.value);
+  };
+  const handleGroupChange = (event: SelectChangeEvent) => {
+    setGroup(event.target.value);
+  };
+  const handleHouseSizeChange = (event: SelectChangeEvent) => {
+    setHouseSize(event.target.value);
+  };
 
+  //HANDLE SUBMIT
   const handleSubmitStatus = async (e) => {
     e.preventDefault();
-    
 
-    let new_participant = props.participant
-    new_participant.status = status
-    var data = JSON.stringify({participant: new_participant});
-    let id = props.participant.id
-    setStatusColor(new_participant.status)
-      
-      var config = {
-        method: 'put',
-        url: `http://localhost:5000/participants/${id}`,
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      axios(config)
-      .then(function (response) {
+    let new_participant = props.participant;
+    new_participant.status = status;
+    var data = JSON.stringify({ participant: new_participant });
+    let id = props.participant.id;
+    setStatusColor(new_participant.status);
+
+    var config = {
+      method: "put",
+      url: `http://localhost:5000/participants/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function(response) {
         console.log(JSON.stringify(response.data));
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
-      
+
     // console.log(`Participant id: ${e.target.id}`);
     // try {
     //     console.log(baseUrl)
@@ -101,7 +117,7 @@ function Participant(props) {
           <td>
             <div
               style={{
-                color: `${statusMap.get(statusColor)}`, //set color in state
+                color: `${statusMap.get(statusColor)}`,
               }}
             >
               <SvgEllipse />
@@ -120,23 +136,20 @@ function Participant(props) {
           <th>Race/Ethnicity</th>
         </tr>
         <tr>
-          <td>{props.participant.group}</td>
+          <td>{group}</td>
           <td>5</td>
           <td>she/her/hers</td>
           <td>56</td>
           <td>Hispanic or Latino</td>
         </tr>
       </table>
+      {/* STATUS */}
       <Box sx={{ maxWidth: 200 }}>
         <FormControl fullWidth>
           <form onSubmit={handleSubmitStatus} id={props.participant.id}>
-            <input type="hidden" name="id" value={props.participant.id} />
             <InputLabel id="select-status-label">Status</InputLabel>
             <Select
-              defaultValue={{
-                label: "test",
-                value: props.participant.status,
-              }}
+              defaultValue={props.participant.status}
               labelId="select-status-label"
               id="select-status"
               value={status}
@@ -154,105 +167,100 @@ function Participant(props) {
           </form>
         </FormControl>
       </Box>
-      <TextField className="email"
-          id="filled-email-input"
-          label="Email"
-          type="email"
-        />
-        <div>
-          <Button>
-            Submit
-          </Button>
-        </div>
-        <TextField
-          id="filled-password-input"
-          label="Phone Number"
-          type="phone-number"
-        />
-        <div>
-          <Button>
-            Submit
-          </Button>
-        </div>
+      {/* EMAIL */}
+      <TextField
+        className="email"
+        id="filled-email-input"
+        label="Email"
+        type="email"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      <TextField
+        id="filled-password-input"
+        label="Phone Number"
+        type="phone-number"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      {/* LANGUAGE */}
       <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                    <InputLabel id="simple-select-label">Language</InputLabel>
-                  <Select
-                    labelId="simple-select-label"
-                    id="simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
-            <MenuItem value={0}>English</MenuItem>
-            <MenuItem value={1}>Spanish</MenuItem>
+        <FormControl fullWidth>
+          <InputLabel id="simple-select-label">Language</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={language}
+            label="Status"
+            onChange={handleLanguageChange}
+          >
+            <MenuItem value={"English"}>English</MenuItem>
+            <MenuItem value={"Spanish"}>Spanish</MenuItem>
           </Select>
         </FormControl>
         <div>
-          <Button>
-            Submit
-          </Button>
+          <Button>Submit</Button>
         </div>
       </Box>
+      {/* GROUP */}
       <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                    <InputLabel id="simple-select-label">Group</InputLabel>
-                  <Select
-                    labelId="simple-select-label"
-                    id="simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
-            <MenuItem value={0}>A</MenuItem>
-            <MenuItem value={1}>B</MenuItem>
+        <FormControl fullWidth>
+          <InputLabel id="simple-select-label">Group</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={group}
+            label="Status"
+            onChange={handleGroupChange}
+          >
+            <MenuItem value={"A"}>A</MenuItem>
+            <MenuItem value={"B"}>B</MenuItem>
           </Select>
         </FormControl>
         <div>
-          <Button>
-            Submit
-          </Button>
+          <Button>Submit</Button>
         </div>
       </Box>
+      {/* HOUSEHOLD SIZE */}
       <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                    <InputLabel id="simple-select-label">Household Size</InputLabel>
-                  <Select
-                    labelId="simple-select-label"
-                    id="simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
-            <MenuItem value={0}>1</MenuItem>
-            <MenuItem value={1}>2</MenuItem>
-            <MenuItem value={2}>3</MenuItem>
-            <MenuItem value={3}>4</MenuItem>
-            <MenuItem value={4}>5</MenuItem>
-            <MenuItem value={5}>6</MenuItem>
-            <MenuItem value={6}>7</MenuItem>
-            <MenuItem value={7}>8</MenuItem>
-            <MenuItem value={8}>9</MenuItem>
-            <MenuItem value={9}>10</MenuItem>
-            <MenuItem value={10}>10+</MenuItem>
+        <FormControl fullWidth>
+          <InputLabel id="simple-select-label">Household Size</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={houseSize}
+            label="Status"
+            onChange={handleHouseSizeChange}
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            <MenuItem value={4}>4</MenuItem>
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={6}>6</MenuItem>
+            <MenuItem value={7}>7</MenuItem>
+            <MenuItem value={8}>8</MenuItem>
+            <MenuItem value={9}>9</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            {/* <MenuItem value={11}>10+</MenuItem> */}
           </Select>
         </FormControl>
         <div>
-          <Button>
-            Submit
-          </Button>
+          <Button>Submit</Button>
         </div>
       </Box>
       <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                    <InputLabel id="simple-select-label">Pronouns</InputLabel>
-                  <Select
-                    labelId="simple-select-label"
-                    id="simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
+        <FormControl fullWidth>
+          <InputLabel id="simple-select-label">Pronouns</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={status}
+            label="Status"
+            onChange={handleStatusChange}
+          >
             <MenuItem value={0}>she/her/hers</MenuItem>
             <MenuItem value={1}>he/him/his</MenuItem>
             <MenuItem value={2}>they/them/theirs</MenuItem>
@@ -261,50 +269,45 @@ function Participant(props) {
           </Select>
         </FormControl>
         <div>
-          <Button>
-            Submit
-          </Button>
+          <Button>Submit</Button>
         </div>
       </Box>
       <TextField
-          id="outlined-number"
-          label="Age"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <div>
-          <Button>
-            Submit
-          </Button>
-        </div>
+        id="outlined-number"
+        label="Age"
+        type="number"
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
       <Box sx={{ maxWidth: 200 }}>
-                    <FormControl fullWidth>
-                    <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
-                  <Select
-                    labelId="simple-select-label"
-                    id="simple-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
+        <FormControl fullWidth>
+          <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
+          <Select
+            labelId="simple-select-label"
+            id="simple-select"
+            value={status}
+            label="Status"
+            onChange={handleStatusChange}
+          >
             <MenuItem value={0}>Hispanic or Latino</MenuItem>
             <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
             <MenuItem value={2}>Asian</MenuItem>
-            <MenuItem value={3}>Native Hawaiian or Other Pacific Islander</MenuItem>
+            <MenuItem value={3}>
+              Native Hawaiian or Other Pacific Islander
+            </MenuItem>
             <MenuItem value={4}>Black or African American</MenuItem>
             <MenuItem value={5}>White</MenuItem>
             <MenuItem value={6}>Other</MenuItem>
           </Select>
         </FormControl>
         <div>
-          <Button>
-            Submit
-          </Button>
+          <Button>Submit</Button>
         </div>
       </Box>
-      
     </div>
   );
 }
