@@ -26,6 +26,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 
+const baseUrl = "http://127.0.0.1:5000"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     //This corresponds to the top tab that says 'Destination' and 'Delivery Status'
@@ -86,7 +87,7 @@ function Row(props) {
      setSelectedImage(e.target.files[0])
     }
 
-    if (row.image == null) {
+    // if (row.image == null) {
       return (
         <div>
           <h5 style={{fontSize: "15px"}}>Upload Image Here!</h5>
@@ -125,9 +126,9 @@ function Row(props) {
           
       </div>
       );
-    } else {
-      return row.image;
-    }
+    // } else {
+    //   return row.image;
+    // }
   }
 
   return (
@@ -145,12 +146,12 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row" style={{fontSize: "17px"}}>
           <span style={{fontWeight: "bold", fontSize: "20px"}}> 
-          {row.firstname + ' ' + row.lastname} </span> <br /> 
+          {row.first_name + ' ' + row.last_name} </span> <br /> 
           <a href={"https://maps.google.com/?q=" + row.address} target="_blank">{row.address}</a>
           <br />
-          <a href={"tel:" + row.number}>{row.number}</a>
+          <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: {row.delivery_status}
+          <br /> Most Recent Delivery Status: Coming soon...
         </TableCell>
         <TableCell>
 
@@ -244,15 +245,29 @@ export default function RouteTable() {
   // },[])
 
   // axios!
+  // const [rowsRoutes, setRowsRoutes] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get('http://127.0.0.1:5000/routes')
+  //   .then((res) => {console.log(res)
+  //      setRowsRoutes(res.data)})
+  //   .catch((err) => {console.log(err)
+  //   })
+  //   }, [])
+
   const [rowsRoutes, setRowsRoutes] = useState([]);
+
+  // GET PARTICIPANTS
+  const fetchRows = async () => {
+    const data = await axios.get(`${baseUrl}/participants/status/3`);
+    const { participants } = data.data;
+    setRowsRoutes(participants);
+    console.log("DATA: ", data);
+  };
+
   useEffect(() => {
-    axios
-    .get('http://127.0.0.1:5000/routes')
-    .then((res) => {console.log(res)
-       setRowsRoutes(res.data)})
-    .catch((err) => {console.log(err)
-    })
-    }, [])
+    fetchRows();
+  }, []);
   
   return (
     <TableContainer 
