@@ -54,6 +54,8 @@ class Participant(db.Model):
     household_size = db.Column(db.Integer, nullable=True)
 
     children = relationship("Status")
+    children = relationship("DeliveryHistory")
+
 
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
@@ -163,11 +165,13 @@ class Volunteer(db.Model):
     hipaa = db.Column(db.Boolean, nullable=False)
     credit = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(320), nullable=False)
-    password = db.Column(db.String(320), nullable=False)
+    password = db.Column(db.Text, nullable=True)
 
     children = relationship("DriverLog")
     children = relationship("DeliveryAssignment")
     children = relationship("VolunteerLog")
+    children = relationship("DeliveryHistory")
+
 
 
     def __repr__(self):
@@ -316,6 +320,34 @@ def format_volunteer_log(volunteer_log):
         "notes": volunteer_log.notes
     }
 
+class DeliveryHistory(db.Model):
+    __tablename__ = 'delivery_history'
+    __table_args__ = {"schema":"RC"}
+
+    delivery_history_id = db.Column(db.Integer, primary_key=True)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"Volunteer #{self.volunteer_id} delivered to Participant #{self.participant_id} on Date {self.delivery_date}"
+
+    def __init__(self, participant_id, volunteer_id, delivery_date, notes):
+        self.participant_id = participant_id
+        self.volunteer_id = volunteer_id
+        self.delivery_date = delivery_date
+        self.notes = notes
+
+def format_delivery_history(delivery_history):
+    return {
+        "delivery_history_id": delivery_history.delivery_history_id,
+        "participant_id": delivery_history.participant_id,
+        "volunteer_id": delivery_history.volunteer_id,
+        "delivery_date": delivery_history.delivery_date,
+        "notes": delivery_history.notes
+    }
+    
 @app.route('/')
 def hello():
     return 'Backend connected to host'
@@ -461,13 +493,14 @@ def create_volunteer():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
     email = request.json['email']
-    phone = request.json['phone_number']
+    phone = request.json['phone']
     language = request.json['language']
     affiliation = request.json['affiliation']
     first_time = request.json['first_time']
     hipaa = request.json['hipaa']
     credit = request.json['credit']
-    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email)
+    password = request.json['password']
+    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
     db.session.add(volunteer)
     db.session.commit()
     return format_participant(volunteer)
