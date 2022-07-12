@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--home page-->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Free Web tutorials">
+        <meta name="keywords" content="HTML, CSS, JavaScript">
+        <meta name="author" content="John Doe">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../stylesheets/index.css" rel="stylesheet" type="text/css">
+        <!--Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Delius&family=Raleway:wght@400;700;800;900&display=swap" rel="stylesheet">
+    </head>
+
+<header>
+  <ul id="nav">
+    <li class="active" class="items"><a href="index.html">Home</a></li>
+    <li class="items"><a href="profile.html">Profile</a></li>
+    <li class="items"><a href="calls.html">Calls</a></li>
+    <li class="items"><a href="routes.html">Routes</a></li>
+    <li class="items"><a href="signup.html">Sign-up</a></li>
+    <li class="title"><h1>Root Causes</h1></li>
+  </ul>
+</header>
+
+
+<body>
+  <div class="container">
+  <img src = "https://staticfanpage.akamaized.net/wp-content/uploads/sites/22/2018/12/vegetables.jpg" alt = "fresh produce" />
+  <div class="centered">
+    <h1 id = "picText"> Welcome Volunteers! </h1>
+   </div>
+</div>
+
+  <h2><div id="current_date"></h2>
+
+  <script>
+  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  let week_day = weekday[date.getDay()];
+  document.getElementById("current_date").innerHTML = "Today is " + week_day + ", " + month + "/" + day + "/" + year;
+  </script>
+  </p>
+  
+  <h1>Announcements</h1>
+  
+  <table>
+  <tr>
+    <td><b>Sign up to drive and deliver produce to Durham families</b></td>
+  </tr>
+  <tr>
+    <td><b>Don't forget to call your participants!</b></td>
+  </tr>
+  <tr>
+    <td><b>Join us on Saturday to help pack the bags of food</b></td>
+  </tr>
+</table>  
+</body>
+  
