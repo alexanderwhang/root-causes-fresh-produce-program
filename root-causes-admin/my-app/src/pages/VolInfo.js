@@ -21,23 +21,23 @@ export function VolInfoPage() {
     const data = await axios.get(`${baseUrl}/volunteers`);
     const { volunteers } = data.data;
     setVolunteerList(volunteers);
-    console.log("DATA: ", data);
+    console.log("DATA2: ", data);
   };
 
   // GET DRIVERS
   const fetchDrivers = async () => {
     const data = await axios.get(`${baseUrl}/volunteers/drivers`);
-    const { drivers } = data.data;
+    const drivers = data.data.volunteers;
+    console.log("DATA1: ", data);
+    console.log("DRIVERS: ");
+    console.log(drivers);
     setDriversList(drivers);
-    console.log("DATA: ", data);
   };
 
   useEffect(() => {
     fetchVolunteers();
-  }, []);
-
-  useEffect(() => {
     fetchDrivers();
+
   }, []);
 
   const Root = styled("div")(({ theme }) => ({
@@ -163,7 +163,7 @@ export function VolInfoPage() {
                   <th>First Time? </th>
                   <th>Availability </th>
                 </tr>
-                  {/* {volunteersList.map((driver) => {
+                  {driversList.map((driver) => {
                     return <tr key={driver.id}>
                             <td>{driver.phone}</td>
                             <td>{driver.email}</td>
@@ -173,17 +173,7 @@ export function VolInfoPage() {
                             <td>{boolMap.get(driver.credit)}</td>
                             <td>...</td>
                         </tr>;
-                  })} */}
-
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
+                  })}
               </tbody>
             </table>
           </div>
