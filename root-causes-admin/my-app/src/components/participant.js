@@ -34,9 +34,32 @@ function Participant(props) {
     props.participant.household_size
   );
   const [pronouns, setPronouns] = React.useState(props.participant.pronouns);
+  const [age, setAge] = React.useState(props.participant.age);
+  const [email, setEmail] = React.useState(props.participant.email);
+  const [phone, setPhone] = React.useState(props.participant.phone);
+  const [street, setStreet] = React.useState(props.participant.street);
+  const [city, setCity] = React.useState(props.participant.city);
+  const [state, setState] = React.useState(props.participant.state);
+  const [zip, setZip] = React.useState(props.participant.zip);
+  const [apartment, setApartment] = React.useState(props.participant.apartment);
+
 
   //   const [participantsList, setParticipantsList] = useState([]);
-  const [statusColor, setStatusColor] = useState(props.participant.status);
+  const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
+  const [groupDisplay, setGroupDisplay] = useState(props.participant.group);
+  const [languageDisplay, setLanguageDisplay] = useState(props.participant.language);
+  const [householdSizeDisplay, setHouseholdSizeDisplay] = useState(props.participant.household_size);
+  const [pronounsDisplay, setPronounsDisplay] = useState(props.participant.pronouns);
+  const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
+  const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
+  const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
+  const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
+  const [cityDisplay, setCityDisplay] = useState(props.participant.city);
+  const [stateDisplay, setStateDisplay] = useState(props.participant.state);
+  const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
+  const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
+  const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
+
 
   //HANDLE CHANGE
   const handleStatusChange = (event: SelectChangeEvent) => {
@@ -54,22 +77,75 @@ function Participant(props) {
   const handlePronounChange = (event: SelectChangeEvent) => {
     setPronouns(event.target.value);
   };
+  const handleAgeChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
+  const handleEmailChange = (event: SelectChangeEvent) => {
+    setEmail(event.target.value);
+  };
+  const handlePhoneChange = (event: SelectChangeEvent) => {
+    setPhone(event.target.value);
+  };
+  const handleStreetChange = (event: SelectChangeEvent) => {
+    setStreet(event.target.value);
+  };
+  const handleCityChange = (event: SelectChangeEvent) => {
+    setCity(event.target.value);
+  };
+  const handleStateChange = (event: SelectChangeEvent) => {
+    setState(event.target.value);
+  };
+  const handleZipChange = (event: SelectChangeEvent) => {
+    setZip(event.target.value);
+  };
+  const handleApartmentChange = (event: SelectChangeEvent) => {
+    setApartment(event.target.value);
+  };
 
   //HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(pronouns);
     let new_participant = props.participant;
 
     new_participant.status = status;
     new_participant.group = group;
     new_participant.language = language;
-    new_participant.houseSize = household_size;
+    new_participant.household_size = household_size;
     new_participant.pronouns = pronouns;
+    new_participant.age = age;
+    new_participant.email = email;
+    new_participant.phone = phone;
+    new_participant.street = street;
+    new_participant.city = city;
+    new_participant.state = state;
+    new_participant.zip = zip;
+    new_participant.apartment = apartment;
 
     var data = JSON.stringify({ participant: new_participant });
     let id = props.participant.id;
-    setStatusColor(new_participant.status);
+    setStatusDisplay(new_participant.status);
+    setGroupDisplay(new_participant.group);
+    setLanguageDisplay(new_participant.language);
+    setHouseholdSizeDisplay(new_participant.household_size);
+    setPronounsDisplay(new_participant.pronouns);
+    setAgeDisplay(new_participant.age);
+    setEmailDisplay(new_participant.email);
+    setPhoneDisplay(new_participant.phone);
+    setStreetDisplay(new_participant.street);
+    setCityDisplay(new_participant.city);
+    setStateDisplay(new_participant.state);
+    setZipDisplay(new_participant.zip);
+    setApartmentDisplay(new_participant.apartment);
+    let address_string = "";
+    if(!new_participant.apartment) {
+      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`
+    } else {
+      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip} Apt. ${new_participant.apartment}`
+
+    }
+    setAddressDisplay(address_string);
 
     var config = {
       method: "put",
@@ -88,27 +164,8 @@ function Participant(props) {
         console.log(error);
       });
 
-    // console.log(`Participant id: ${e.target.id}`);
-    // try {
-    //     console.log(baseUrl)
-    //     const config = {
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     }
-    //     console.log(status)
-    //     let body = JSON.stringify({status: status})
-    //   const data = await axios.put(`${baseUrl}/participants/1`, body, config );
-    //   console.log("DATA: ")
-    //   console.log(data)
-    //   setParticipantsList([...participantsList, data.data]);
-    //   handleStatusChange("");
-    //   console.log("Receive submit");
-    // } catch (err) {
-    //   console.error(err.message);
-    //   console.log(`Participant id: ${e.target.id}`);
-    // }
   };
+
   const [edit_form_status, setEdit] = React.useState(true)
 
   const editInfo = () => {
@@ -123,11 +180,11 @@ function Participant(props) {
 
   return (
     <div>
-      <div className="editButton">
-        <Button variant="outlined" size="small" onClick={editInfo}>
-          Edit
-        </Button>
-      </div>
+        <div className="editButton">
+          <Button variant="outlined" size="small" onClick={editInfo}>
+            Edit
+          </Button>
+        </div>
       <table className="personal_info">
         <tr>
           <th>Status</th>
@@ -140,16 +197,16 @@ function Participant(props) {
           <td>
             <div
               style={{
-                color: `${statusMap.get(statusColor)}`,
+                color: `${statusMap.get(statusDisplay)}`,
               }}
             >
               <SvgEllipse />
             </div>
           </td>
-          <td>{props.participant.address}</td>
-          <td>{props.participant.email}</td>
-          <td>{props.participant.phone}</td>
-          <td>{props.participant.language}</td>
+          <td>{addressDisplay}</td> {/*ADD CONDITIONAL FOR APARTMENT*/}
+          <td>{emailDisplay}</td>
+          <td>{phoneDisplay}</td>
+          <td>{languageDisplay}</td>
         </tr>
         <tr>
           <th>Group</th>
@@ -159,10 +216,10 @@ function Participant(props) {
           <th>Race/Ethnicity</th>
         </tr>
         <tr>
-          <td>{props.participant.group}</td>
-          <td>{props.participant.household_size}</td>
-          <td>{props.participant.pronouns}</td>
-          <td>56</td>
+          <td>{groupDisplay}</td>
+          <td>{householdSizeDisplay}</td>
+          <td>{pronounsDisplay}</td>
+          <td>{ageDisplay}</td>
           <td>Hispanic or Latino</td>
         </tr>
       </table>
@@ -191,6 +248,8 @@ function Participant(props) {
           id="filled-email-input"
           label="Email"
           type="email"
+          value={email}
+          onChange={handleEmailChange}
         />
         <div></div>
         {/* PHONE  NUMBER */}
@@ -198,27 +257,29 @@ function Participant(props) {
           id="filled-password-input"
           label="Phone Number"
           type="phone-number"
+          value={phone}
+          onChange={handlePhoneChange}
         />
-        <div></div>
+
         {/* ADDRESS */}
-        <TextField id="filled-password-input" label="Street" type="street" />
-        <div></div>
-        <TextField id="filled-password-input" label="City" type="city" />
-        <div></div>
-        <TextField id="filled-password-input" label="State" type="state" />
-        <div></div>
+        <TextField id="filled-password-input" label="Street" type="street" value={street} onChange={handleStreetChange} />
+        <TextField id="filled-password-input" label="City" type="city" value={city} onChange={handleCityChange} />
+        <TextField id="filled-password-input" label="State" type="state" value={state} onChange={handleStateChange} />
         <TextField
           id="filled-password-input"
           label="Zip Code"
           type="zip-code"
-        />
-        <div></div>
+          value={zip}
+          onChange={handleZipChange}
+        /> 
         <TextField
           id="filled-password-input"
           label="Apartment Number"
           type="apartment-number"
+          value={apartment}
+          onChange={handleApartmentChange}
         />
-        <div></div>
+        
         {/* LANGUAGE */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -236,6 +297,7 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
+
         {/* GROUP */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -251,8 +313,8 @@ function Participant(props) {
               <MenuItem value={"B"}>B</MenuItem>
             </Select>
           </FormControl>
-          <div></div>
         </Box>
+
         {/* HOUSEHOLD SIZE */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -277,8 +339,8 @@ function Participant(props) {
               {/* <MenuItem value={11}>10+</MenuItem> */}
             </Select>
           </FormControl>
-          <div></div>
         </Box>
+
         {/* PRONOUNS */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -307,6 +369,8 @@ function Participant(props) {
           InputLabelProps={{
             shrink: true,
           }}
+          value={age}
+          onChange={handleAgeChange}
         />
         <div></div>
         <Box sx={{ maxWidth: 200 }}>

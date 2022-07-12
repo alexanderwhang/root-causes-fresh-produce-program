@@ -88,7 +88,12 @@ def format_participant(participant):
         "language": participant.language,
         "pronoun": participant.pronouns,
         "group": participant.group,
-        "household_size": participant.household_size
+        "household_size": participant.household_size,
+        "street": address.street,
+        "city": address.city,
+        "state": address.state,
+        "zip": address.zip,
+        "apartment": address.apartment
     }
 
 class Status(db.Model):
@@ -380,6 +385,7 @@ def delete_participant(id):
 def update_participant(id):
     participant = Participant.query.filter_by(id=id)
     statusObj = Status.query.filter_by(participant_id=id)
+    addressObj = Address.query.filter_by(participant_id=id)
 
     first_name = request.json['participant']['first_name']
     last_name = request.json['participant']['last_name']
@@ -389,6 +395,13 @@ def update_participant(id):
     language = request.json['participant']['language']
     status = request.json['participant']['status']
     group = request.json['participant']['group']
+    street = request.json['participant']['street']
+    city = request.json['participant']['city']
+    state = request.json['participant']['state']
+    zip = request.json['participant']['zip']
+    apartment = request.json['participant']['apartment']
+
+
     participant.update(dict(first_name=first_name))
     participant.update(dict(last_name=last_name))
     # participant.update(dict(address=address))
@@ -400,6 +413,12 @@ def update_participant(id):
 
     statusObj.update(dict(status_type_id=status))
     statusObj.update(dict(status_date=datetime.now(timezone.utc)))
+
+    addressObj.update(dict(street=street))
+    addressObj.update(dict(city=city))
+    addressObj.update(dict(state=state))
+    addressObj.update(dict(zip=zip))
+    addressObj.update(dict(apartment=apartment))
 
     db.session.commit()
     return {'participant': format_participant(participant.one())}

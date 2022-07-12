@@ -107,6 +107,7 @@ export function Participants() {
             // style="background-color: white;"
           />
         </div>
+        
 
         {/* <input type="text" placeholder ="Search..." className ="search" onChange ={(e)=>setQuery(e.target.value)}/> */}
 
@@ -376,7 +377,6 @@ export function Individual({ match }) {
 
   const [participantsList, setParticipantsList] = useState([]);
 
-  const editInfo = () => {};
 
   // GET
   const fetchParticipants = async () => {
@@ -413,11 +413,6 @@ export function Individual({ match }) {
                 <h2>
                   {participant.first_name} {participant.last_name}
                 </h2>
-                <div className="editButton">
-                  <Button variant="outlined" size="small" onClick={editInfo}>
-                    Edit
-                  </Button>
-                </div>
 
                 {/* tabs code */}
                 <Box
