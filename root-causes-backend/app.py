@@ -261,6 +261,31 @@ def format_delivery(delivery):
         "assignment_date": delivery.assignment_date,
     }
 
+class CallAssignment(db.Model):
+    __tablename__ = 'call_assigment'
+    __table_args__ = {"schema":"RC"}
+
+    call_assignment_id = db.Column(db.Integer, primary_key=True)
+    volunteer_id = db.Column(db.Integer, nullable=False)
+    assigment_date = db.Column(db.DateTime, nullable=False)
+    participant_list = db.Column(db.ARRAY(Integer), nullable=False)
+
+    def __repr__(self):
+        return f"Caller ID #{self.volunteer_id} calling Participant ID#{self.participant_id} on Date {self.assignment_date}"
+
+    def __init__(self, volunteer_id, assignment_date, participant_list):
+        self.volunteer_id = volunteer_id
+        self.assignment_date = assignment_date
+        self.participant_list = participant_list
+
+def format_calls(calls):
+    return {
+        "call_assignment_id": calls.call_assignment_id,
+        "volunteer_id": calls.volunteer_id,
+        "assignment_date": calls.assignment_date,
+        "participant_list": calls.participant_list,
+    }
+
 @app.route('/')
 def hello():
     return 'Backend connected to host'
