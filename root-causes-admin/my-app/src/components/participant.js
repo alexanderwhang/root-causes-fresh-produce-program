@@ -283,7 +283,7 @@ function Participant(props) {
         />
         
         {/* LANGUAGE */}
-        <Box sx={{ maxWidth: 200 }}>
+        <Box sx={{ maxWidth: 200 }} className="language">
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Language</InputLabel>
             <Select
@@ -364,6 +364,7 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      <div class="age">
         <TextField
           id="outlined-number"
           label="Age"
@@ -374,6 +375,7 @@ function Participant(props) {
           value={age}
           onChange={handleAgeChange}
         />
+      </div>
         <div></div>
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>

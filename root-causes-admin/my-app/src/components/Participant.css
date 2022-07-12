@@ -10,4 +10,7 @@
     align-items: center;
 }
 
-
+.age{
+    position: absolute;
+    margin-top: 3.5rem;
+}
