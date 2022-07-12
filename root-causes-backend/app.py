@@ -547,7 +547,7 @@ def update_volunteer(id):
     first_name = request.json['particpant']['first_name']
     last_name = request.json['particpant']['last_name']
     email = request.json['particpant']['email']
-    phone = request.json['particpant']['phone_number']
+    phone = request.json['particpant']['phone']
     language = request.json['particpant']['language']
     affiliation = request.json['particpant']['affiliation']
     first_time = request.json['particpant']['first_time']
