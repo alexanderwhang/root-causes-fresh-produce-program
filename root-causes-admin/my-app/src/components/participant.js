@@ -245,6 +245,8 @@ function Participant(props) {
           </FormControl>
         </Box>
         {/* EMAIL */}
+    <div class="textInputs">
+      <div>
         <TextField
           className="email"
           id="filled-email-input"
@@ -253,8 +255,10 @@ function Participant(props) {
           value={email}
           onChange={handleEmailChange}
         />
+      </div>
         <div></div>
         {/* PHONE  NUMBER */}
+      <div class="phoneNumber">
         <TextField
           id="filled-password-input"
           label="Phone Number"
@@ -262,11 +266,18 @@ function Participant(props) {
           value={phone}
           onChange={handlePhoneChange}
         />
-
+      </div>
         {/* ADDRESS */}
+      <div>
         <TextField id="filled-password-input" label="Street" type="street" value={street} onChange={handleStreetChange} />
+      </div>
+      <div>
         <TextField id="filled-password-input" label="City" type="city" value={city} onChange={handleCityChange} />
+      </div>
+      <div>
         <TextField id="filled-password-input" label="State" type="state" value={state} onChange={handleStateChange} />
+      </div>
+      <div>
         <TextField
           id="filled-password-input"
           label="Zip Code"
@@ -274,6 +285,8 @@ function Participant(props) {
           value={zip}
           onChange={handleZipChange}
         /> 
+      </div>
+      <div>
         <TextField
           id="filled-password-input"
           label="Apartment Number"
@@ -281,9 +294,12 @@ function Participant(props) {
           value={apartment}
           onChange={handleApartmentChange}
         />
+      </div>
+    </div>
         
         {/* LANGUAGE */}
-        <Box sx={{ maxWidth: 200 }}>
+      <div class="language">
+        <Box sx={{ maxWidth: 200 }} className="language">
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Language</InputLabel>
             <Select
@@ -299,6 +315,7 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
+      </div>
 
         {/* GROUP */}
         <Box sx={{ maxWidth: 200 }}>
@@ -364,6 +381,7 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      <div class="age">
         <TextField
           id="outlined-number"
           label="Age"
@@ -374,6 +392,7 @@ function Participant(props) {
           value={age}
           onChange={handleAgeChange}
         />
+      </div>
         <div></div>
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -398,7 +417,7 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
-        <Button type="submit">Submit</Button>
+        <Button variant="outlined" type="submit">Submit</Button>
       </form>
     </div>
   );

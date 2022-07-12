@@ -1,5 +1,6 @@
 #outlined-number{
     align-items: start;
+    margin-right: 5px;
 }
 
 .email{
@@ -10,4 +11,16 @@
     align-items: center;
 }
 
+.age{
+    position: absolute;
+    margin-top: 3.5rem;
+}
 
+.textInputs{
+    margin-right: 750px;
+    margin-top: -3.5rem;
+}
+
+.language{
+    margin-top: -21rem;
+}
