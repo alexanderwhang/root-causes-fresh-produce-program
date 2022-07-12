@@ -19,7 +19,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 
 # pip install pipenv
 # - To activate: pipenv shell
-# pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors
+# pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors flask-marshmallow
         # If pyscopg2 is not installing -> pip install postgres first or xcode-select --install
 # Flask run
 # python (to activate python)
@@ -457,6 +457,16 @@ def get_volunteer(id):
     volunteer = Participant.query.filter_by(volunteer_id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
     return {'volunteers': formatted_volunteer}
+
+# GET VOLUNTEERS BY LANGUAGE
+@app.route('/volunteers/language/<language>', methods = ['GET'])
+def get_volunteers_by_language(language):
+    volunteers = Volunteer.query.filter_by(language=language).all()
+    volunteer_list = []
+    for volunteer in volunteers:
+        volunteer_list.append(format_volunteer(volunteer))
+    
+    return {'volunteers': volunteer_list}
 
 # DELETE VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['DELETE'])

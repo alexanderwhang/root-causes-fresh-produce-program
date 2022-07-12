@@ -106,6 +106,7 @@ function Participant(props) {
   //HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
+    editInfo();
 
     console.log(pronouns);
     let new_participant = props.participant;
@@ -384,10 +385,10 @@ function Participant(props) {
               label="Status"
               onChange={handleStatusChange}
             >
-              <MenuItem value={0}>Hispanic or Latino</MenuItem>
-              <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
-              <MenuItem value={2}>Asian</MenuItem>
-              <MenuItem value={3}>
+              <MenuItem value={"Hispanic or Latino"}>Hispanic or Latino</MenuItem>
+              <MenuItem value={"American Indian or Alaskan Native"}>American Indian or Alaskan Native</MenuItem>
+              <MenuItem value={"Asian"}>Asian</MenuItem>
+              <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
                 Native Hawaiian or Other Pacific Islander
               </MenuItem>
               <MenuItem value={4}>Black or African American</MenuItem>
