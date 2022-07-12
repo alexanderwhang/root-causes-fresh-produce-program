@@ -10,6 +10,7 @@ psycopg2 = "*"
 python-dotenv = "*"
 flask-cors = "*"
 psycopg2-binary = "*"
+flask-marshmallow = "*"
 
 [dev-packages]
 

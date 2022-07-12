@@ -175,10 +175,52 @@ function Participant(props) {
       <div>
         <Button>Submit</Button>
       </div>
+      {/* PHONE  NUMBER */}
       <TextField
         id="filled-password-input"
         label="Phone Number"
         type="phone-number"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      {/* ADDRESS */}
+      <TextField
+        id="filled-password-input"
+        label="Street"
+        type="street"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      <TextField
+        id="filled-password-input"
+        label="City"
+        type="city"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      <TextField
+        id="filled-password-input"
+        label="State"
+        type="state"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      <TextField
+        id="filled-password-input"
+        label="Zip Code"
+        type="zip-code"
+      />
+      <div>
+        <Button>Submit</Button>
+      </div>
+      <TextField
+        id="filled-password-input"
+        label="Apartment Number"
+        type="apartment-number"
       />
       <div>
         <Button>Submit</Button>
