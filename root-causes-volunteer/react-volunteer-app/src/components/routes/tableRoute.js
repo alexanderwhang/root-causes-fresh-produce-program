@@ -25,8 +25,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
+import '../../styleSheets/tableRoute.css';
 
 const baseUrl = "http://127.0.0.1:5000"
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     //This corresponds to the top tab that says 'Destination' and 'Delivery Status'
@@ -54,11 +56,19 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const [delivery_status, setDeliveryStatus] = useState("");
+  const [notes, setNotes] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
     setDeliveryStatus(e.target.value);
     console.log(delivery_status);
+  }
+
+  const handleSubmit2 = e => {
+    e.preventDefault();
+    setNotes(e.target.value);
+    console.log(notes);
+    
   }
 
   function changeBackground1(e) {
@@ -87,7 +97,7 @@ function Row(props) {
      setSelectedImage(e.target.files[0])
     }
 
-    // if (row.image == null) {
+    if (row.image == null) {
       return (
         <div>
           <h5 style={{fontSize: "15px"}}>Upload Image Here!</h5>
@@ -99,7 +109,6 @@ function Row(props) {
             </div>
             )}
 
-          
           <form method = "post" 
                 action="http://127.0.0.1:5000/routes"
                 enctype = "multipart/form-data">
@@ -112,9 +121,9 @@ function Row(props) {
               }}
             />
             <input type="hidden" name="id" value={row.id} />
-          
+          <br />
           <Button className="submitImage"
-            style={{backgroundColor: "#00743e"}}
+            style={{backgroundColor: "#00743e", marginTop: "10px" }}
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -122,13 +131,12 @@ function Row(props) {
             >
             Submit
           </Button>
-          </form>
-          
+          </form> 
       </div>
       );
-    // } else {
-    //   return row.image;
-    // }
+    } else {
+      return row.image;
+    }
   }
 
   return (
@@ -152,6 +160,7 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery Status: Coming soon...
+          <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>
 
@@ -189,14 +198,41 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                     <TableRow>
-                      <TableCell>Notes</TableCell>
+                      <TableCell>
+                      <div id="btn-group">
+                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/notes">
+                        <input type="hidden" name="id" value={row.id} />
+                        <input style={{ marginRight: '15px' }} type= "text" name="routes_notes" placeholder="Enter notes here..." />
+                      <br />
+                      <Button
+                          style={{backgroundColor: "#00743e", marginTop: "10px", marginRight: "5px"}}
+                          type="submit"
+                          variant="contained"
+                          sx={{ mt: 3, mb: 2 }}
+                          onSubmit={handleSubmit2}
+                          >
+                          Submit
+                      </Button>
+                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
+                        <input type="hidden" name="id" value={row.id} />
+                        <Button
+                            name = "delete"
+                            style={{backgroundColor: "#fc2848", marginTop: "10px"}}
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            onSubmit={handleSubmit2}
+                            >
+                            DELETE NOTE HISTORY
+                        </Button>                        
+                      </form>
+                    </form>
+                    </div>
+                      </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow key="extra1">
-                      <TableCell component="th" scope="row">
-                        <FinalNote />
-                      </TableCell>
                   </TableRow>
                 </TableBody>
                 <TableHead>
@@ -231,18 +267,6 @@ Row.propTypes = {
 };
 
 export default function RouteTable() {
-  // const [rowsRoutes, setRowsRoutes] = useState([])
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/routes', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRowsRoutes(resp))
-  //   .catch(error => console.log(error))
-  // },[])
 
   // axios!
   // const [rowsRoutes, setRowsRoutes] = useState([]);
@@ -255,7 +279,7 @@ export default function RouteTable() {
   //   })
   //   }, [])
 
-  const [rowsRoutes, setRowsRoutes] = useState([]);
+    const [rowsRoutes, setRowsRoutes] = useState([]);
 
   // GET PARTICIPANTS
   const fetchRows = async () => {
@@ -290,4 +314,5 @@ export default function RouteTable() {
     </TableContainer>
   );
 }
+
 
