@@ -1,0 +1,21 @@
+.submitCall:hover {
+    color: #f9f8e1;
+    background-color: #72bc44; 
+    
+}
+
+.submitCall {
+    border-radius: "12px"
+
+}
+
+#delete-note-btn{
+    background-color: #4d514f;
+    margin-left: 15px;
+    height: 3px;
+    width: 1px !important;
+    font-size: 10px;
+}
+#delete-note-btn:hover{
+    background-color: red;
+}
