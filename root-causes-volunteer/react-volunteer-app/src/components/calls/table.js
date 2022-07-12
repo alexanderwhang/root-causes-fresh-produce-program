@@ -27,6 +27,7 @@ import axios from 'axios';
 // import rows from '../calls/rows.json';
 import { useEffect, useState } from "react";
 import '../../styleSheets/callsTable.css';
+import '../../styleSheets/tableRoute.css';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -72,7 +73,6 @@ function Row(props) {
     
   }
 
-
   const time = null;
   const current = null;
   const date = null;
@@ -100,6 +100,32 @@ function Row(props) {
     e.target.style.background = "#00743e";
   }
 
+
+  function printArray(obj) {
+    const myArray = obj.toString().split(",")
+    if (myArray.length === 0) {
+      return;
+    }
+    const listItems = myArray.map((note) => 
+                      <li style={{fontSize: "17px"}}>{note}</li>); 
+    return <ul> {listItems} </ul> 
+    }
+
+  function mostRecent(obj) {
+    const myArray = obj.toString().split(",")
+    const last = myArray.length - 1
+    return <h3 style={{display: "inline", color: "black", fontSize: "17px"}}>{myArray[last]} </h3>
+  }
+
+  function getdeleteIndex(obj) {
+    const myArray = obj.toString().split(",");
+    for (let i = 0; i < myArray.length; i++){
+      if (obj == myArray[i]){
+        return i;
+      }
+    }
+  }
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -125,8 +151,9 @@ function Row(props) {
             >
             {row.status}
           </span>
-          <br /> Notes: {row.calls_notes} 
+          <br /> Most Recent Note: {mostRecent(row.call_notes)} 
           <br /> Status Last Changed: {row.status_time}
+
           
         </TableCell>        
         <TableCell>  
@@ -187,11 +214,13 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell>
+                    <div id="btn-group">
                       <form noValidate method = "post" action="http://127.0.0.1:5000/calls/notes">
                         <input type="hidden" name="id" value={row.id} />
-                        <input type= "text" name="notes" placeholder="Enter notes here..." />
+                        <input style={{ marginRight: '15px' }} type= "text" name="notes" placeholder="Enter notes here..." />
+                      <br />
                       <Button
-                          style={{backgroundColor: "#00743e"}}
+                          style={{backgroundColor: "#00743e", marginTop: "10px", marginRight: "5px"}}
                           type="submit"
                           variant="contained"
                           sx={{ mt: 3, mb: 2 }}
@@ -203,7 +232,7 @@ function Row(props) {
                         <input type="hidden" name="id" value={row.id} />
                         <Button
                             name = "delete"
-                            style={{backgroundColor: "#fc2848"}}
+                            style={{backgroundColor: "#fc2848", marginTop: "10px"}}
                             type="submit"
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
@@ -212,9 +241,11 @@ function Row(props) {
                             DELETE NOTE HISTORY
                         </Button>                        
                       </form>
-
                     </form>
-                    <h3>{row.calls_notes}</h3>
+                    </div>
+                    <h5 style={{fontSize: "17px"}}>Note History</h5>
+                    {printArray(row.call_notes)}
+                      
                     </TableCell>
                   </TableRow>
                 </TableHead>
