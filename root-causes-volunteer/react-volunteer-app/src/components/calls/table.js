@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import '../../styleSheets/callsTable.css';
 import '../../styleSheets/tableRoute.css';
 
+const baseUrl = "http://127.0.0.1:5000"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -143,23 +144,25 @@ function Row(props) {
             scope="row"
             style={{fontSize: "17px"}}>
           <span style={{fontWeight: "bold", fontSize: "20px"}}> 
-            {row.firstname + " " + row.lastname} 
+            {row.first_name + " " + row.last_name} 
           </span> <br /> 
-          <a href={"tel:" + row.number}>{row.number}</a>
+          <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
             >
             {row.status}
           </span>
-          <br /> Most Recent Note: {mostRecent(row.call_notes)} 
-          <br /> Status Last Changed: {row.status_time}
+          <br /> Most Recent Note: 
+            {/* {mostRecent(row.call_notes)}  */}
+          <br /> Status Last Changed: 
+            {/* {row.status_time} */}
 
           
         </TableCell>        
         <TableCell>  
           <form noValidate method = "post" action="http://127.0.0.1:5000/calls">
             <input type="hidden" name="id" value={row.id} />
-            <input type="hidden" name="status_time" value={status_time} />
+            {/* <input type="hidden" name="status_time" value={status_time} /> */}
             <FormControl>
             <FormLabel id="radio-buttons-availability">Please mark participant availability: </FormLabel>
             <RadioGroup
@@ -244,7 +247,7 @@ function Row(props) {
                     </form>
                     </div>
                     <h5 style={{fontSize: "17px"}}>Note History</h5>
-                    {printArray(row.call_notes)}
+                    {/* {printArray(row.call_notes)} */}
                       
                     </TableCell>
                   </TableRow>
@@ -273,32 +276,34 @@ Row.propTypes = {
 };
 
 export default function CollapsibleTable() {
-
   // const [rows, setRows] = useState([])
 
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/calls', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRows(resp))
-  //   .catch(error => console.log(error))
-
-  // },[])
-
   // axios!
-  const [rows, setRows] = useState([]);
-  useEffect(() => {
-    axios
-    .get('http://127.0.0.1:5000/calls')
-    .then((res) => {console.log(res)
-       setRows(res.data)})
-    .catch((err) => {console.log(err)
-    })
-    }, [])
+  // const [rows, setRows] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get('http://127.0.0.1:5000/calls')
+  //   .then((res) => {console.log(res)
+  //      setRows(res.data)})
+  //   .catch((err) => {console.log(err)
+  //   })
+  //   }, [])
+
+    const [rows, setRows] = useState([]);
+
+    // GET PARTICIPANTS
+    // 1 = GREEN, ready for delivery
+    // 3 = SALMON, needs follow-up call
+    const fetchRows = async () => {
+      const data = await axios.get(`${baseUrl}/participants/status/3`);
+      const { participants } = data.data;
+      setRows(participants);
+      console.log("DATA: ", data);
+    };
+  
+    useEffect(() => {
+      fetchRows();
+    }, []);
 
   return (
     <TableContainer 
