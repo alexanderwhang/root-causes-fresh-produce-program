@@ -490,17 +490,16 @@ def update_participant(id):
 # CREATE VOLUNTEER
 @app.route('/volunteers', methods = ['POST'])
 def create_volunteer():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    affiliation = request.json['affiliation']
-    first_time = request.json['first_time']
-    hipaa = request.json['hipaa']
-    credit = request.json['credit']
-    password = request.json['password']
-    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone = request.form['phone_number']
+    language = request.form['language']
+    affiliation = request.form['affiliation']
+    first_time = request.form['first_time']
+    hipaa = request.form['hipaa']
+    credit = request.form['credit']
+    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email)
     db.session.add(volunteer)
     db.session.commit()
     return format_participant(volunteer)

@@ -31,6 +31,7 @@ import RadioButtonsCredit from '../components/profile/radioButtonCredit';
 import RadioButtonsHIPAA from '../components/profile/radioButtonHIPAA';
 import PhoneNumber from '../components/profile/phoneNumber';
 
+// reference participant.js in components file
 
 function Copyright(props) {
   return (
@@ -59,7 +60,6 @@ export default function Profile() {
   const [first_time, setFirstTime] = useState("");
   const [credit, setCredit] = useState("");
   const [hipaa, setHipaa] = useState("");
-
 
   const handleSubmit=(event)=>{ 
     event.preventDefault()
@@ -97,7 +97,7 @@ export default function Profile() {
           </Typography>
 
           <Box component="form" noValidate sx={{ mt: 3 }}>
-          <form noValidate method = "post" action="http://127.0.0.1:5000/profile">
+          <form noValidate method = "post" action="http://127.0.0.1:5000/volunteers">
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -245,8 +245,8 @@ export default function Profile() {
                       name="first_time"
                       onChange={(e)=>setFirstTime(e.target.value)}
                     >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
                     </RadioGroup>
                 </FormControl>
               </Grid>
@@ -258,8 +258,8 @@ export default function Profile() {
                     name="credit"
                     onChange={(e)=>setCredit(e.target.value)}
                   >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -271,8 +271,8 @@ export default function Profile() {
                       name="hipaa"
                       onChange={(e)=>setHipaa(e.target.value)}
                     >
-                      <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                      <FormControlLabel value="no" control={<Radio />} label="No" />
+                      <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                      <FormControlLabel value={false} control={<Radio />} label="No" />
                     </RadioGroup>
                 </FormControl>
               </Grid>

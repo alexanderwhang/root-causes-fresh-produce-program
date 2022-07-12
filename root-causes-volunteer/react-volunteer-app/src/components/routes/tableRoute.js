@@ -282,8 +282,10 @@ export default function RouteTable() {
     const [rowsRoutes, setRowsRoutes] = useState([]);
 
   // GET PARTICIPANTS
+  // 1 = GREEN, ready for delivery
+  // 3 = SALMON, needs follow-up call
   const fetchRows = async () => {
-    const data = await axios.get(`${baseUrl}/participants/status/3`);
+    const data = await axios.get(`${baseUrl}/participants/status/1`);
     const { participants } = data.data;
     setRowsRoutes(participants);
     console.log("DATA: ", data);
