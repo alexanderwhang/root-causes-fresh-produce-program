@@ -316,7 +316,7 @@ function Participant(props) {
           <div></div>
         </Box>
       </div>
-      
+
         {/* GROUP */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -417,7 +417,7 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
-        <Button type="submit">Submit</Button>
+        <Button variant="outlined" type="submit">Submit</Button>
       </form>
     </div>
   );
