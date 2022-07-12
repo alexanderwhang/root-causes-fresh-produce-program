@@ -58,11 +58,7 @@ function Participant(props) {
   const [stateDisplay, setStateDisplay] = useState(props.participant.state);
   const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
   const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
-
-
-
-
-
+  const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
 
 
   //HANDLE CHANGE
@@ -110,6 +106,7 @@ function Participant(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(pronouns);
     let new_participant = props.participant;
 
     new_participant.status = status;
@@ -141,6 +138,14 @@ function Participant(props) {
     setStateDisplay(new_participant.state);
     setZipDisplay(new_participant.zip);
     setApartmentDisplay(new_participant.apartment);
+    let address_string = "";
+    if(!new_participant.apartment) {
+      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`
+    } else {
+      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip} Apt. ${new_participant.apartment}`
+
+    }
+    setAddressDisplay(address_string);
 
     var config = {
       method: "put",
@@ -198,7 +203,7 @@ function Participant(props) {
               <SvgEllipse />
             </div>
           </td>
-          <td>{streetDisplay} {cityDisplay}, {stateDisplay} {zipDisplay}</td> {/*ADD CONDITIONAL FOR APARTMENT*/}
+          <td>{addressDisplay}</td> {/*ADD CONDITIONAL FOR APARTMENT*/}
           <td>{emailDisplay}</td>
           <td>{phoneDisplay}</td>
           <td>{languageDisplay}</td>
@@ -365,6 +370,7 @@ function Participant(props) {
             shrink: true,
           }}
           value={age}
+          onChange={handleAgeChange}
         />
         <div></div>
         <Box sx={{ maxWidth: 200 }}>
