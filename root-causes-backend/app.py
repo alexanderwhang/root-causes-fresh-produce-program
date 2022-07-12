@@ -167,6 +167,8 @@ class Volunteer(db.Model):
 
     children = relationship("DriverLog")
     children = relationship("DeliveryAssignment")
+    children = relationship("VolunteerLog")
+
 
     def __repr__(self):
         return f"Volunteer: {self.first_name} {self.last_name}"
@@ -283,7 +285,35 @@ def format_calls(calls):
         "call_assignment_id": calls.call_assignment_id,
         "volunteer_id": calls.volunteer_id,
         "assignment_date": calls.assignment_date,
-        "participant_list": calls.participant_list,
+        "participant_list": calls.participant_list
+    }
+
+class VolunteerLog(db.Model):
+    __tablename__ = 'volunteer_log'
+    __table_args__ = {"schema":"RC"}
+
+    volunteer_log_id = db.Column(db.Integer, primary_key=True)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_type = db.Column(db.Text, nullable=True)
+    week_available = db.Column(db.Date, nullable=False)
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"Volunteer #{self.volunteer_id} as {self.volunteer_type} on Date {self.week_available}"
+
+    def __init__(self, volunteer_id, volunteer_type, week_available, notes):
+        self.volunteer_id = volunteer_id
+        self.volunteer_type = volunteer_type
+        self.week_available = week_available
+        self.notes = notes
+
+def format_volunteer_log(volunteer_log):
+    return {
+        "volunteer_log_id": volunteer_log.call_assignment_id,
+        "volunteer_id": volunteer_log.volunteer_id,
+        "volunteer_type": volunteer_log.volunteer_type,
+        "week_available": volunteer_log.week_available,
+        "notes": volunteer_log.notes
     }
 
 @app.route('/')
@@ -502,15 +532,25 @@ def update_volunteer(id):
     db.session.commit()
     return {'volunteer': format_volunteer(volunteer.one())}
 
-# GET ALL DRIVERS
-@app.route('/volunteers/drivers', methods = ['GET'])
-def get_drivers():
-    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter = False, full = False).all()
+# GET VOLUNTEERS BY TYPE
+@app.route('/volunteers/type/<type>', methods = ['GET'])
+def get_volunteers_by_type(type):
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
     
     return {'volunteers': volunteer_list}
+
+# GET ALL DRIVERS
+# @app.route('/volunteers/drivers', methods = ['GET'])
+# def get_drivers():
+#     volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter = False, full = False).all()
+#     volunteer_list = []
+#     for volunteer in volunteers:
+#         volunteer_list.append(format_volunteer(volunteer))
+    
+#     return {'volunteers': volunteer_list}
 
 # GET AVAILABLE DRIVERS BY DATE
 @app.route('/volunteers/drivers/<date>', methods = ['GET'])
@@ -530,7 +570,6 @@ def get_deliveries():
     for delivery in deliveries:
         delivery_list.append(format_delivery(delivery))
     return {'deliveries': delivery_list}
-
 
 
 #...

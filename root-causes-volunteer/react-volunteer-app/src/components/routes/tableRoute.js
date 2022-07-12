@@ -27,6 +27,8 @@ import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import '../../styleSheets/tableRoute.css';
 
+const baseUrl = "http://127.0.0.1:5000"
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     //This corresponds to the top tab that says 'Destination' and 'Delivery Status'
@@ -152,12 +154,12 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row" style={{fontSize: "17px"}}>
           <span style={{fontWeight: "bold", fontSize: "20px"}}> 
-          {row.firstname + ' ' + row.lastname} </span> <br /> 
+          {row.first_name + ' ' + row.last_name} </span> <br /> 
           <a href={"https://maps.google.com/?q=" + row.address} target="_blank">{row.address}</a>
           <br />
-          <a href={"tel:" + row.number}>{row.number}</a>
+          <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: {row.delivery_status}
+          <br /> Most Recent Delivery Status: Coming soon...
           <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>
@@ -265,29 +267,31 @@ Row.propTypes = {
 };
 
 export default function RouteTable() {
-  // const [rowsRoutes, setRowsRoutes] = useState([])
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/routes', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRowsRoutes(resp))
-  //   .catch(error => console.log(error))
-  // },[])
 
   // axios!
-  const [rowsRoutes, setRowsRoutes] = useState([]);
+  // const [rowsRoutes, setRowsRoutes] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get('http://127.0.0.1:5000/routes')
+  //   .then((res) => {console.log(res)
+  //      setRowsRoutes(res.data)})
+  //   .catch((err) => {console.log(err)
+  //   })
+  //   }, [])
+
+    const [rowsRoutes, setRowsRoutes] = useState([]);
+
+  // GET PARTICIPANTS
+  const fetchRows = async () => {
+    const data = await axios.get(`${baseUrl}/participants/status/3`);
+    const { participants } = data.data;
+    setRowsRoutes(participants);
+    console.log("DATA: ", data);
+  };
+
   useEffect(() => {
-    axios
-    .get('http://127.0.0.1:5000/routes')
-    .then((res) => {console.log(res)
-       setRowsRoutes(res.data)})
-    .catch((err) => {console.log(err)
-    })
-    }, [])
+    fetchRows();
+  }, []);
   
   return (
     <TableContainer 
@@ -310,4 +314,5 @@ export default function RouteTable() {
     </TableContainer>
   );
 }
+
 
