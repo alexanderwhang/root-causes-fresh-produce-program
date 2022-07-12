@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base, relationship
 import json
 import pdb
 from flask_marshmallow import Marshmallow
-from datetime import datetime
+from datetime import datetime, timezone
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -96,7 +96,7 @@ class Status(db.Model):
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
     status_type_id = db.Column(db.Integer, nullable=False)
     volunteer_id = db.Column(db.Integer, nullable=True)
-    status_date = db.Column(db.TIMESTAMP, nullable=False)
+    status_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     source = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
@@ -371,6 +371,7 @@ def update_participant(id):
     participant.update(dict(group=group))
 
     statusObj.update(dict(status_type_id=status))
+    statusObj.update(dict(status_date=datetime.now(timezone.utc)))
 
     db.session.commit()
     return {'participant': format_participant(participant.one())}

@@ -30,12 +30,10 @@ function Participant(props) {
   const [status, setStatus] = React.useState(props.participant.status);
   const [group, setGroup] = React.useState(props.participant.group);
   const [language, setLanguage] = React.useState(props.participant.language);
-  const [houseSize, setHouseSize] = React.useState(props.participant.house_size);
+  const [houseSize, setHouseSize] = React.useState(
+    props.participant.house_size
+  );
   const [pronouns, setPronouns] = React.useState(props.participant.pronouns);
-  
-
-
-  
 
   //   const [participantsList, setParticipantsList] = useState([]);
   const [statusColor, setStatusColor] = useState(props.participant.status);
@@ -146,7 +144,7 @@ function Participant(props) {
       {/* STATUS */}
       <Box sx={{ maxWidth: 200 }}>
         <FormControl fullWidth>
-          <form onSubmit={handleSubmitStatus} id={props.participant.id}>
+          <form onSubmit={handleSubmitStatus}>
             <InputLabel id="select-status-label">Status</InputLabel>
             <Select
               defaultValue={props.participant.status}
