@@ -51,13 +51,14 @@ class Participant(db.Model):
     email = db.Column(db.String(320), nullable=False)
     pronouns = db.Column(db.Text, nullable=True)
     group = db.Column(db.String(1), nullable=False)
+    household_size = db.Column(db.Integer, nullable=True)
 
     children = relationship("Status")
 
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -67,6 +68,7 @@ class Participant(db.Model):
         self.email = email
         self.pronouns = pronouns
         self.group = group
+        self.household_size = household_size
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -85,7 +87,8 @@ def format_participant(participant):
         "phone": participant.phone,
         "language": participant.language,
         "pronoun": participant.pronouns,
-        "group": participant.group
+        "group": participant.group,
+        "household_size": participant.household_size
     }
 
 class Status(db.Model):

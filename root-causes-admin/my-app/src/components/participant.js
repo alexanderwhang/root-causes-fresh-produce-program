@@ -30,8 +30,8 @@ function Participant(props) {
   const [status, setStatus] = React.useState(props.participant.status);
   const [group, setGroup] = React.useState(props.participant.group);
   const [language, setLanguage] = React.useState(props.participant.language);
-  const [houseSize, setHouseSize] = React.useState(
-    props.participant.house_size
+  const [household_size, setHouseSize] = React.useState(
+    props.participant.household_size
   );
   const [pronouns, setPronouns] = React.useState(props.participant.pronouns);
 
@@ -53,11 +53,17 @@ function Participant(props) {
   };
 
   //HANDLE SUBMIT
-  const handleSubmitStatus = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let new_participant = props.participant;
+
     new_participant.status = status;
+    new_participant.group = group;
+    new_participant.language = language;
+    new_participant.houseSize = household_size;
+    new_participant.pronouns = pronouns;
+
     var data = JSON.stringify({ participant: new_participant });
     let id = props.participant.id;
     setStatusColor(new_participant.status);
@@ -134,17 +140,17 @@ function Participant(props) {
           <th>Race/Ethnicity</th>
         </tr>
         <tr>
-          <td>{group}</td>
-          <td>5</td>
-          <td>she/her/hers</td>
+          <td>{props.participant.group}</td>
+          <td>{props.participant.household_size}</td>
+          <td>{props.participant.pronouns}</td>
           <td>56</td>
           <td>Hispanic or Latino</td>
         </tr>
       </table>
-      {/* STATUS */}
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <form onSubmit={handleSubmitStatus}>
+      <form onSubmit={handleSubmit}>
+        {/* STATUS */}
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
             <InputLabel id="select-status-label">Status</InputLabel>
             <Select
               defaultValue={props.participant.status}
@@ -159,195 +165,168 @@ function Participant(props) {
               <MenuItem value={2}>Not This Week</MenuItem>
               <MenuItem value={3}>Requires Follow Up</MenuItem>
             </Select>
-            <Button type="submit" value={props.participant.id}>
-              Submit
-            </Button>
-          </form>
-        </FormControl>
-      </Box>
-      {/* EMAIL */}
-      <TextField
-        className="email"
-        id="filled-email-input"
-        label="Email"
-        type="email"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      {/* PHONE  NUMBER */}
-      <TextField
-        id="filled-password-input"
-        label="Phone Number"
-        type="phone-number"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      {/* ADDRESS */}
-      <TextField
-        id="filled-password-input"
-        label="Street"
-        type="street"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      <TextField
-        id="filled-password-input"
-        label="City"
-        type="city"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      <TextField
-        id="filled-password-input"
-        label="State"
-        type="state"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      <TextField
-        id="filled-password-input"
-        label="Zip Code"
-        type="zip-code"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      <TextField
-        id="filled-password-input"
-        label="Apartment Number"
-        type="apartment-number"
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      {/* LANGUAGE */}
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="simple-select-label">Language</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={language}
-            label="Status"
-            onChange={handleLanguageChange}
-          >
-            <MenuItem value={"English"}>English</MenuItem>
-            <MenuItem value={"Spanish"}>Spanish</MenuItem>
-          </Select>
-        </FormControl>
+          </FormControl>
+        </Box>
+        {/* EMAIL */}
+        <TextField
+          className="email"
+          id="filled-email-input"
+          label="Email"
+          type="email"
+        />
         <div>
-          <Button>Submit</Button>
         </div>
-      </Box>
-      {/* GROUP */}
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="simple-select-label">Group</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={group}
-            label="Status"
-            onChange={handleGroupChange}
-          >
-            <MenuItem value={"A"}>A</MenuItem>
-            <MenuItem value={"B"}>B</MenuItem>
-          </Select>
-        </FormControl>
+        {/* PHONE  NUMBER */}
+        <TextField
+          id="filled-password-input"
+          label="Phone Number"
+          type="phone-number"
+        />
         <div>
-          <Button>Submit</Button>
         </div>
-      </Box>
-      {/* HOUSEHOLD SIZE */}
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="simple-select-label">Household Size</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={houseSize}
-            label="Status"
-            onChange={handleHouseSizeChange}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            {/* <MenuItem value={11}>10+</MenuItem> */}
-          </Select>
-        </FormControl>
+        {/* ADDRESS */}
+        <TextField id="filled-password-input" label="Street" type="street" />
         <div>
-          <Button>Submit</Button>
         </div>
-      </Box>
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="simple-select-label">Pronouns</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={status}
-            label="Status"
-            onChange={handleStatusChange}
-          >
-            <MenuItem value={0}>she/her/hers</MenuItem>
-            <MenuItem value={1}>he/him/his</MenuItem>
-            <MenuItem value={2}>they/them/theirs</MenuItem>
-            <MenuItem value={3}>Other</MenuItem>
-            <MenuItem value={4}>Prefer Not to Share</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField id="filled-password-input" label="City" type="city" />
         <div>
-          <Button>Submit</Button>
         </div>
-      </Box>
-      <TextField
-        id="outlined-number"
-        label="Age"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <div>
-        <Button>Submit</Button>
-      </div>
-      <Box sx={{ maxWidth: 200 }}>
-        <FormControl fullWidth>
-          <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
-          <Select
-            labelId="simple-select-label"
-            id="simple-select"
-            value={status}
-            label="Status"
-            onChange={handleStatusChange}
-          >
-            <MenuItem value={0}>Hispanic or Latino</MenuItem>
-            <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
-            <MenuItem value={2}>Asian</MenuItem>
-            <MenuItem value={3}>
-              Native Hawaiian or Other Pacific Islander
-            </MenuItem>
-            <MenuItem value={4}>Black or African American</MenuItem>
-            <MenuItem value={5}>White</MenuItem>
-            <MenuItem value={6}>Other</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField id="filled-password-input" label="State" type="state" />
         <div>
-          <Button>Submit</Button>
         </div>
-      </Box>
+        <TextField
+          id="filled-password-input"
+          label="Zip Code"
+          type="zip-code"
+        />
+        <div>
+        </div>
+        <TextField
+          id="filled-password-input"
+          label="Apartment Number"
+          type="apartment-number"
+        />
+        <div>
+        </div>
+        {/* LANGUAGE */}
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="simple-select-label">Language</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={language}
+              label="Status"
+              onChange={handleLanguageChange}
+            >
+              <MenuItem value={"English"}>English</MenuItem>
+              <MenuItem value={"Spanish"}>Spanish</MenuItem>
+            </Select>
+          </FormControl>
+          <div>
+          </div>
+        </Box>
+        {/* GROUP */}
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="simple-select-label">Group</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={group}
+              label="Status"
+              onChange={handleGroupChange}
+            >
+              <MenuItem value={"A"}>A</MenuItem>
+              <MenuItem value={"B"}>B</MenuItem>
+            </Select>
+          </FormControl>
+          <div>
+          </div>
+        </Box>
+        {/* HOUSEHOLD SIZE */}
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="simple-select-label">Household Size</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={household_size}
+              label="Status"
+              onChange={handleHouseSizeChange}
+            >
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={6}>6</MenuItem>
+              <MenuItem value={7}>7</MenuItem>
+              <MenuItem value={8}>8</MenuItem>
+              <MenuItem value={9}>9</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+              {/* <MenuItem value={11}>10+</MenuItem> */}
+            </Select>
+          </FormControl>
+          <div>
+          </div>
+        </Box>
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="simple-select-label">Pronouns</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={status}
+              label="Status"
+              onChange={handleStatusChange}
+            >
+              <MenuItem value={0}>she/her/hers</MenuItem>
+              <MenuItem value={1}>he/him/his</MenuItem>
+              <MenuItem value={2}>they/them/theirs</MenuItem>
+              <MenuItem value={3}>Other</MenuItem>
+              <MenuItem value={4}>Prefer Not to Share</MenuItem>
+            </Select>
+          </FormControl>
+          <div>
+          </div>
+        </Box>
+        <TextField
+          id="outlined-number"
+          label="Age"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <div>
+        </div>
+        <Box sx={{ maxWidth: 200 }}>
+          <FormControl fullWidth>
+            <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
+            <Select
+              labelId="simple-select-label"
+              id="simple-select"
+              value={status}
+              label="Status"
+              onChange={handleStatusChange}
+            >
+              <MenuItem value={0}>Hispanic or Latino</MenuItem>
+              <MenuItem value={1}>American Indian or Alaskan Native</MenuItem>
+              <MenuItem value={2}>Asian</MenuItem>
+              <MenuItem value={3}>
+                Native Hawaiian or Other Pacific Islander
+              </MenuItem>
+              <MenuItem value={4}>Black or African American</MenuItem>
+              <MenuItem value={5}>White</MenuItem>
+              <MenuItem value={6}>Other</MenuItem>
+            </Select>
+          </FormControl>
+          <div>
+          </div>
+        </Box>
+        <Button type="submit">Submit</Button>
+      </form>
     </div>
   );
 }
