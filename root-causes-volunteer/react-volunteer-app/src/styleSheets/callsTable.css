@@ -19,3 +19,26 @@
 #delete-note-btn:hover{
     background-color: red;
 }
+
+#note_submit{
+    background-color: white;
+    color: #00743e;
+    border: 2px solid #00743e;
+  }
+  
+  #note_submit:hover{
+    color: white;
+    background-color: #00743e;
+  }
+  
+  #note_delete{
+    size: small;
+    background-color: white;
+    color: #fc2848;
+    border: 2px solid #fc2848;
+  }
+  
+  #note_delete:hover{
+    color: white;
+    background-color: #fc2848;
+  }
