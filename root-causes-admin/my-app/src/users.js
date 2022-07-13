@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios"; 
 import { useEffect, useState } from "react";
+import { cardClasses } from "@mui/material";
 {/*export const Users=[{
     "key": 1,
     "status": "green",
@@ -219,13 +220,21 @@ export function Users(){
     setUserList(users2);
     // console.log("USER LIST: ", data);\
     console.log("USER LIST: ");
-    console.log(data);
-
+    console.log(users2);
+    getUserObjs();
   };
 
   useEffect(() => {
     fetchUserList();
   }, []);
+
+  const userObs = [];
+  const getUserObjs = async () => {
+    for (let i = 0; i < userList.length; i++) {
+      const user = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
+      userList[i].append();
+    }
+  };
 
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);

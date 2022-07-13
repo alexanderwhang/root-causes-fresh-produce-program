@@ -535,7 +535,7 @@ def get_volunteers_by_language(language):
 # DELETE VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['DELETE'])
 def delete_volunteer(id):
-    volunteer = Volunteer.query.filter_by(volunteer_id=id).one()
+    volunteer = Volunteer.query.filter_by(id=id).one()
     db.session.delete(volunteer)
     db.session.commit()
     return f'Participant (id: {id}) deleted.'
