@@ -23,3 +23,20 @@
 #admin-btn:hover{
   background-color: #fab289 !important;
 }
+
+
+
+
+
+/* Volunteer(
+  first_name='Hello',
+  last_name='Entry',
+  phone='1234567890',
+  affiliation='graduate',
+  language='Spanish',
+  first_time=True,
+  hipaa=True,
+  credit=True,
+  email='hello@gmail.com',
+  password='HelloWorld'
+) */

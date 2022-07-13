@@ -21,15 +21,6 @@ import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import PhoneInput from 'react-phone-number-input/input';
- 
-// components to import
-import BasicSelect from '../components/profile/dropDownAffiliation.js';
-import BasicSelectLanguage from '../components/profile/dropDownLanguage.js';
-import RadioButtonsVolunteer from '../components/profile/radioButtonVolunteer';
-import RadioButtonsCredit from '../components/profile/radioButtonCredit';
-import RadioButtonsHIPAA from '../components/profile/radioButtonHIPAA';
-import PhoneNumber from '../components/profile/phoneNumber';
 
 // reference participant.js in components file
 
@@ -70,9 +61,9 @@ export default function Profile() {
     setPhone('')
     setLanguage('')
     setAffiliation('')
-    setFirstTime()
-    setCredit()
-    setHipaa()
+    setFirstTime('')
+    setCredit('')
+    setHipaa('')
   }
   return (
     <ThemeProvider theme={theme}>
@@ -243,7 +234,6 @@ export default function Profile() {
                     <RadioGroup
                       aria-labelledby="radio-buttons-volunteer"
                       name="first_time"
-                      value={first_time}
                       onChange={(e)=>setFirstTime(e.target.value)}
                     >
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -257,7 +247,6 @@ export default function Profile() {
                   <RadioGroup
                     aria-labelledby="credit"
                     name="credit"
-                    value={credit}
                     onChange={(e)=>setCredit(e.target.value)}
                   >
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -271,7 +260,6 @@ export default function Profile() {
                     <RadioGroup
                       aria-labelledby="hipaa"
                       name="hipaa"
-                      value={hipaa}
                       onChange={(e)=>setHipaa(e.target.value)}
                     >
                       <FormControlLabel value={true} control={<Radio />} label="Yes" />
