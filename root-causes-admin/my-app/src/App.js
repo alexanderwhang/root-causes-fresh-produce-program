@@ -37,8 +37,6 @@ const baseUrl = "http://127.0.0.1:5000";
 //npm install --save styled-components
 //npm i react-csv
 //npm install xlsx
-//npm i mdbreact
-//npm i mdb-react-ui-kit
 
 export function Participants() {
   const [participantsList, setParticipantsList] = useState([]);
