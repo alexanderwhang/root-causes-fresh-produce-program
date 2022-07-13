@@ -711,6 +711,16 @@ def get_calls():
         db.session.add(call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
+    
+@app.route('/recent_delivery', methods = ['POST'])
+def recent_delivery():
+        id = request.form['id']
+        time = request.form['status_time']
+        participant = DeliveryHistory.query.get(id)
+        participant.most_recent_delivery = time
+        db.session.add(participant)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
         
 
 if __name__ == '__main__':
