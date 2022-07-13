@@ -156,7 +156,7 @@ class Volunteer(db.Model):
     __tablename__ = 'volunteer'
     __table_args__ = {"schema": "RC"}
 
-    volunteer_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     phone = db.Column(db.Text, nullable=False)
@@ -192,7 +192,7 @@ class Volunteer(db.Model):
 
 def format_volunteer(volunteer):
     return {
-        "id": volunteer.volunteer_id,
+        "id": volunteer.id,
         "first_name": volunteer.first_name,
         "last_name": volunteer.last_name,
         "affiliation": volunteer.affiliation,
@@ -210,7 +210,7 @@ class DriverLog(db.Model):
     __table_args__ = {"schema": "RC"}
 
     driver_log_preferences_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     date_available = db.Column(db.Date, nullable=False)
     time_available = db.Column(db.TIMESTAMP, nullable=False)
     deliver_more_preference = db.Column(db.Boolean, nullable=False)
@@ -249,7 +249,7 @@ class DeliveryAssignment(db.Model):
 
     delivery_list_id = db.Column(db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, nullable=False)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     assignment_date = db.Column(db.Text, nullable=False)        #should be date?
 
     def __repr__(self):
@@ -298,7 +298,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -327,7 +327,7 @@ class DeliveryHistory(db.Model):
 
     delivery_history_id = db.Column(db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
 
@@ -605,42 +605,41 @@ def get_deliveries():
         delivery_list.append(format_delivery(delivery))
     return {'deliveries': delivery_list}
 
+class VolObj():  
+    def __init__(self,id,participant_list): 
+        self.particpant_list=participant_list
+        self.id =id 
 
 # CALLER MANAGEMENT ALGORITHM
 @app.route('/callermanagement', methods = ['GET'])
 def get_call_assignments():
     type = "Caller"  
-    class Volunteer:  
-        def __init__(self,id,participant_list=[]): 
-            self.particpant_list=participant_list
-            self.id =id 
+    
     def volObjects(array):  
         ret = []
         for i in range(len(array)): 
              volunteer = array[i]   
-             volunteer_object=Volunteer(volunteer.id) 
+             volunteer_object=VolObj(volunteer.id,[]) 
              ret.append(volunteer_object) 
         return ret
 
-
-
     #make each volunteer into an volunteer object 
     #array of volunteers that speak english
-    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="English").all()
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
     
     #array of volunteers that speak spanish
-    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="Spanish").all()
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
     list_of_volObjects_english= volObjects(volunteers_english) 
     list_of_volObjects_spanish= volObjects(volunteers_spanish)
     
     # array of participants that speak english
-    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="English").all()
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
     
     #array of participants that speak spanish
-    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="Spanish").all()
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
     
     #step 0: get the participants into chunks  
-    def generate_assingments(volunteers,participants):
+    def generate_assignments(volunteers,participants):
         def chunkSize(participants,volunteers):   
             #prevent infinite chunking
             if len(volunteers)==0: 
@@ -655,8 +654,8 @@ def get_call_assignments():
             volunteer=volunteers[i] 
             volunteer.participant_list=participantChunks[i]   
         return volunteers
-    volunteersE =generate_assignment(volunteers_english,participants_english)  
-    volunteersS = generate_assignment(volunteers_spanish,participants_spanish) 
+    volunteersE = generate_assignments(volunteers_english,participants_english)  
+    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
     allVolunteers =[] 
     allVolunteers.extend(volunteersE)
     allVolunteers.extend(volunteersS)  
@@ -672,9 +671,16 @@ def get_call_assignments():
 
 #  def format_sortedVolunteers
 def format_sortedVolunteers(volunteers):
+    ids = "{"
+    # for participant in volunteers.participant_list:
+    for i in range(len(volunteers.participant_list)):
+        ids+=str(volunteers.participant_list[i].id)
+        if(i < len(volunteers.participant_list) -1 ):
+            ids+=", "
+    ids+="}"
     return {
         "id": volunteers.id,
-        "items": volunteers.items
+        "items": ids # {1, 2, 3, 4, 5}
     }
 
 
