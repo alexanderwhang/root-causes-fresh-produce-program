@@ -97,7 +97,7 @@ export default function Profile() {
           </Typography>
 
           <Box component="form" noValidate sx={{ mt: 3 }}>
-          <form noValidate method = "post" action="http://127.0.0.1:5000/profile">
+          <form noValidate method = "post" action="http://127.0.0.1:5000/volunteers">
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
