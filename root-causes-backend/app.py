@@ -605,7 +605,19 @@ def get_deliveries():
     return {'deliveries': delivery_list}
 
 
-#...
+# CALLER MANAGEMENT ALGORITHM
+@app.route('/callermanagement', methods = ['GET'])
+def get_call_assignments():
+    type = "Caller"
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="English").all()
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="Spanish").all()
+
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="English").all()
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="Spanish").all()
+
+    
+
+
 
 
 #VOLUNTEER APP
