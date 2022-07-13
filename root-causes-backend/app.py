@@ -330,6 +330,7 @@ class DeliveryHistory(db.Model):
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
+    most_recent_delivery = db.Column(db.String(100))
 
     def __repr__(self):
         return f"Volunteer #{self.volunteer_id} delivered to Participant #{self.participant_id} on Date {self.delivery_date}"
