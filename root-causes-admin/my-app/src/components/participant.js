@@ -227,6 +227,7 @@ function Participant(props) {
       </table>
       <form onSubmit={handleSubmit} hidden={edit_form_status}>
         {/* STATUS */}
+      <div class="status-dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="select-status-label">Status</InputLabel>
@@ -244,6 +245,7 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      </div>
         {/* EMAIL */}
     <div class="textInputs">
       <div>
@@ -318,6 +320,7 @@ function Participant(props) {
       </div>
 
         {/* GROUP */}
+      <div class="group-dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Group</InputLabel>
@@ -333,8 +336,10 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      </div>
 
         {/* HOUSEHOLD SIZE */}
+      <div class="household-dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Household Size</InputLabel>
@@ -359,8 +364,10 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      </div>
 
         {/* PRONOUNS */}
+      <div class="pronouns-dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Pronouns</InputLabel>
@@ -381,6 +388,8 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
+      </div>
+
       <div class="age">
         <TextField
           id="outlined-number"
@@ -394,6 +403,7 @@ function Participant(props) {
         />
       </div>
         <div></div>
+      <div class="race-dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
@@ -417,9 +427,10 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
-        <div className="submit_button">
+        <div className="submit-button">
           <Button variant="contained" type="submit">Submit</Button>
         </div>
+      </div>
       </form>
     </div>
   );

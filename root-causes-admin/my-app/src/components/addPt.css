@@ -15,7 +15,7 @@
 
 .language-input{
     margin-top: -21rem;
-    margin-left: 520px;
+    margin-left: 295px;
 }
 
 .status_dropdown{
@@ -44,7 +44,7 @@
     font-size: 15px;
     padding: 4px;
     margin: 0.7rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
     align-items: center;
 }
@@ -61,6 +61,7 @@
     display: flex;
     margin-top: 4rem;
     margin-left: 514px;
+    width: 60%;
 }
 
 .add_new{
