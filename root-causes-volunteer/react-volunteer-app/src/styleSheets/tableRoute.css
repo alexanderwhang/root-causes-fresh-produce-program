@@ -1,0 +1,48 @@
+#btn-group button {
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+  
+  /* Clear floats (clearfix hack) */
+    #btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  /* Add a background color on hover */
+/* #btn-group button:hover {
+    background-color: #3e8e41;
+  } */
+
+#volunteer-btn:hover{
+  color: white;
+  background-color: #f7c86d !important;
+}
+
+#admin-btn:hover{
+  background-color: #fab289 !important;
+}
+
+#note_submit{
+  background-color: white;
+  color: #00743e;
+  border: 2px solid #00743e;
+}
+
+#note_submit:hover{
+  color: white;
+  background-color: #00743e;
+}
+
+#note_delete{
+  size: small;
+  background-color: white;
+  color: #fc2848;
+  border: 2px solid #fc2848;
+}
+
+#note_delete:hover{
+  color: white;
+  background-color: #fc2848;
+}

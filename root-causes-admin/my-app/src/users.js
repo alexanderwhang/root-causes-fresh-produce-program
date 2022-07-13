@@ -209,7 +209,24 @@ const baseUrl = "http://127.0.0.1:5000";
 let users = [];
 
 
-export function Users(){  
+export function Users(){ 
+  const [userList, setUserList]= useState([]);
+
+  // GET
+  const fetchUserList = async () => {
+    const data = await axios.get(`${baseUrl}/callermanagement`);
+    const users2 = data.data.sortedVolunteers;
+    setUserList(users2);
+    // console.log("USER LIST: ", data);\
+    console.log("USER LIST: ");
+    console.log(data);
+
+  };
+
+  useEffect(() => {
+    fetchUserList();
+  }, []);
+
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
 
