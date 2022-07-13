@@ -1,0 +1,40 @@
+.email-input{
+    align-items: start;
+}
+
+.age-input{
+    position: absolute;
+    margin-top: 3.5rem;
+}
+
+.text-inputs{
+    margin-left: 200px;
+    margin-top: -3.5rem;
+}
+
+.language-input{
+    margin-top: -21rem;
+}
+
+.submit_button button{
+    background-color: #72bb44;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 0.7rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.submit_button button:hover{
+    background-color: #68ab3e;
+}
+
+.submit_button{
+    margin: 0 auto;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

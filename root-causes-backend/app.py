@@ -185,7 +185,7 @@ class Volunteer(db.Model):
         self.language = language
         self.first_time = first_time
         self.hipaa = hipaa
-        self.email = credit
+        self.credit = credit
         self.email = email
         self.password = password
 

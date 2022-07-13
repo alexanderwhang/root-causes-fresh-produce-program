@@ -1,3 +1,4 @@
+import "./App.css";
 import React from "react";
 // import { Individual } from "./App";
 import {useNavigate} from "react-router-dom";
@@ -11,12 +12,28 @@ import Button from '@mui/material/Button';
 import SvgEllipse from './symbolComponents/Ellipse';
 import {useEffect, useState} from 'react';
 import axios from "axios"
+import TextField from "@mui/material/TextField";
 
 const baseUrl = "http://localhost:5000"
 
-export const Table = ({data}) => {
+export const Table = () => {
   const [participantsList, setParticipantsList] = useState([]);
+  const [value, setValue] = useState("");
+  // const [dataSource, setDataSource] = useState(participantsList);
+  const [tableFilter, setTableFilter] = useState([]);
 
+  const filterData = (e) => {
+    if(e.target.value !== ""){
+      setValue(e.target.value);
+      const filterTable = participantsList.filter(o=>Object.keys(o).some(k=>
+          String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())));
+          setTableFilter([...filterTable])
+    } else{
+      setValue(e.target.value);
+      setParticipantsList([...participantsList]);
+    }
+  }
+  
   // GET
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants`);
@@ -32,12 +49,6 @@ export const Table = ({data}) => {
 
   const navigate = useNavigate();
 
-  // const [value, setValue] = React.useState("no-color");
-
-  // const handleChange = (event) => {
-  //   setValue(event.target.value);
-  // };
-
   let statusMap = new Map ([
     [0, "grey"],
     [4, "grey"],
@@ -47,8 +58,32 @@ export const Table = ({data}) => {
   ])
 
   return (
+    <div>
+    <div id="search">
+          <TextField
+            id="searchField"
+            label="Search"
+            // helperText="Some important text"
+            value={value}
+            onChange={filterData}
+            type="search"
+            // style="background-color: white;"
+          />
+    </div>
+      <div className="send-texts">
+            <Button
+              onClick={() => {
+                navigate("/smstexts");
+              }}
+              variant="contained"
+              sx={{backgroundColor:"#d6a977"}}
+            >
+              Send Texts
+            </Button>
+          </div>
+    <div className="container1">
     <table class="pt_list">
-      <tbody>
+      <thead>
         <tr>
           <th>Status</th>
           <th>First Name</th>
@@ -59,7 +94,34 @@ export const Table = ({data}) => {
           <th>Language</th>
           <th>Group</th>
         </tr>
-        {participantsList.map((participant) => {
+        </thead>
+        <tbody>
+        {(value.length > 0) ? tableFilter.map((participant) => {
+          return (
+            <tr key={participant.id}>
+              <td> 
+                <div style={{color: `${statusMap.get(participant.status)}`}}>
+                <SvgEllipse />
+                </div>
+              </td>
+              <td> 
+                <Button
+                  id="pt_button" onClick ={()=>{
+                  navigate("/individual/" + participant.id);
+                }}>{participant.first_name}
+                </Button>
+              </td>
+              <td>{participant.last_name}</td>
+              <td>{participant.address}</td>
+              <td>{participant.email}</td>
+              <td>{participant.phone}</td>
+              <td>{participant.language}</td>
+              <td>{participant.group}</td>
+            </tr>
+          )
+        })
+        :
+        participantsList.map((participant) => {
           return (
             <tr key={participant.id}>
               <td> 
@@ -79,11 +141,15 @@ export const Table = ({data}) => {
               <td>{participant.email}</td>
               <td>{participant.phone}</td>
               <td>{participant.language}</td>
-              <td>{participant.group}</td>
+              <td>hi</td>
             </tr>
+          )
+        })
+} 
+        </tbody>
+          </table>
+          </div>
+          </div>
           );
-        })}
-      </tbody>
-    </table>
-  );
-};
+        }
+    

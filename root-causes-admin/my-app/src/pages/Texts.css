@@ -1,31 +1,80 @@
+.sms{
+    display: flex;
+    height: 400vh;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.box{
+    width: 45%;
+    margin: 1rem;
+}
+.box h4{ 
+   text-align: center;
+   margin-bottom: 1rem;
+}
+
 .sending{
-    margin-left: 150px;
-    margin-top: 10vh;
+    /* margin-left: 150px; */
+    display: flex;
+    width: 100%;
+    float: left;
+    border: 3px solid black;
+    border-radius: 5px;
+    border: 3px solid #cfbb99;
+    border-radius: 30px;
+    background-color: #e0cba4;
 }
 
-.submitButton{
-    margin-top: 1rem;
-    margin-left: 65px;
-    margin-bottom: 2.5rem;
-}
-
-.messageBox{
-    margin-left: -6px;
-    margin-top: 1rem;
-}
-
-.confirmMessage{
-    margin-top: 0.5rem;
-    margin-left: 20px;
+.basic-select{
+    display: flex;
+    margin: 2rem;
+    max-height: 20vh;
+    align-items: center;
+    justify-content: center;
 }
 
 .filter{
-    margin-left: 1px;
-    margin-right: -25px;
+    margin: 1rem;
+    width: 100px;
 }
 
-.indivButtonCont{
-    display: flex;
+.submitButton{
+    max-width: 90px;
+    margin: 0 auto;
+}
+
+.messaging{
+    margin: 1rem;
+    display: inline-block;
+    align-items: center;
     justify-content: center;
-    margin-top: 1rem;
+}
+
+
+.confirmMessage {
+    /* margin-top: 0.5rem;
+    margin-left: 20px; */
+    margin: 0 auto;
+    width: 50%;
+}
+
+.sending button{
+    background-color: #00743e;
+}
+
+.sending button:hover{
+    background-color: #009a4b;
+}
+
+.receiving{
+    display: flex;
+    width: 100%;
+    float: left;
+    border: 3px solid black;
+    border-radius: 5px;
+    border: 3px solid #cfbb99;
+    border-radius: 30px;
+    background-color: #e0cba4;
+    height: 50vh;
 }
