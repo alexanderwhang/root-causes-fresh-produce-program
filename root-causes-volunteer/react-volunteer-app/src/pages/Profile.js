@@ -70,9 +70,9 @@ export default function Profile() {
     setPhone('')
     setLanguage('')
     setAffiliation('')
-    setFirstTime('')
-    setCredit('')
-    setHipaa('')
+    setFirstTime()
+    setCredit()
+    setHipaa()
   }
   return (
     <ThemeProvider theme={theme}>
@@ -93,7 +93,7 @@ export default function Profile() {
             <ContactsOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Register Here
+            Register
           </Typography>
 
           <Box component="form" noValidate sx={{ mt: 3 }}>
@@ -243,6 +243,7 @@ export default function Profile() {
                     <RadioGroup
                       aria-labelledby="radio-buttons-volunteer"
                       name="first_time"
+                      value={first_time}
                       onChange={(e)=>setFirstTime(e.target.value)}
                     >
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -252,10 +253,11 @@ export default function Profile() {
               </Grid>
               <Grid item xs={12}>
                 <FormControl>
-                  <FormLabel id="radio-buttons-credit">Are you volunteering for credit?</FormLabel>
+                  <FormLabel id="credit">Are you volunteering for credit?</FormLabel>
                   <RadioGroup
-                    aria-labelledby="radio-buttons-credit"
+                    aria-labelledby="credit"
                     name="credit"
+                    value={credit}
                     onChange={(e)=>setCredit(e.target.value)}
                   >
                     <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -265,10 +267,11 @@ export default function Profile() {
               </Grid>
               <Grid item xs={12}>
                 <FormControl>
-                  <FormLabel id="radio-buttons-HIPAA">Have you completed the HIPAA training?</FormLabel>
+                  <FormLabel id="hipaa">Have you completed the HIPAA training?</FormLabel>
                     <RadioGroup
-                      aria-labelledby="radio-buttons-HIPAA"
+                      aria-labelledby="hipaa"
                       name="hipaa"
+                      value={hipaa}
                       onChange={(e)=>setHipaa(e.target.value)}
                     >
                       <FormControlLabel value={true} control={<Radio />} label="Yes" />
