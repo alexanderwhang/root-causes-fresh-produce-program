@@ -26,7 +26,6 @@ import { PracticeUsers } from "./practiceUsers";
 import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {NewTable} from "./components/NewTable.js";
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
