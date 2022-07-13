@@ -716,7 +716,7 @@ def get_calls():
 def recent_delivery():
         id = request.form['id']
         time = request.form['status_time']
-        participant = DeliveryHistory.query.get(id)
+        participant = DeliveryHistory.query.filter_by(participant_id=id).one()
         participant.most_recent_delivery = time
         db.session.add(participant)
         db.session.commit()
