@@ -93,7 +93,7 @@ export default function Profile() {
             <ContactsOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Register Here
+            Register
           </Typography>
 
           <Box component="form" noValidate sx={{ mt: 3 }}>
