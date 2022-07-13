@@ -608,7 +608,7 @@ def get_deliveries():
 #...
 
 
-#VOLUNTEER APP
+########VOLUNTEER APP##########
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
@@ -662,9 +662,19 @@ def login():
                 f'{email} successfully logged in!'
             )
 
-
-
-
+#STATUS ON CALLS PAGE
+@app.route('/status_from_calls', methods = ['POST'])
+def get_calls():
+        id = request.form['id']
+        status = request.form['status']
+        # time = request.form['status_time']
+        call = Status.query.get(id)
+        call.status_type_id = status
+        # call.status_time = time
+        db.session.add(call)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/calls')
+        
 
 if __name__ == '__main__':
     app.run()
