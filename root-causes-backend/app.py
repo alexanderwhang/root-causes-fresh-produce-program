@@ -155,7 +155,7 @@ class Volunteer(db.Model):
     __tablename__ = 'volunteer'
     __table_args__ = {"schema": "RC"}
 
-    volunteer_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     phone = db.Column(db.Text, nullable=False)
@@ -191,7 +191,7 @@ class Volunteer(db.Model):
 
 def format_volunteer(volunteer):
     return {
-        "id": volunteer.volunteer_id,
+        "id": volunteer.id,
         "first_name": volunteer.first_name,
         "last_name": volunteer.last_name,
         "affiliation": volunteer.affiliation,
@@ -209,7 +209,7 @@ class DriverLog(db.Model):
     __table_args__ = {"schema": "RC"}
 
     driver_log_preferences_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     date_available = db.Column(db.Date, nullable=False)
     time_available = db.Column(db.TIMESTAMP, nullable=False)
     deliver_more_preference = db.Column(db.Boolean, nullable=False)
@@ -248,7 +248,7 @@ class DeliveryAssignment(db.Model):
 
     delivery_list_id = db.Column(db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, nullable=False)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     assignment_date = db.Column(db.Text, nullable=False)        #should be date?
 
     def __repr__(self):
@@ -297,7 +297,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -326,7 +326,7 @@ class DeliveryHistory(db.Model):
 
     delivery_history_id = db.Column(db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.volunteer_id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
 
@@ -508,7 +508,7 @@ def create_volunteer():
 # GET ALL VOLUNTEERS
 @app.route('/volunteers', methods = ['GET'])
 def get_volunteers():
-    volunteers = Volunteer.query.order_by(Volunteer.volunteer_id.asc()).all()
+    volunteers = Volunteer.query.order_by(Volunteer.id.asc()).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -517,7 +517,7 @@ def get_volunteers():
 # GET VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['GET'])
 def get_volunteer(id):
-    volunteer = Participant.query.filter_by(volunteer_id=id).one()
+    volunteer = Participant.query.filter_by(id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
     return {'volunteers': formatted_volunteer}
 
@@ -534,7 +534,7 @@ def get_volunteers_by_language(language):
 # DELETE VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['DELETE'])
 def delete_volunteer(id):
-    volunteer = Volunteer.query.filter_by(volunteer_id=id).one()
+    volunteer = Volunteer.query.filter_by(id=id).one()
     db.session.delete(volunteer)
     db.session.commit()
     return f'Participant (id: {id}) deleted.'
@@ -542,7 +542,7 @@ def delete_volunteer(id):
 # UPDATE VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['PUT'])
 def update_volunteer(id):
-    volunteer = Volunteer.query.filter_by(volunteer_id=id)
+    volunteer = Volunteer.query.filter_by(id=id)
     #first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email
     first_name = request.json['particpant']['first_name']
     last_name = request.json['particpant']['last_name']
@@ -568,7 +568,7 @@ def update_volunteer(id):
 # GET VOLUNTEERS BY TYPE
 @app.route('/volunteers/type/<type>', methods = ['GET'])
 def get_volunteers_by_type(type):
-    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).all()
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -578,7 +578,7 @@ def get_volunteers_by_type(type):
 # GET ALL DRIVERS
 # @app.route('/volunteers/drivers', methods = ['GET'])
 # def get_drivers():
-#     volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter = False, full = False).all()
+#     volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.id == DriverLog.volunteer_id, isouter = False, full = False).all()
 #     volunteer_list = []
 #     for volunteer in volunteers:
 #         volunteer_list.append(format_volunteer(volunteer))
@@ -588,7 +588,7 @@ def get_volunteers_by_type(type):
 # GET AVAILABLE DRIVERS BY DATE
 @app.route('/volunteers/drivers/<date>', methods = ['GET'])
 def get_drivers_by_date(date):
-    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter=True).filter(DriverLog.date_available==date).all()
+    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.id == DriverLog.volunteer_id, isouter=True).filter(DriverLog.date_available==date).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -609,15 +609,11 @@ def get_deliveries():
 @app.route('/callermanagement', methods = ['GET'])
 def get_call_assignments():
     type = "Caller"
-    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="English").all()
-    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="Spanish").all()
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="English").all()
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="Spanish").all()
 
     participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="English").all()
     participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="Spanish").all()
-
-    
-
-
 
 
 #VOLUNTEER APP

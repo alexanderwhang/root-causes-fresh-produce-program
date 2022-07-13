@@ -26,7 +26,7 @@ export function VolInfoPage() {
 
   // GET DRIVERS
   const fetchDrivers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/Driver`);
+    const data = await axios.get(`${baseUrl}/volunteers/type/Driver`);
     const drivers = data.data.volunteers;
     console.log("DATA1: ", data);
     console.log("DRIVERS: ");
