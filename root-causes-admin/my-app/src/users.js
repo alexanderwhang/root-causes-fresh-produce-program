@@ -228,12 +228,20 @@ export function Users(){
     fetchUserList();
   }, []);
 
-  const userObs = [];
+  let userObjs = [];
   const getUserObjs = async () => {
     for (let i = 0; i < userList.length; i++) {
-      const user = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
-      userList[i].append();
+      let vol = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
+      let pts = [];
+      for(let j = 0; j <userList[i].items.length; j++) {
+        let pt = await axios.get(`${baseUrl}/participants/${userList[i].items[j].id}`);
+        pts.append(pt);
+      }
+      userObjs[i].append({"vol": vol, "pts": pts});
     }
+    console.log("-------------------------")
+    console.log("userObjs: ")
+    console.log(userObjs);
   };
 
   const [participantsList, setParticipantsList] = useState([]);
