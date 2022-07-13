@@ -8,8 +8,10 @@ import Calls from './pages/Calls.js';
 import SignUp from './pages/SignUp.js';
 import Profile from './pages/Profile.js';
 import RoutesDrive from './pages/Routes.js';
-
+import EitherOr from './pages/VolunteerOrAdmin.js';
 import TrueProfile from './pages/TrueProfile.js';
+
+
 
 function App() {
   return (
@@ -24,6 +26,9 @@ function App() {
         <Route path="/routes" element={<RoutesDrive/>} />
         
         <Route path="/trueprofile" element={<TrueProfile/>} />
+
+        <Route path="/volunteeroradmin" element={<EitherOr/>} />
+
       </Routes>
     </Router>
   );

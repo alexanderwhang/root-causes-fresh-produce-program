@@ -7,8 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faHome, faUserCircle, faCar, faPhone, faFileLines } from '@fortawesome/free-solid-svg-icons';
 // import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import styled, { createGlobalStyle } from "styled-components";
-import { Home, Bookmark, User } from "react-feather";
 
 
 

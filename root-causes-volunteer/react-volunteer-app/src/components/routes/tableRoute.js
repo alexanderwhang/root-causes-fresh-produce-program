@@ -25,6 +25,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
+import '../../styleSheets/tableRoute.css';
+
+const baseUrl = "http://127.0.0.1:5000"
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,11 +56,27 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
   const [delivery_status, setDeliveryStatus] = useState("");
+  const [notes, setNotes] = useState("");
+  const [status_time, setDate] = useState(""); 
+  
+  const handleTime = () => {
+    let current = new Date();
+    let date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    let time = current.toLocaleTimeString();
+    setDate(time + " on " + date);
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
     setDeliveryStatus(e.target.value);
     console.log(delivery_status);
+  }
+
+  const handleSubmit2 = e => {
+    e.preventDefault();
+    setNotes(e.target.value);
+    console.log(notes);
+    
   }
 
   function changeBackground1(e) {
@@ -98,7 +117,6 @@ function Row(props) {
             </div>
             )}
 
-          
           <form method = "post" 
                 action="http://127.0.0.1:5000/routes"
                 enctype = "multipart/form-data">
@@ -111,9 +129,9 @@ function Row(props) {
               }}
             />
             <input type="hidden" name="id" value={row.id} />
-          
-          <Button className="submitImage"
-            style={{backgroundColor: "#00743e"}}
+          <br />
+          <Button id="note_submit"
+            style={{marginTop: "10px"}}
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -121,8 +139,7 @@ function Row(props) {
             >
             Submit
           </Button>
-          </form>
-          
+          </form> 
       </div>
       );
     } else {
@@ -145,17 +162,20 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row" style={{fontSize: "17px"}}>
           <span style={{fontWeight: "bold", fontSize: "20px"}}> 
-          {row.firstname + ' ' + row.lastname} </span> <br /> 
+          {row.first_name + ' ' + row.last_name} </span> <br /> 
           <a href={"https://maps.google.com/?q=" + row.address} target="_blank">{row.address}</a>
           <br />
-          <a href={"tel:" + row.number}>{row.number}</a>
+          <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: {row.delivery_status}
+          <br /> Most Recent Delivery Status: Coming soon... {row.status_time}
+          <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>
 
-      <form noValidate method = "post" action="http://127.0.0.1:5000/routes" >
+      {/* <form noValidate method = "post" action="http://127.0.0.1:5000/routes" > */}
+      <form>
         <input type="hidden" name="id" value={row.id} />
+        <input type="hidden" name="status_time" value={status_time} />
           <FormLabel id="radio-buttons-availability"></FormLabel>
             <RadioGroup
               aria-labelledby="radio-buttons-availability"
@@ -188,14 +208,41 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                     <TableRow>
-                      <TableCell>Notes</TableCell>
+                      <TableCell>
+                      <div id="btn-group">
+                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/notes">
+                        <input type="hidden" name="id" value={row.id} />
+                        <input style={{ marginRight: '15px' }} type= "text" name="routes_notes" placeholder="Enter notes here..." />
+                      <br />
+                      <Button id = "note_submit"
+                          style={{marginTop: "10px", marginRight: "5px"}}
+                          type="submit"
+                          variant="contained"
+                          sx={{ mt: 3, mb: 2 }}
+                          onSubmit={handleSubmit2}
+                          >
+                          Submit
+                      </Button>
+                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
+                        <input type="hidden" name="id" value={row.id} />
+                        <Button id = "note_delete"
+                            name = "delete"
+                            style={{marginTop: "10px"}}
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            onSubmit={handleSubmit2}
+                            >
+                            DELETE NOTE HISTORY
+                        </Button>                        
+                      </form>
+                    </form>
+                    </div>
+                      </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow key="extra1">
-                      <TableCell component="th" scope="row">
-                        <FinalNote />
-                      </TableCell>
                   </TableRow>
                 </TableBody>
                 <TableHead>
@@ -230,29 +277,31 @@ Row.propTypes = {
 };
 
 export default function RouteTable() {
-  // const [rowsRoutes, setRowsRoutes] = useState([])
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/routes', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRowsRoutes(resp))
-  //   .catch(error => console.log(error))
-  // },[])
 
   // axios!
-  const [rowsRoutes, setRowsRoutes] = useState([]);
+  // const [rowsRoutes, setRowsRoutes] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get('http://127.0.0.1:5000/routes')
+  //   .then((res) => {console.log(res)
+  //      setRowsRoutes(res.data)})
+  //   .catch((err) => {console.log(err)
+  //   })
+  //   }, [])
+
+    const [rowsRoutes, setRowsRoutes] = useState([]);
+
+  // GET PARTICIPANTS
+  const fetchRows = async () => {
+    const data = await axios.get(`${baseUrl}/participants/status/1`);
+    const { participants } = data.data;
+    setRowsRoutes(participants);
+    console.log("DATA: ", data);
+  };
+
   useEffect(() => {
-    axios
-    .get('http://127.0.0.1:5000/routes')
-    .then((res) => {console.log(res)
-       setRowsRoutes(res.data)})
-    .catch((err) => {console.log(err)
-    })
-    }, [])
+    fetchRows();
+  }, []);
   
   return (
     <TableContainer 
@@ -275,4 +324,5 @@ export default function RouteTable() {
     </TableContainer>
   );
 }
+
 

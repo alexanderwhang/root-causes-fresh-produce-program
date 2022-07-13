@@ -111,13 +111,18 @@ export default function SignIn() {
               </Grid>
               <Grid item>
                 <Link href="/profile" variant="body2" style={{color: "#00743e"}}>
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account? Register"}
                 </Link>
               </Grid>
 
               <Grid item>
                 <Link href="/trueprofile" variant="body2" style={{color: "#00743e"}}>
-                  {"Logged in? Click here to see your Profile!"}
+                  {"Click here to see your profile!"}
+                </Link>
+                <br />
+                <Link href="/volunteeroradmin" variant="body2" 
+                  style={{color: "#00743e"}}>
+                  {"Volunteer/Admin Page"}
                 </Link>
               </Grid>
 

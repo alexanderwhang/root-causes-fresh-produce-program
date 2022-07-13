@@ -27,7 +27,9 @@ import axios from 'axios';
 // import rows from '../calls/rows.json';
 import { useEffect, useState } from "react";
 import '../../styleSheets/callsTable.css';
+import '../../styleSheets/tableRoute.css';
 
+const baseUrl = "http://127.0.0.1:5000"
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -72,7 +74,6 @@ function Row(props) {
     
   }
 
-
   const time = null;
   const current = null;
   const date = null;
@@ -100,6 +101,32 @@ function Row(props) {
     e.target.style.background = "#00743e";
   }
 
+
+  function printArray(obj) {
+    const myArray = obj.toString().split(",")
+    if (myArray.length === 0) {
+      return;
+    }
+    const listItems = myArray.map((note) => 
+                      <li style={{fontSize: "17px"}}>{note}</li>); 
+    return <ul> {listItems} </ul> 
+    }
+
+  function mostRecent(obj) {
+    const myArray = obj.toString().split(",")
+    const last = myArray.length - 1
+    return <h3 style={{display: "inline", color: "black", fontSize: "17px"}}>{myArray[last]} </h3>
+  }
+
+  function getdeleteIndex(obj) {
+    const myArray = obj.toString().split(",");
+    for (let i = 0; i < myArray.length; i++){
+      if (obj == myArray[i]){
+        return i;
+      }
+    }
+  }
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -117,20 +144,23 @@ function Row(props) {
             scope="row"
             style={{fontSize: "17px"}}>
           <span style={{fontWeight: "bold", fontSize: "20px"}}> 
-            {row.firstname + " " + row.lastname} 
+            {row.first_name + " " + row.last_name} 
           </span> <br /> 
-          <a href={"tel:" + row.number}>{row.number}</a>
+          <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
-            >
-            {row.status}
+            >Coming Soon
+            {/* {row.status} */}
           </span>
-          <br /> Notes: {row.calls_notes} 
-          <br /> Status Last Changed: {row.status_time}
+          <br /> Most Recent Note: 
+            {/* {mostRecent(row.call_notes)}  */}
+          <br /> Status Last Changed: 
+            {/* {row.status_time} */}
+
           
         </TableCell>        
         <TableCell>  
-          <form noValidate method = "post" action="http://127.0.0.1:5000/calls">
+          <form noValidate method = "post" action="http://127.0.0.1:5000/status_from_calls">
             <input type="hidden" name="id" value={row.id} />
             <input type="hidden" name="status_time" value={status_time} />
             <FormControl>
@@ -140,11 +170,11 @@ function Row(props) {
               name="radio-buttons-group"
               defaultValue = "No Response"
               >
-              <FormControlLabel name = 'status' control={<Radio />} value="Available" label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value="No Response" label="No Response" />
-              <FormControlLabel name = 'status' control={<Radio />} value="Not Available" label="Not Available" />
+              <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
+              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
-            
+            {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
             
         <Button className="submitCall"
             style={{backgroundColor: "#00743e"}}
@@ -187,11 +217,13 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell>
+                    <div id="btn-group">
                       <form noValidate method = "post" action="http://127.0.0.1:5000/calls/notes">
                         <input type="hidden" name="id" value={row.id} />
-                        <input type= "text" name="notes" placeholder="Enter notes here..." />
-                      <Button
-                          style={{backgroundColor: "#00743e"}}
+                        <input style={{ marginRight: '15px' }} type= "text" name="notes" placeholder="Enter notes here..." />
+                      <br />
+                      <Button id="note_submit"
+                          style={{marginTop: "10px", marginRight: "5px"}}
                           type="submit"
                           variant="contained"
                           sx={{ mt: 3, mb: 2 }}
@@ -201,9 +233,9 @@ function Row(props) {
                       </Button>
                       <form noValidate method = "post" action="http://127.0.0.1:5000/calls/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
-                        <Button
+                        <Button id="note_delete"
                             name = "delete"
-                            style={{backgroundColor: "#fc2848"}}
+                            style={{marginTop: "10px"}}
                             type="submit"
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
@@ -212,9 +244,11 @@ function Row(props) {
                             DELETE NOTE HISTORY
                         </Button>                        
                       </form>
-
                     </form>
-                    <h3>{row.calls_notes}</h3>
+                    </div>
+                    <h5 style={{fontSize: "17px"}}>Note History</h5>
+                    {/* {printArray(row.call_notes)} */}
+                      
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -242,32 +276,34 @@ Row.propTypes = {
 };
 
 export default function CollapsibleTable() {
-
   // const [rows, setRows] = useState([])
 
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/calls', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRows(resp))
-  //   .catch(error => console.log(error))
-
-  // },[])
-
   // axios!
-  const [rows, setRows] = useState([]);
-  useEffect(() => {
-    axios
-    .get('http://127.0.0.1:5000/calls')
-    .then((res) => {console.log(res)
-       setRows(res.data)})
-    .catch((err) => {console.log(err)
-    })
-    }, [])
+  // const [rows, setRows] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get('http://127.0.0.1:5000/calls')
+  //   .then((res) => {console.log(res)
+  //      setRows(res.data)})
+  //   .catch((err) => {console.log(err)
+  //   })
+  //   }, [])
+
+    const [rows, setRows] = useState([]);
+
+    // GET PARTICIPANTS
+    // 1 = GREEN, ready for delivery
+    // 3 = SALMON, needs follow-up call
+    const fetchRows = async () => {
+      const data = await axios.get(`${baseUrl}/participants/status/3`);
+      const { participants } = data.data;
+      setRows(participants);
+      console.log("DATA: ", data);
+    };
+  
+    useEffect(() => {
+      fetchRows();
+    }, []);
 
   return (
     <TableContainer 

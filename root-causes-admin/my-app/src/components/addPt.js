@@ -1,5 +1,5 @@
 import React from "react";
-import "./Participant.css";
+import "./addPt.css";
 import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 // const baseUrl = "http://127.0.0.1:5000";
 const baseUrl = "http://localhost:5000";
 
-function Participant(props) {
+function NewParticipant() {
   let statusMap = new Map([
     [0, "grey"],
     [4, "grey"],
@@ -25,40 +25,37 @@ function Participant(props) {
     [3, "salmon"],
   ]);
 
-  console.log(props);
 
-  const [status, setStatus] = React.useState(props.participant.status);
-  const [group, setGroup] = React.useState(props.participant.group);
-  const [language, setLanguage] = React.useState(props.participant.language);
-  const [household_size, setHouseSize] = React.useState(
-    props.participant.household_size
-  );
-  const [pronouns, setPronouns] = React.useState(props.participant.pronouns);
-  const [age, setAge] = React.useState(props.participant.age);
-  const [email, setEmail] = React.useState(props.participant.email);
-  const [phone, setPhone] = React.useState(props.participant.phone);
-  const [street, setStreet] = React.useState(props.participant.street);
-  const [city, setCity] = React.useState(props.participant.city);
-  const [state, setState] = React.useState(props.participant.state);
-  const [zip, setZip] = React.useState(props.participant.zip);
-  const [apartment, setApartment] = React.useState(props.participant.apartment);
+  const [status, setStatus] = React.useState(0);
+  const [group, setGroup] = React.useState('');
+  const [language, setLanguage] = React.useState('');
+  const [household_size, setHouseSize] = React.useState(0);
+  const [pronouns, setPronouns] = React.useState('');
+  const [age, setAge] = React.useState(0);
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [street, setStreet] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [state, setState] = React.useState('');
+  const [zip, setZip] = React.useState(0);
+  const [apartment, setApartment] = React.useState('');
 
 
   //   const [participantsList, setParticipantsList] = useState([]);
-  const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
-  const [groupDisplay, setGroupDisplay] = useState(props.participant.group);
-  const [languageDisplay, setLanguageDisplay] = useState(props.participant.language);
-  const [householdSizeDisplay, setHouseholdSizeDisplay] = useState(props.participant.household_size);
-  const [pronounsDisplay, setPronounsDisplay] = useState(props.participant.pronouns);
-  const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
-  const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
-  const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
-  const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
-  const [cityDisplay, setCityDisplay] = useState(props.participant.city);
-  const [stateDisplay, setStateDisplay] = useState(props.participant.state);
-  const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
-  const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
-  const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
+//   const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
+//   const [groupDisplay, setGroupDisplay] = useState(props.participant.group);
+//   const [languageDisplay, setLanguageDisplay] = useState(props.participant.language);
+//   const [householdSizeDisplay, setHouseholdSizeDisplay] = useState(props.participant.household_size);
+//   const [pronounsDisplay, setPronounsDisplay] = useState(props.participant.pronouns);
+//   const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
+//   const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
+//   const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
+//   const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
+//   const [cityDisplay, setCityDisplay] = useState(props.participant.city);
+//   const [stateDisplay, setStateDisplay] = useState(props.participant.state);
+//   const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
+//   const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
+//   const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
 
 
   
@@ -109,7 +106,7 @@ function Participant(props) {
     editInfo();
 
     console.log(pronouns);
-    let new_participant = props.participant;
+    let new_participant = {};
 
     new_participant.status = status;
     new_participant.group = group;
@@ -126,20 +123,19 @@ function Participant(props) {
     new_participant.apartment = apartment;
 
     var data = JSON.stringify({ participant: new_participant });
-    let id = props.participant.id;
-    setStatusDisplay(new_participant.status);
-    setGroupDisplay(new_participant.group);
-    setLanguageDisplay(new_participant.language);
-    setHouseholdSizeDisplay(new_participant.household_size);
-    setPronounsDisplay(new_participant.pronouns);
-    setAgeDisplay(new_participant.age);
-    setEmailDisplay(new_participant.email);
-    setPhoneDisplay(new_participant.phone);
-    setStreetDisplay(new_participant.street);
-    setCityDisplay(new_participant.city);
-    setStateDisplay(new_participant.state);
-    setZipDisplay(new_participant.zip);
-    setApartmentDisplay(new_participant.apartment);
+    // setStatusDisplay(new_participant.status);
+    // setGroupDisplay(new_participant.group);
+    // setLanguageDisplay(new_participant.language);
+    // setHouseholdSizeDisplay(new_participant.household_size);
+    // setPronounsDisplay(new_participant.pronouns);
+    // setAgeDisplay(new_participant.age);
+    // setEmailDisplay(new_participant.email);
+    // setPhoneDisplay(new_participant.phone);
+    // setStreetDisplay(new_participant.street);
+    // setCityDisplay(new_participant.city);
+    // setStateDisplay(new_participant.state);
+    // setZipDisplay(new_participant.zip);
+    // setApartmentDisplay(new_participant.apartment);
     let address_string = "";
     if(!new_participant.apartment) {
       address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`
@@ -147,11 +143,11 @@ function Participant(props) {
       address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip} Apt. ${new_participant.apartment}`
 
     }
-    setAddressDisplay(address_string);
+    // setAddressDisplay(address_string);
 
     var config = {
-      method: "put",
-      url: `http://localhost:5000/participants/${id}`,
+      method: "post",
+      url: `http://localhost:5000/participants`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -182,50 +178,7 @@ function Participant(props) {
 
   return (
     <div>
-        <div className="edit_button">
-          <Button variant="contained" size="small" onClick={editInfo}>
-            Edit
-          </Button>
-        </div>
-      <table className="personal_info">
-        <tr>
-          <th>Status</th>
-          <th>Address</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Language</th>
-        </tr>
-        <tr>
-          <td>
-            <div
-              style={{
-                color: `${statusMap.get(statusDisplay)}`,
-              }}
-            >
-              <SvgEllipse />
-            </div>
-          </td>
-          <td>{addressDisplay}</td> {/*ADD CONDITIONAL FOR APARTMENT*/}
-          <td>{emailDisplay}</td>
-          <td>{phoneDisplay}</td>
-          <td>{languageDisplay}</td>
-        </tr>
-        <tr>
-          <th>Group</th>
-          <th>Household Size</th>
-          <th>Pronouns</th>
-          <th>Age</th>
-          <th>Race/Ethnicity</th>
-        </tr>
-        <tr>
-          <td>{groupDisplay}</td>
-          <td>{householdSizeDisplay}</td>
-          <td>{pronounsDisplay}</td>
-          <td>{ageDisplay}</td>
-          <td>Hispanic or Latino</td>
-        </tr>
-      </table>
-      <form onSubmit={handleSubmit} hidden={edit_form_status}>
+      <form onSubmit={handleSubmit} hidden={false}>
         {/* STATUS */}
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
@@ -245,10 +198,10 @@ function Participant(props) {
           </FormControl>
         </Box>
         {/* EMAIL */}
-    <div class="textInputs">
+    <div class="text-inputs">
       <div>
         <TextField
-          className="email"
+          className="email-input"
           id="filled-email-input"
           label="Email"
           type="email"
@@ -298,7 +251,7 @@ function Participant(props) {
     </div>
         
         {/* LANGUAGE */}
-      <div class="language">
+      <div class="language-input">
         <Box sx={{ maxWidth: 200 }} className="language">
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Language</InputLabel>
@@ -381,7 +334,7 @@ function Participant(props) {
             </Select>
           </FormControl>
         </Box>
-      <div class="age">
+      <div class="age-input">
         <TextField
           id="outlined-number"
           label="Age"
@@ -425,4 +378,4 @@ function Participant(props) {
   );
 }
 
-export default Participant;
+export default NewParticipant;

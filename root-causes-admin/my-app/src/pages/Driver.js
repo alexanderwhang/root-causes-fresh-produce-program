@@ -52,7 +52,7 @@ export function Driver() {
 
   // GET DRIVERS
   const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/drivers/2022-07-09`); // GET PATIENTS READY FOR DELIVERY (GREEN)
+    const data = await axios.get(`${baseUrl}/volunteers/drivers/2022-07-09`); // GET DRIVERS AVAILABLE FOR DELIVERY
     const { volunteers } = data.data;
     setVolunteersList(volunteers);
     console.log("DATA: ", data);

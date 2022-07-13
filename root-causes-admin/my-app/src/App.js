@@ -1,11 +1,14 @@
 import "./App.css";
 import Participant from "./components/participant";
+import NewParticipant from "./components/addPt";
+import Volunteer from "./components/volunteer";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
 import { Table } from "./Table";
 import Navbar from "./components/Navbar/Navbar";
 import { Driver } from "./pages/Driver.js";
+import { VolInfoPage } from "./pages/VolInfo.js";
 import { Texts } from "./pages/Texts.js";
 import { Home } from "./home";
 import TextField from "@mui/material/TextField";
@@ -164,16 +167,14 @@ export function Callers() {
     console.log("DATA: ", data);
   };
 
-  let users = []
+  let users = [];
   volunteersList.map((vol) => {
-    return (
-      users.push({title: vol.id, items: []})
-    );
-  })
-  
-  users.push({title: "pts", items: participantsList})
-  console.log(users)
-  
+    return users.push({ title: vol.id, items: [] });
+  });
+
+  users.push({ title: "pts", items: participantsList });
+  console.log(users);
+
   const [peoples, setPeople] = useState(PracticeUsers);
   const CreateAssignment = () => {
     const participantsList = PracticeUsers[PracticeUsers.length - 1].items;
@@ -366,8 +367,6 @@ export function Individual({ match }) {
 
   const [participantsList, setParticipantsList] = useState([]);
 
-  const editInfo = () => {};
-
   // GET
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants`);
@@ -379,50 +378,6 @@ export function Individual({ match }) {
   useEffect(() => {
     fetchParticipants();
   }, []);
-
-  let statusMap = new Map([
-    [0, "grey"],
-    [4, "grey"],
-    [1, "green"],
-    [2, "tan"],
-    [3, "salmon"],
-  ]);
-
-  const [status, setStatus] = React.useState(0);
-
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
-  };
-
-  // function handleSubmitStatus(event) {
-  //   event.preventDefault();
-  //   const url = "http://localhost:3000/uploadFile";
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-  //   formData.append("fileName", file.name);
-  //   const config = {
-  //     headers: {
-  //       "content-type": "multipart/form-data",
-  //     },
-  //   };
-  //   axios.post(url, formData, config).then((response) => {
-  //     console.log(response.data);
-  //   });
-  // }
-
-  const handleSubmitStatus = async (e) => {
-    e.preventDefault();
-    console.log(`Participant id: ${e.target.id}`);
-    try {
-      const data = await axios.put(`${baseUrl}/participants/1`, { status });
-      setParticipantsList([...participantsList, data.data]);
-      handleStatusChange("");
-      console.log("Receive submit");
-    } catch (err) {
-      console.error(err.message);
-      console.log(`Participant id: ${e.target.id}`);
-    }
-  };
 
   return (
     <div>
@@ -447,11 +402,6 @@ export function Individual({ match }) {
                 <h2>
                   {participant.first_name} {participant.last_name}
                 </h2>
-                <div className="editButton">
-                  <Button variant="outlined" size="small" onClick={editInfo}>
-                    Edit
-                  </Button>
-                </div>
 
                 {/* tabs code */}
                 <Box
@@ -476,23 +426,6 @@ export function Individual({ match }) {
                 </Box>
                 <TabPanel value={value} index={0}>
                   <Participant participant={participant} />
-                
-                  
-                  {/* ); */}
-                  {/* <table className="personal_info">
-          <tr>
-            <th>Address</th>
-            <th>Phone Number</th>
-            <th>Email Address</th>
-            <th>Language</th>
-          </tr>
-          <tr>
-            <td>71 Lyons Junction</td>
-            <td>584-350-9281</td>
-            <td>gpatman0@globo.com</td>
-            <td>Tsonga</td>
-          </tr>
-          </table> */}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <table className="med_info">
@@ -572,7 +505,6 @@ export function Individual({ match }) {
                   </table>
                 </TabPanel>
               </div>
-              
             </div>
             <div className="tempBorder"></div>
           </div>
@@ -587,254 +519,7 @@ export function SMSTexts() {
 }
 
 export function VolInfo() {
-  const [volunteersList, setVolunteerList] = useState([]);
-  const [driversList, setDriversList] = useState([]);
-
-  // GET ALL VOLUNTEERS
-  const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers`);
-    const { volunteers } = data.data;
-    setVolunteerList(volunteers);
-    console.log("DATA: ", data);
-  };
-
-  // GET DRIVERS
-  const fetchDrivers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/drivers`);
-    const { drivers } = data.data;
-    setDriversList(drivers);
-    console.log("DATA: ", data);
-  };
-
-  useEffect(() => {
-    fetchVolunteers();
-    fetchDrivers();
-  }, []);
-
-  // const Root = styled("div")(({ theme }) => ({
-  //   width: "100%",
-  //   ...theme.typography.body2,
-  //   "& > :not(style) + :not(style)": {
-  //     marginTop: theme.spacing(2),
-  //   },
-  // }));
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-  
-  const [query2, setQuery2] = React.useState("");
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  const keys = [
-    "firstName",
-    "lastName",
-    "phoneNumber",
-    "email",
-    "language",
-    "type",
-    // "hippa",
-    // "credit"
-
-  ];
-    //write a function that filters out list of people, provide that new filtered list to that function 
-    //populated by the state
-
-  const search = (data) => {
-    return data.filter((item) =>
-      keys.some((key) =>
-        item[key].toLowerCase().includes(value.query.toLowerCase())
-      )
-    );
-  };
-
-  const searchThing = () => {
-    alert("it worked")
-  }
-  let boolMap = new Map([
-    [true, "Y"],
-    [false, "N"],
-  ]);
-
-  return (
-    <div>
-      <Navbar />
-      <h2> Volunteer Info </h2>
-      <Box sx={{ borderBottom: 0, borderColor: "#f7c86d", color: "black" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          centered
-        >
-          <Tab label="Current Week Volunteers" {...a11yProps(0)} />
-          <Tab label="All Volunteers" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <div className="curr_vols">
-          <h3> Callers </h3>
-          {/* date of availability? */}
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time? </th>
-                  <th>Availability </th>
-                </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h3> Drivers </h3>
-
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time? </th>
-                  <th>Availability </th>
-                </tr>
-                {/* {driversList.map((driver) => {
-                return (
-                  <tr key={driver.id}>
-                    <td>
-                      {" "}
-                      {driver.first_name} {driver.last_name}{" "}
-                    </td>
-                    <td>{driver.phone}</td>
-                    <td>{driver.email}</td>
-                    <td>{driver.language}</td>
-                    <td> {boolMap.get(driver.first_time)}</td>
-                    <td>{boolMap.get(driver.hipaa)}</td>
-                    <td>{boolMap.get(driver.credit)}</td>
-                  </tr>
-                );
-              })} */}
-              </tbody>
-            </table>
-          </div>
-          <h3> Packers </h3>
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time? </th>
-                  <th>Availability </th>
-                </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
-                
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <div className="all_vols">
-          <div id="search">
-            <TextField
-              // id="searchField"
-              label="Search"
-              onKeyDown={(event) => setQuery2(event.target.value)}
-              type="search"
-            />
-          </div>
-          <table class="vol_list">
-            <tbody>
-              <tr>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Language</th>
-                <th>Type</th>
-                <th>HIPPA?</th>
-                <th>Affiliation</th>
-                <th>For Credit?</th>
-                {/* Last date of activity?? */}
-              </tr>
-              {volunteersList.map((volunteer) => {
-                return (
-                  <tr key={volunteer.id}>
-                    <td>
-                      {" "}
-                      {volunteer.first_name} {volunteer.last_name}{" "}
-                    </td>
-                    <td>{volunteer.phone}</td>
-                    <td>{volunteer.email}</td>
-                    <td>{volunteer.language}</td>
-                    <td></td>
-                    <td> {boolMap.get(volunteer.first_time)}</td>
-                    <td>{boolMap.get(volunteer.hipaa)}</td>
-                    <td>{boolMap.get(volunteer.credit)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </TabPanel>
-      <FooterContainer />
-    </div>
-  );
+  return <VolInfoPage />;
 }
 
 export function Drivers() {
@@ -883,6 +568,7 @@ export function App({ library }) {
           <h1 id="picText"> Welcome Admin! </h1>
         </div>
       </div>
+      <NewParticipant />
       <FooterContainer />
     </div>
   );
