@@ -402,7 +402,7 @@ function Participant(props) {
               id="simple-select"
               value={status}
               label="Status"
-              onChange={handleStatusChange}
+              // onChange={handleStatusChange}
             >
               <MenuItem value={"Hispanic or Latino"}>Hispanic or Latino</MenuItem>
               <MenuItem value={"American Indian or Alaskan Native"}>American Indian or Alaskan Native</MenuItem>
@@ -410,9 +410,9 @@ function Participant(props) {
               <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
                 Native Hawaiian or Other Pacific Islander
               </MenuItem>
-              <MenuItem value={4}>Black or African American</MenuItem>
-              <MenuItem value={5}>White</MenuItem>
-              <MenuItem value={6}>Other</MenuItem>
+              <MenuItem value={"Black or African American"}>Black or African American</MenuItem>
+              <MenuItem value={"White"}>White</MenuItem>
+              <MenuItem value={"Other"}>Other</MenuItem>
             </Select>
           </FormControl>
           <div></div>

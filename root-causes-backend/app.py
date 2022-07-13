@@ -517,7 +517,7 @@ def get_volunteers():
 # GET VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['GET'])
 def get_volunteer(id):
-    volunteer = Participant.query.filter_by(id=id).one()
+    volunteer = Volunteer.query.filter_by(id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
     return {'volunteers': formatted_volunteer}
 
