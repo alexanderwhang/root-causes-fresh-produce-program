@@ -3,29 +3,19 @@ import Participant from "./components/participant";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
-import { Table } from "./components/Table";
-// import { Vol_data } from "./vol_data";
+import { Table } from "./Table";
 import Navbar from "./components/Navbar/Navbar";
 import { Driver } from "./pages/Driver.js";
 import { Texts } from "./pages/Texts.js";
 import { Home } from "./home";
 import TextField from "@mui/material/TextField";
-// import {
-//   accordionSummaryclassNamees,
-//   imageListclassNamees,
-// } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-// import NativeSelect from "@mui/material/NativeSelect";
-// import { green } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-// import { styled } from "@mui/material/styles";
-// import Divider from "@mui/material/Divider";
-// import Chip from "@mui/material/Chip";
 import { FooterContainer } from "./containers/footer";
 import SvgEllipse from "./symbolComponents/Ellipse";
 import { DragPractice } from "./practice.js";
@@ -33,15 +23,19 @@ import { PracticeUsers } from "./practiceUsers";
 import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {NewTable} from "./components/NewTable.js";
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
 
 //commands to run for it to work:
-// npm install axios --save
+//npm install axios --save
 //npm install @mui/material @emotion/react @emotion/styled
 //npm install --save styled-components
 //npm i react-csv
+//npm install xlsx
+//npm i mdbreact
+//npm i mdb-react-ui-kit
 
 export function Participants() {
   const [participantsList, setParticipantsList] = useState([]);
@@ -60,23 +54,28 @@ export function Participants() {
 
   const navigate = useNavigate();
 
-  const [query, setQuery] = useState("");
-  // const keys = [
-  //   "status",
-  //   "first_name",
-  //   "last_name",
-  //   "address",
-  //   "phone_number",
-  //   "email",
-  //   "language",
-  //   "group",
-  // ];
+  const [search, setSearch] = useState("");
 
-  // const search = (data) => {
-  //   return data.filter((item) =>
-  //     keys.some((key) => item[key].toLowerCase().includes(query.toLowerCase()))
-  //   );
-  // };
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+  }
+
+  const keys = [
+    "status",
+    "first_name",
+    "last_name",
+    "address",
+    "phone_number",
+    "email",
+    "language",
+    "group",
+  ];
+
+  const searching = (data) => {
+    return data.filter((item) =>
+      keys.some((key) => item[key].toLowerCase().includes(search.toLowerCase()))
+    );
+  };
 
   return (
     <div>
@@ -84,33 +83,36 @@ export function Participants() {
 
       <section id="contact_list">
         <h2> Participants </h2>
-        <div id="search">
+        {/* <NewTable data={participantsList}/> */}
+        {/* <div id="search">
           <TextField
             id="searchField"
             label="Search"
             // helperText="Some important text"
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={handleSearch}
             type="search"
             // style="background-color: white;"
           />
-        </div>
+        </div> */}
 
         {/* <input type="text" placeholder ="Search..." className ="search" onChange ={(e)=>setQuery(e.target.value)}/> */}
-
-        <Button 
-          onClick={() => {
-            navigate("/smstexts");
-          }}
-          variant="outlined"
-        >
-          Send Texts
-        </Button>
-        <section>
+        
+        <div className="contact-list-container">
           {/* participant table */}
-          <div className="container1">
-            <Table data={participantsList} />
-          </div>
-        </section>
+          {/* <div className="send-texts">
+            <Button
+              onClick={() => {
+                navigate("/smstexts");
+              }}
+              variant="contained"
+              sx={{backgroundColor:"#d6a977"}}
+            >
+              Send Texts
+            </Button>
+          </div> */}
+        
+            <Table/>
+        </div>
         <div className="colorKey">
           <h4> Key: </h4>
           <div className="colorInKey">
@@ -129,6 +131,7 @@ export function Participants() {
           </div>
         </div>
       </section>
+
       <div className="footer">
         <FooterContainer />
       </div>
@@ -642,32 +645,39 @@ export function VolInfo() {
       "aria-controls": `simple-tabpanel-${index}`,
     };
   }
-  const [query, setQuery] = React.useState("");
-  const [value, setValue] = useState(0);
+  
+  const [query2, setQuery2] = React.useState("");
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  // const keys = [
-  //   "firstName",
-  //   "lastName",
-  //   "phoneNumber",
-  //   "email",
-  //   "language",
-  //   "type",
-  //   // "hippa",
-  //   // "credit"
-  // ];
+  const keys = [
+    "firstName",
+    "lastName",
+    "phoneNumber",
+    "email",
+    "language",
+    "type",
+    // "hippa",
+    // "credit"
 
-  // const search = (data) => {
-  //   return data.filter((item) =>
-  //     keys.some((key) =>
-  //       item[key].toLowerCase().includes(value.query.toLowerCase())
-  //     )
-  //   );
-  // };
+  ];
+    //write a function that filters out list of people, provide that new filtered list to that function 
+    //populated by the state
 
+  const search = (data) => {
+    return data.filter((item) =>
+      keys.some((key) =>
+        item[key].toLowerCase().includes(value.query.toLowerCase())
+      )
+    );
+  };
+
+  const searchThing = () => {
+    alert("it worked")
+  }
   let boolMap = new Map([
     [true, "Y"],
     [false, "N"],
@@ -731,7 +741,7 @@ export function VolInfo() {
                   <th>First Time? </th>
                   <th>Availability </th>
                 </tr>
-                {driversList.map((driver) => {
+                {/* {driversList.map((driver) => {
                 return (
                   <tr key={driver.id}>
                     <td>
@@ -746,7 +756,7 @@ export function VolInfo() {
                     <td>{boolMap.get(driver.credit)}</td>
                   </tr>
                 );
-              })}
+              })} */}
               </tbody>
             </table>
           </div>
@@ -782,9 +792,9 @@ export function VolInfo() {
         <div className="all_vols">
           <div id="search">
             <TextField
-              id="searchField"
+              // id="searchField"
               label="Search"
-              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(event) => setQuery2(event.target.value)}
               type="search"
             />
           </div>
@@ -831,27 +841,6 @@ export function Drivers() {
   return <Driver />;
 }
 
-// export function Footer() {}
-// export function Analytics() {
-//   return (
-//     <div>
-//       <Navbar />
-//       <h1 className="constructing">Under construction</h1>
-//       <iframe
-//         src="https://giphy.com/embed/ZofCGn3c0VK9y"
-//         width="480"
-//         height="348"
-//         frameBorder="0"
-//         className="giphy-embed"
-//         allowFullScreen="true"
-//       ></iframe>
-//       <p>
-//         <a href="https://giphy.com/gifs/pokemon-pikachu-ZofCGn3c0VK9y"></a>
-//       </p>
-//       <FooterContainer />
-//     </div>
-//   );
-// }
 
 export function App({ library }) {
   let dayMap = new Map([

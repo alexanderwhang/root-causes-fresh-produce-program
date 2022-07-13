@@ -115,13 +115,14 @@ img {
 #contact_list{
   padding: 1rem;
   margin: 1rem;
-  height: 132vh;
+  height: 140vh;
 }
 
 #contact_list h2{
   margin-top: 0.8rem;
 
 }
+
 
 .pt_list{
   width: 1100px;
@@ -131,16 +132,39 @@ img {
   padding: 0.5rem;
 }
 
-.container1{
+.contact-list-container{
+  max-width: 80%;
+  margin: 0 auto;
   display: flex;
+}
+
+.send-texts{
+  /* position: relative; */
+  margin-bottom: 1rem;
+  /* width: 50%;
+  justify-content: right;
+  float: right; */
+  justify-content: right;
+  height: 40px;
+}
+
+.send-texts button{
+  float: right;
+}
+.send-texts button:hover{
+  background-color: #e8c297;
+}
+
+.container1{
+  /* display: flex; */
   justify-content: center;
-  flex-flow: row wrap;
+  /* flex-flow: row wrap; */
   overflow: auto;
   overflow-x: auto;
   overflow-y: auto;
   overflow-x: auto;
   height: 600px;
-  width: 90%;
+  max-width: 100%;
   margin: 0 auto;
   z-index: -1;
 }
@@ -152,8 +176,7 @@ img {
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
-  position: initial;
-  z-index: 1;
+  position: relative;
 }
 
 .colorKey h4{
@@ -172,6 +195,7 @@ img {
 
 .footer{
   z-index: 10;
+  /* margin-top:2rem; */
 }
 
 /* INDIV */

@@ -17,6 +17,8 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { CSVLink } from "react-csv";
 import ParseExcel from "../components/ParseExcel.js"
+import { styled } from '@mui/material/styles';
+
 
 const baseUrl = "http://127.0.0.1:5000";
 
@@ -62,6 +64,9 @@ export function Driver() {
   }, []);
 
 
+  const Input = styled('input')({
+  display: 'none',
+  });
 
   let statusMap = new Map([
     [0, "grey"],
@@ -70,6 +75,9 @@ export function Driver() {
     [3, "salmon"],
   ]);
 
+   const handleFile = (e) => {
+        console.log(e.target.files[0]);
+    }
   // const [file, setFile] = useState();
 
   // function handleChange(event) {
@@ -169,11 +177,14 @@ export function Driver() {
           </CSVLink>
         </Button>
         {/* <Button type="submit" variant="contained"> */}
-        <Button variant="contained">
-          <ParseExcel/>
+        {/* <Button variant="contained">
+          <ParseExcel/> */}
+        <label htmlFor="contained-button-file">
+      <Input accept="image/*" id="contained-button-file" multiple type="file"/>
+        <Button variant="contained" component="span" id="upload">
           Upload Routes
         </Button>
-        {/* </form> */}
+        </label>
       </div>
       <div className="after_assign">
         <List
