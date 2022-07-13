@@ -167,7 +167,7 @@ function Row(props) {
           <br />
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: Coming soon... {row.status_time}
+          <br /> Most Recent Delivery Status: Coming soon... {row.most_recent_delivery}
           <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>
@@ -189,6 +189,7 @@ function Row(props) {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
           onSubmit={handleSubmit}
+          onClick={handleTime}
           onMouseOver={changeBackground1}
           onMouseOut={changeBackground2}
           >
