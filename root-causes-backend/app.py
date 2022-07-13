@@ -490,20 +490,47 @@ def update_participant(id):
 # CREATE VOLUNTEER
 @app.route('/volunteers', methods = ['POST'])
 def create_volunteer():
-    first_name = request.json['volunteer']['first_name']
-    last_name = request.json['volunteer']['last_name']
-    email = request.json['volunteer']['email']
-    phone = request.json['volunteer']['phone']
-    language = request.json['volunteer']['language']
-    affiliation = request.json['volunteer']['affiliation']
-    first_time = request.json['volunteer']['first_time']
-    hipaa = request.json['volunteer']['hipaa']
-    credit = request.json['volunteer']['credit']
-    password = request.json['volunteer']['password']
-    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    phone = request.form.get('phone')
+    affiliation = request.form.get('affiliation')
+    language = request.form.get('language')
+    first_time = request.form.get('first_time')
+    if first_time == "true":
+        first_time = True
+    else:
+        first_time = False
+    credit = request.form.get('credit')
+    if (credit == "true"):
+        credit = True
+    else:
+        credit = False
+    hipaa = request.form.get('hipaa')
+    if (hipaa == "true"):
+        hipaa = True
+    else:
+        hipaa = False
+    volunteer = Volunteer(first_name=first_name, last_name=last_name, phone=phone, affiliation=affiliation, language=language, first_time=first_time, hipaa=hipaa, credit=credit, email=email, password=password)
     db.session.add(volunteer)
     db.session.commit()
-    return format_participant(volunteer)
+    return redirect('http://127.0.0.1:3000/')
+    
+    # first_name = request.json['volunteer']['first_name']
+    # last_name = request.json['volunteer']['last_name']
+    # email = request.json['volunteer']['email']
+    # phone = request.json['volunteer']['phone']
+    # language = request.json['volunteer']['language']
+    # affiliation = request.json['volunteer']['affiliation']
+    # first_time = request.json['volunteer']['first_time']
+    # hipaa = request.json['volunteer']['hipaa']
+    # credit = request.json['volunteer']['credit']
+    # password = request.json['volunteer']['password']
+    # volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
+    # db.session.add(volunteer)
+    # db.session.commit()
+    # return format_participant(volunteer)
 
 # GET ALL VOLUNTEERS
 @app.route('/volunteers', methods = ['GET'])

@@ -245,8 +245,8 @@ export default function Profile() {
                       name="first_time"
                       onChange={(e)=>setFirstTime(e.target.value)}
                     >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
                     </RadioGroup>
                 </FormControl>
               </Grid>
@@ -258,8 +258,8 @@ export default function Profile() {
                     name="credit"
                     onChange={(e)=>setCredit(e.target.value)}
                   >
-                    <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="no" control={<Radio />} label="No" />
+                    <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                    <FormControlLabel value={false} control={<Radio />} label="No" />
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -271,8 +271,8 @@ export default function Profile() {
                       name="hipaa"
                       onChange={(e)=>setHipaa(e.target.value)}
                     >
-                      <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-                      <FormControlLabel value="no" control={<Radio />} label="No" />
+                      <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                      <FormControlLabel value={false} control={<Radio />} label="No" />
                     </RadioGroup>
                 </FormControl>
               </Grid>
