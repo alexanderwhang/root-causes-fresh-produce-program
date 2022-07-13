@@ -172,8 +172,7 @@ function Row(props) {
         </TableCell>
         <TableCell>
 
-      {/* <form noValidate method = "post" action="http://127.0.0.1:5000/routes" > */}
-      <form>
+      <form noValidate method = "post" action="http://127.0.0.1:5000/recent_delivery" >
         <input type="hidden" name="id" value={row.id} />
         <input type="hidden" name="status_time" value={status_time} />
           <FormLabel id="radio-buttons-availability"></FormLabel>
