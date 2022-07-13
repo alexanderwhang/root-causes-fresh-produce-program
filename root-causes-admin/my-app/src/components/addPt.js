@@ -1,6 +1,7 @@
 import React from "react";
+import "../App.css"
 import "./Participant.css";
-import SvgEllipse from "../symbolComponents/Ellipse";
+// import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
@@ -178,6 +179,7 @@ function NewParticipant() {
 
   return (
     <div>
+        <h1>Add New Participant</h1>
       <form onSubmit={handleSubmit} hidden={false}>
         {/* STATUS */}
         <Box sx={{ maxWidth: 200 }}>

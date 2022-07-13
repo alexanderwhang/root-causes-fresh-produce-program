@@ -490,16 +490,16 @@ def update_participant(id):
 # CREATE VOLUNTEER
 @app.route('/volunteers', methods = ['POST'])
 def create_volunteer():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    affiliation = request.json['affiliation']
-    first_time = request.json['first_time']
-    hipaa = request.json['hipaa']
-    credit = request.json['credit']
-    password = request.json['password']
+    first_name = request.json['volunteer']['first_name']
+    last_name = request.json['volunteer']['last_name']
+    email = request.json['volunteer']['email']
+    phone = request.json['volunteer']['phone']
+    language = request.json['volunteer']['language']
+    affiliation = request.json['volunteer']['affiliation']
+    first_time = request.json['volunteer']['first_time']
+    hipaa = request.json['volunteer']['hipaa']
+    credit = request.json['volunteer']['credit']
+    password = request.json['volunteer']['password']
     volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
     db.session.add(volunteer)
     db.session.commit()
@@ -544,15 +544,15 @@ def delete_volunteer(id):
 def update_volunteer(id):
     volunteer = Volunteer.query.filter_by(id=id)
     #first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email
-    first_name = request.json['particpant']['first_name']
-    last_name = request.json['particpant']['last_name']
-    email = request.json['particpant']['email']
-    phone = request.json['particpant']['phone']
-    language = request.json['particpant']['language']
-    affiliation = request.json['particpant']['affiliation']
-    first_time = request.json['particpant']['first_time']
-    hipaa = request.json['particpant']['hipaa']
-    credit = request.json['particpant']['credit']
+    first_name = request.json['volunteer']['first_name']
+    last_name = request.json['volunteer']['last_name']
+    email = request.json['volunteer']['email']
+    phone = request.json['volunteer']['phone']
+    language = request.json['volunteer']['language']
+    affiliation = request.json['volunteer']['affiliation']
+    first_time = request.json['volunteer']['first_time']
+    hipaa = request.json['volunteer']['hipaa']
+    credit = request.json['volunteer']['credit']
     volunteer.update(dict(first_name=first_name))
     volunteer.update(dict(last_name=last_name))
     volunteer.update(dict(email=email))
