@@ -5,15 +5,37 @@
 .age-input{
     position: absolute;
     margin-top: 3.5rem;
+    margin-left: 520px;
 }
 
 .text-inputs{
-    margin-left: 200px;
+    margin-left: 740px;
     margin-top: -3.5rem;
 }
 
 .language-input{
     margin-top: -21rem;
+    margin-left: 520px;
+}
+
+.status_dropdown{
+    margin-left: 520px;
+}
+
+.group_dropdown{
+    margin-left: 520px;
+}
+
+.household_dropdown{
+    margin-left: 520px;
+}
+
+.pronouns_dropdown{
+    margin-left: 520px;
+}
+
+.race_dropdown{
+    margin-left: 520px;
 }
 
 .submit_button button{
@@ -23,7 +45,7 @@
     padding: 4px;
     margin: 0.7rem;
     margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     align-items: center;
 }
 
@@ -37,4 +59,12 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    margin-top: 4rem;
+    margin-left: 514px;
 }
+
+.add_new{
+    margin-left: 600px;
+    margin-bottom: 1rem;
+}
+
