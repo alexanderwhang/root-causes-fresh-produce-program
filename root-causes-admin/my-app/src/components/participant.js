@@ -182,8 +182,8 @@ function Participant(props) {
 
   return (
     <div>
-        <div className="editButton">
-          <Button variant="outlined" size="small" onClick={editInfo}>
+        <div className="edit_button">
+          <Button variant="contained" size="small" onClick={editInfo}>
             Edit
           </Button>
         </div>
@@ -417,7 +417,9 @@ function Participant(props) {
           </FormControl>
           <div></div>
         </Box>
-        <Button variant="outlined" type="submit">Submit</Button>
+        <div className="submit_button">
+          <Button variant="contained" type="submit">Submit</Button>
+        </div>
       </form>
     </div>
   );

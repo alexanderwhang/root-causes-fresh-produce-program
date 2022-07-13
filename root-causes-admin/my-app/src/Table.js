@@ -17,6 +17,22 @@ const baseUrl = "http://localhost:5000"
 export const Table = ({data}) => {
   const [participantsList, setParticipantsList] = useState([]);
 
+  const [value, setValue] = useState("");
+  const [dataSource, setDataSource] = useState(participantsList);
+  const [tableFilter, setTableFilter] = useState([]);
+  
+  const filterData = (e) => {
+  if(e.target.value !== ""){
+  setValue(e.target.value);
+  const filterTable = dataSource.filter(o=>Object.keys(o).some(k=>
+  String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())));
+  setTableFilter([...filterTable])
+  } else{
+  setValue(e.target.value);
+  setDataSource([...dataSource]);
+  }
+  }
+
   // GET
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants`);
@@ -87,3 +103,4 @@ export const Table = ({data}) => {
     </table>
   );
 };
+

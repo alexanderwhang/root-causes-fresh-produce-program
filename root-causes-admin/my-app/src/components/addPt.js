@@ -1,5 +1,5 @@
 import React from "react";
-import "./Participant.css";
+import "./addPt.css";
 import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
@@ -198,10 +198,10 @@ function NewParticipant() {
           </FormControl>
         </Box>
         {/* EMAIL */}
-    <div class="textInputs">
+    <div class="text-inputs">
       <div>
         <TextField
-          className="email"
+          className="email-input"
           id="filled-email-input"
           label="Email"
           type="email"
@@ -251,7 +251,7 @@ function NewParticipant() {
     </div>
         
         {/* LANGUAGE */}
-      <div class="language">
+      <div class="language-input">
         <Box sx={{ maxWidth: 200 }} className="language">
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Language</InputLabel>
@@ -334,7 +334,7 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
-      <div class="age">
+      <div class="age-input">
         <TextField
           id="outlined-number"
           label="Age"
@@ -370,7 +370,9 @@ function NewParticipant() {
           </FormControl>
           <div></div>
         </Box>
-        <Button variant="outlined" type="submit">Submit</Button>
+        <div className="submit_button">
+          <Button variant="contained" type="submit">Submit</Button>
+        </div>
       </form>
     </div>
   );

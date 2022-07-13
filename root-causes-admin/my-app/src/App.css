@@ -186,6 +186,21 @@ img {
   margin-top: 1rem;
 }
 
+.indivButtonCont button{
+  background-color: #d6a977;
+  border-radius: 5px;
+  font-size: 15px;
+  padding: 4px;
+  margin: 0.7rem;
+  margin-top: 0.7rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.indivButtonCont button:hover{
+  background-color: #bd9669;
+}
+
 .personal_info{
   /* width: 80%;
   align-items: center;
