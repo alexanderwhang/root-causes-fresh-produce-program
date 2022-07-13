@@ -1,5 +1,6 @@
 import "./App.css";
 import Participant from "./components/participant";
+import NewParticipant from "./components/addPt";
 import Volunteer from "./components/volunteer";
 import { useNavigate } from "react-router-dom";
 // import { useState } from "react";
@@ -107,11 +108,10 @@ export function Participants() {
             // style="background-color: white;"
           />
         </div>
-        
 
         {/* <input type="text" placeholder ="Search..." className ="search" onChange ={(e)=>setQuery(e.target.value)}/> */}
 
-        <Button 
+        <Button
           onClick={() => {
             navigate("/smstexts");
           }}
@@ -175,16 +175,14 @@ export function Callers() {
     console.log("DATA: ", data);
   };
 
-  let users = []
+  let users = [];
   volunteersList.map((vol) => {
-    return (
-      users.push({title: vol.id, items: []})
-    );
-  })
-  
-  users.push({title: "pts", items: participantsList})
-  console.log(users)
-  
+    return users.push({ title: vol.id, items: [] });
+  });
+
+  users.push({ title: "pts", items: participantsList });
+  console.log(users);
+
   const [peoples, setPeople] = useState(PracticeUsers);
   const CreateAssignment = () => {
     const participantsList = PracticeUsers[PracticeUsers.length - 1].items;
@@ -377,7 +375,6 @@ export function Individual({ match }) {
 
   const [participantsList, setParticipantsList] = useState([]);
 
-
   // GET
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants`);
@@ -516,7 +513,6 @@ export function Individual({ match }) {
                   </table>
                 </TabPanel>
               </div>
-              
             </div>
             <div className="tempBorder"></div>
           </div>
@@ -531,7 +527,7 @@ export function SMSTexts() {
 }
 
 export function VolInfo() {
-  return <VolInfoPage />
+  return <VolInfoPage />;
 }
 
 export function Drivers() {
@@ -601,6 +597,7 @@ export function App({ library }) {
           <h1 id="picText"> Welcome Admin! </h1>
         </div>
       </div>
+      <NewParticipant />
       <FooterContainer />
     </div>
   );

@@ -256,7 +256,7 @@ export function VolInfoPage() {
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Language</th>
-                <th>Type</th>
+                {/* <th>Type</th> */}
                 <th>HIPPA?</th>
                 <th>Affiliation</th>
                 <th>For Credit?</th>
@@ -272,7 +272,7 @@ export function VolInfoPage() {
                     <td>{volunteer.phone}</td>
                     <td>{volunteer.email}</td>
                     <td>{volunteer.language}</td>
-                    <td></td>
+                    {/* <td></td> */}
                     <td> {boolMap.get(volunteer.first_time)}</td>
                     <td>{boolMap.get(volunteer.hipaa)}</td>
                     <td>{boolMap.get(volunteer.credit)}</td>
