@@ -7,7 +7,27 @@ const baseUrl = "http://127.0.0.1:5000";
 let users = [];
 let users2 = [];
 
+export function UserIdList() {
+  let userIdList = [{}];
 
+  // GET
+  const fetchUserIdList = async () => {
+    const data = await axios.get(`${baseUrl}/callermanagement`);
+    userIdList = data.data.sortedVolunteers;
+    // setUserList(userList);
+    // console.log("USER LIST: ", data);\
+    console.log("USER LIST: ");
+    console.log(userIdList);
+    // getUserObjs();
+    return userIdList;
+  };
+
+  useEffect(() => {
+    fetchUserIdList();
+  }, []);
+
+  // return userIdList;
+}
 export function Users(){ 
   // const [userList, setUserList]= useState([{}]);
   // const [userObjs, setUserObjs]= useState([]);
@@ -96,7 +116,7 @@ export function Users(){
     fetchVolunteers();
   }, []);
 
-
+//  USERS 2
   users2[0]=({"vol": {}, "pts": participantsList});  
    
    volunteersList.map((vol) => {
@@ -108,6 +128,8 @@ export function Users(){
     console.log("users2: ", users2)
   // return (users2);
 
+
+  // USERS
   volunteersList.map((vol) => {
     return (
       users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language}) 

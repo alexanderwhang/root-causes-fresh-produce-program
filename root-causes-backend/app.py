@@ -252,7 +252,7 @@ class DeliveryAssignment(db.Model):
     delivery_list_id = db.Column(db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
-    assignment_date = db.Column(db.Text, nullable=False)        #should be date?
+    assignment_date = db.Column(db.Date, nullable=False)        #should be date?
 
     def __repr__(self):
         return f"Driver ID #{self.volunteer_id} delivering to Participant ID#{self.participant_id} on Date {self.assignment_date}"
@@ -276,7 +276,7 @@ class CallAssignment(db.Model):
 
     call_assignment_id = db.Column(db.Integer, primary_key=True)
     volunteer_id = db.Column(db.Integer, nullable=False)
-    assigment_date = db.Column(db.DateTime, nullable=False)
+    assigment_date = db.Column(db.DateTime, nullable=False,  default=datetime.now(timezone.utc))
     participant_list = db.Column(db.ARRAY(Integer), nullable=False)
 
     def __repr__(self):
@@ -287,7 +287,7 @@ class CallAssignment(db.Model):
         self.assignment_date = assignment_date
         self.participant_list = participant_list
 
-def format_calls(calls):
+def format_call_assignment(calls):
     return {
         "call_assignment_id": calls.call_assignment_id,
         "volunteer_id": calls.volunteer_id,
@@ -355,6 +355,19 @@ def format_delivery_history(delivery_history):
 @app.route('/')
 def hello():
     return 'Backend connected to host'
+
+# CREATE CALL ASSIGNMENTS
+@app.route('/callassignment', methods = ['POST'])
+def create_call_assignment():
+    volunteer_id = request.json['volunteer_id']
+    participant_list = request.json['participant_list']
+    assignment_date = datetime.now(timezone.utc)
+
+    assignment = CallAssignment(volunteer_id, assignment_date, participant_list)
+    db.session.add(assignment)
+    db.session.commit()
+    return format_call_assignment(assignment)
+
 
 ############# PARTCIPANTS ##############
 # CREATE PARTICIPANT

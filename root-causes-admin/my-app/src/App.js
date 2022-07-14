@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem"; 
 import { Users } from "./users";
+import { UserIdList } from "./users"
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
@@ -143,8 +144,20 @@ export function Participants() {
 export function Callers() {
   let users =Users();
   let participantsList= users[users.length-1].items;
-  let [peoples, setPeople] = useState(users);  
+  let [peoples, setPeople] = useState(users); 
+  let userIdList = UserIdList();
+  console.log("userIdList: ", userIdList)
 
+
+  const handleConfirmAssignments = async (e) => {
+    for (let i = 0; i < userIdList.length; i++) {
+      const data = userIdList[0];
+      console.log("confirm assignments")
+      console.log("userIdList: ", userIdList)
+      console.log("data: ", data)
+      const response = await axios.post(`${baseUrl}/callassignment`, data);
+    }
+  }
   return (
     <div>
       <DragPractice data={peoples} />
@@ -154,7 +167,7 @@ export function Callers() {
           <Button variant="contained" >
             Generate Assignments
           </Button>
-          <Button color="success" variant="contained">
+          <Button color="success" variant="contained" onClick={handleConfirmAssignments}>
             Confirm Assignments{" "}
           </Button>
         </div>
