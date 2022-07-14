@@ -86,7 +86,7 @@ return (
             key={item.id}
             className={dragging?getStyles({grpI,itemI}):"dnd-item"}>    
             
-            <ul class="ptInfo"> 
+            <ul className="ptInfo"> 
                 <li id="ptName">{item.first_name} {item.last_name} </li> 
                 <li>{item.email} </li>
                 {/* <li>{item.lastName}</li>  */}
