@@ -53,11 +53,11 @@ function Participant(props) {
   const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
   const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
   const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
-  const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
-  const [cityDisplay, setCityDisplay] = useState(props.participant.city);
-  const [stateDisplay, setStateDisplay] = useState(props.participant.state);
-  const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
-  const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
+  // const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
+  // const [cityDisplay, setCityDisplay] = useState(props.participant.city);
+  // const [stateDisplay, setStateDisplay] = useState(props.participant.state);
+  // const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
+  // const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
   const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
 
 
@@ -135,10 +135,10 @@ function Participant(props) {
     setAgeDisplay(new_participant.age);
     setEmailDisplay(new_participant.email);
     setPhoneDisplay(new_participant.phone);
-    setStreetDisplay(new_participant.street);
-    setCityDisplay(new_participant.city);
-    setStateDisplay(new_participant.state);
-    setZipDisplay(new_participant.zip);
+    // setStreetDisplay(new_participant.street);
+    // setCityDisplay(new_participant.city);
+    // setStateDisplay(new_participant.state);
+    // setZipDisplay(new_participant.zip);
     setApartmentDisplay(new_participant.apartment);
     let address_string = "";
     if(!new_participant.apartment) {

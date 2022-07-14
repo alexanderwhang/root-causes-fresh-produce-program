@@ -144,44 +144,7 @@ export function Participants() {
 }
 
 export function Callers() {
-<<<<<<< HEAD
    callAssignments();
-  
-=======
-  let users = Users();
-  // let participantsList= users[users.length-1].items;
-  let [peoples, setPeople] = useState(users); 
-  // let userIdList = UserIdList();
-  // console.log("userIdList: ", userIdList)
-
-
-  // const handleConfirmAssignments = async (e) => {
-  //   for (let i = 0; i < userIdList.length; i++) {
-  //     const data = userIdList[0];
-  //     console.log("confirm assignments")
-  //     console.log("userIdList: ", userIdList)
-  //     console.log("data: ", data)
-  //     const response = await axios.post(`${baseUrl}/callassignment`, data);
-  //   }
-  // }
-  return (
-    <div>
-      <DataDragPractice data={peoples} />
-      {/* buttons */}
-      {/* <section id="call_assign">
-        <div className="call_buttons">
-          <Button variant="contained" >
-            Generate Assignments
-          </Button>
-          <Button color="success" variant="contained" onClick={handleConfirmAssignments}>
-            Confirm Assignments{" "}
-          </Button>
-        </div>
-      </section> */}
-      <FooterContainer />
-    </div>
-  );
->>>>>>> b546d280f20147358c5d08fc133d4cd4e128e5be
 }
 
 interface TabPanelProps {
