@@ -1,14 +1,7 @@
-import "./App.css";
+import "../App.css";
 import React from "react";
-// import { Individual } from "./App";
 import {useNavigate} from "react-router-dom";
-// import Box from "@mui/material/Box";
-// import InputLabel from "@mui/material/InputLabel";
-// import FormControl from "@mui/material/FormControl";
-// import NativeSelect from "@mui/material/NativeSelect";
 import Button from '@mui/material/Button';
-// import Link from '@mui/material/Link';
-// import Ellipse from './symbols/Ellipse.svg';
 import SvgEllipse from '../symbolComponents/Ellipse';
 import {useEffect, useState} from 'react';
 import axios from "axios"
@@ -63,11 +56,9 @@ export const Table = () => {
           <TextField
             id="searchField"
             label="Search"
-            // helperText="Some important text"
             value={value}
             onChange={filterData}
             type="search"
-            // style="background-color: white;"
           />
     </div>
       <div className="send-texts">
@@ -141,7 +132,7 @@ export const Table = () => {
               <td>{participant.email}</td>
               <td>{participant.phone}</td>
               <td>{participant.language}</td>
-              <td>hi</td>
+              <td>{participant.group}</td>
             </tr>
           )
         })

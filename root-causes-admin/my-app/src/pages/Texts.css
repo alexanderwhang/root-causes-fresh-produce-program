@@ -9,7 +9,18 @@
     width: 45%;
     margin: 1rem;
 }
-.box h4{ 
+
+.box2{
+    width: 45%;
+    margin: 1rem;
+}
+
+.box h3{ 
+   text-align: center;
+   margin-bottom: 1rem;
+}
+
+.box2 h3{
    text-align: center;
    margin-bottom: 1rem;
 }
@@ -24,19 +35,25 @@
     border: 3px solid #cfbb99;
     border-radius: 30px;
     background-color: #e0cba4;
+    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .basic-select{
     display: flex;
     margin: 2rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
     max-height: 20vh;
     align-items: center;
     justify-content: center;
+    /* width: 150px; */
 }
 
 .filter{
     margin: 1rem;
-    width: 100px;
+    width: 175px;
 }
 
 .submitButton{
@@ -49,6 +66,12 @@
     display: inline-block;
     align-items: center;
     justify-content: center;
+}
+
+.selected_pts{
+    margin: 1rem;
+    max-height: 50px;
+    position: relative;
 }
 
 
@@ -68,7 +91,6 @@
 }
 
 .receiving{
-    display: flex;
     width: 100%;
     float: left;
     border: 3px solid black;
@@ -76,5 +98,56 @@
     border: 3px solid #cfbb99;
     border-radius: 30px;
     background-color: #e0cba4;
-    height: 50vh;
+    max-height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.receiving h4{
+    text-align: center;
+    margin: 0.5rem;
+}
+
+.caught{
+    max-height: 40%;
+    width: 90%;
+    /* display: inline-block; */
+    margin: 1rem;
+    margin-left: 2rem;
+    position: relative;
+    border: 2px solid #cfbb99;
+    border-radius: 30px;
+    box-shadow: 0 0 15px 0 #877c6c;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.uncaught{
+    max-height: 40%;
+    width: 90%;
+    /* display: inline-block; */
+    margin: 1rem;
+    margin-left: 2rem;
+    position: relative;
+    border: 2px solid #cfbb99;
+    border-radius: 30px;
+    box-shadow: 0 0 15px 0 #877c6c;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#nested-list-subheader2{
+    background-color: #00743e;
+    color: white;
+    font-size: 15px;
+    position: relative;
+  }
+
+.sublist{
+    background-color: #ebe9d3;
+}
+
+#text_status{
+    margin-right: 0.5rem;
+    width: 20px;
 }
