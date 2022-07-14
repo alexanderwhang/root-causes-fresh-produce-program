@@ -181,9 +181,12 @@ function NewParticipant() {
 
   return (
     <div>
-        <h1>Add New Participant</h1>
+        <div class="add_new">
+          <h1>Add New Participant</h1>
+        </div>
       <form onSubmit={handleSubmit} hidden={false}>
         {/* STATUS */}
+      <div class="status_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="select-status-label">Status</InputLabel>
@@ -201,6 +204,7 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
+      </div>
         {/* EMAIL */}
     <div class="text-inputs">
       <div>
@@ -275,6 +279,7 @@ function NewParticipant() {
       </div>
 
         {/* GROUP */}
+      <div class="group_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Group</InputLabel>
@@ -290,8 +295,10 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
+      </div>
 
         {/* HOUSEHOLD SIZE */}
+      <div class="household_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Household Size</InputLabel>
@@ -316,8 +323,10 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
+      </div>
 
         {/* PRONOUNS */}
+      <div class="pronouns_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Pronouns</InputLabel>
@@ -338,6 +347,8 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
+      </div>
+      
       <div class="age-input">
         <TextField
           id="outlined-number"
@@ -351,6 +362,7 @@ function NewParticipant() {
         />
       </div>
         <div></div>
+      <div class="race_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
@@ -374,6 +386,7 @@ function NewParticipant() {
           </FormControl>
           <div></div>
         </Box>
+      </div>
         <div className="submit_button">
           <Button variant="contained" type="submit">Submit</Button>
         </div>

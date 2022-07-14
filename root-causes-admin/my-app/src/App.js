@@ -383,7 +383,7 @@ export function Individual({ match }) {
                     </tr>
                     <tr>
                       <td>#12345</td>
-                      <td>Pulmonary Hypertension Diagnosis</td>
+                      <td>Type 2 Diabetes</td>
                       <td>Dr. Jones</td>
                       <td>Duke Hospital</td>
                       <td>8/23/21</td>

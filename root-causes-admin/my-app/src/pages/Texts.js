@@ -132,7 +132,7 @@ export default function Texts(){
                   </div>
                 </Box>
                 <div className="confirmMessage">
-                  <Button variant="contained"> Confirm Message </Button>
+                  <Button variant="contained"> Send Message </Button>
                 </div>
               </div>
             </div>
@@ -359,7 +359,8 @@ export default function Texts(){
           </div>
           </div>
         </div>
-        </div>
-        </div>
+          </div>
+            <FooterContainer />
+          </div>
     );
 }
