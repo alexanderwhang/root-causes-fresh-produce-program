@@ -101,7 +101,8 @@ export function Texts(){
             </div>
           </div>
         </div>
-        </div>
-        </div>
+          </div>
+            <FooterContainer />
+          </div>
     );
 }
