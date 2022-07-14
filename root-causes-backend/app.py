@@ -11,6 +11,8 @@ from flask_marshmallow import Marshmallow
 from datetime import datetime, timezone
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
+import os
+from twilio.rest import Client
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -492,6 +494,47 @@ def update_participant(id):
 
     db.session.commit()
     return {'participant': format_participant(participant.one())}
+
+# OUTGOING SMS TEXT
+@app.route('/smstexts', methods=['POST'])
+def outgoing_sms():
+    account_sid = "ACa19caaefab10dead0bf946d4e3190175"
+    auth_token = "99238e6ddab706ec700abe98ed63cac3"
+    client = Client(account_sid, auth_token)
+
+    message1 = client.messages \
+                .create(
+                     body="Sent from Root Causes!",
+                     from_='+19897046694',
+                     to='+17137398907'
+                 )
+    message2 = client.messages \
+                .create(
+                    body="Sent from Root Causes!",
+                    from_='+19897046694',
+                    to='+15714713578'
+                )
+
+# INCOMING SMS TEXT
+@app.route('/smstexts', methods=['GET', 'POST'])
+def incoming_sms():
+    """Send a dynamic reply to an incoming text message"""
+    # Get the message the user sent our Twilio number
+    body = request.values.get('Body', None)
+
+    # Start our TwiML response
+    resp = MessagingResponse()
+
+    # Determine the right reply for this message
+    if body == '1':
+        resp.message("You have selected YES!")
+    elif body == '2':
+        resp.message("You have selected NO!")
+
+    return str(resp)
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 ######### VOLUNTEERS ##########
 
