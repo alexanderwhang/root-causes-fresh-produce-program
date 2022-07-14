@@ -52,6 +52,8 @@ class Participant(db.Model):
     pronouns = db.Column(db.Text, nullable=True)
     group = db.Column(db.String(1), nullable=False)
     household_size = db.Column(db.Integer, nullable=True)
+    most_recent_delivery = db.Column(db.String(100), nullable=True)
+    most_recent_call = db.Column(db.String(100), nullable=True)
 
     children = relationship("Status")
     children = relationship("DeliveryHistory")
@@ -60,7 +62,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -71,6 +73,8 @@ class Participant(db.Model):
         self.pronouns = pronouns
         self.group = group
         self.household_size = household_size
+        self.most_recent_delivery = most_recent_delivery
+        self.most_recent_call = most_recent_call
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -95,7 +99,9 @@ def format_participant(participant):
         "city": address.city,
         "state": address.state,
         "zip": address.zip,
-        "apartment": address.apartment
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call" : participant.most_recent_call
     }
 
 class Status(db.Model):
@@ -714,9 +720,14 @@ def get_calls():
     
 @app.route('/recent_delivery', methods = ['POST'])
 def recent_delivery():
+    # if request.method == 'GET':
+    #     all_routes = Participant.query,all()
+    #     results_routes = routes_schema.dump(all_routes)
+    #     return jsonify(results_routes)    
+    # else:
         id = request.form['id']
         time = request.form['status_time']
-        participant = DeliveryHistory.query.filter_by(participant_id=id).one()
+        participant = Participant.query.get(id)
         participant.most_recent_delivery = time
         db.session.add(participant)
         db.session.commit()
