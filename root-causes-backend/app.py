@@ -9,6 +9,7 @@ import json
 import pdb
 from flask_marshmallow import Marshmallow
 from datetime import datetime, timezone
+import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -168,7 +169,7 @@ class Volunteer(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(320), nullable=False)
-    password = db.Column(db.Text, nullable=True)
+    password = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.Text, nullable=False)
     affiliation = db.Column(db.Text, nullable=True)
     language = db.Column(db.Text, nullable=False)
@@ -307,7 +308,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -369,12 +370,20 @@ def hello():
 def create_participant():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
+    date_of_birth = request.json['date_of_birth']
+    age = request.json['age']
     email = request.json['email']
-    phone = request.json['phone_number']
+    phone = request.json['phone']
     language = request.json['language']
     group = request.json['group']
     pronouns = request.json['pronouns']
-    participant = Participant(first_name, last_name,email,phone,language, group, pronouns)
+    household_size = request.json['household_size']
+    most_recent_delivery = request.json['most_recent_delivery']
+    most_recent_call = request.json['most_recent_call']
+    sms_response = request.json['sms_response']
+    
+    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
+    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
     db.session.add(participant)
     db.session.commit()
     return format_participant(participant)
@@ -751,53 +760,69 @@ def recent_delivery():
 @app.route('/signup', methods = ['POST'])
 def add_signup():
     if request.method == 'POST' and ('callerDay1' in request.form):
+        volunteer_type = "Caller"
         callerDay1 = request.form.get('callerDay1')
         callerDay2 = request.form.get('callerDay2')
         callerDay3 = request.form.get('callerDay3')
         callerDay4 = request.form.get('callerDay4')
         callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
-        signup = signups(callerDay=callerDay)
-        db.session.add(signup)
+        for day in callerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
+        volunteer_type = "Packer"
         packerDay1 = request.form.get('packerDay1')
         packerDay2 = request.form.get('packerDay2')
         packerDay3 = request.form.get('packerDay3')
         packerDay4 = request.form.get('packerDay4')
         packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
-        signup = signups(packerDay=packerDay)
-        db.session.add(signup)
+        for day in packerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('driver_preference' in request.form):
+        # more deliveries?
+        driverMoreDelivery = request.form.get('driverMoreDelivery')
+        if (driverMoreDelivery == "moreDelivery"):
+            driverMoreDelivery = True
+        else:
+            driverMoreDelivery = False
+            
+        # outside Durham?
+        driverOutsideDurham = request.form.get('driverOutsideDurham')
+        if (driverOutsideDurham == "outsideDurham"):
+            driverOutsideDurham = True
+        else:
+            driverOutsideDurham = False
+        
+        driver_preference = request.form['driver_preference']
+        
+        driverTime = request.form.get('driver_time')
+        driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
+                
         driverDay1 = request.form.get('driverDay1')
         driverDay2 = request.form.get('driverDay2')
         driverDay3 = request.form.get('driverDay3')
         driverDay4 = request.form.get('driverDay4')
         driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
-        
-        driverMoreDelivery = request.form.get('driverMoreDelivery')
-        driverOutsideDurham = request.form.get('driverOutsideDurham')
-        other_preference = [driverMoreDelivery, driverOutsideDurham]
-        
-        driver_preference = request.form['driver_preference']
-        
-        driverTime9 = request.form.get('driverTime9')
-        driverTime915 = request.form.get('driverTime915')
-        driverTime930 = request.form.get('driverTime930')
-        driverTime945 = request.form.get('driverTime945')
-        driverTime10 = request.form.get('driverTime10')
-        driverTime1015 = request.form.get('driverTime1015')
-        driverTime1030 = request.form.get('driverTime1030')
-        driverTime1045 = request.form.get('driverTime1045')
-        driverTime = [driverTime9, driverTime915, driverTime930, driverTime945,
-                      driverTime10, driverTime1015, driverTime1030, driverTime1045]
-        
-        signup = signups(driverDay=driverDay, other_preference=other_preference,
-                         driver_preference=driver_preference, driverTime=driverTime)
-        
-        db.session.add(signup)
+        for day in driverDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
+                person = VolunteerLog(date_available=day, time_available=driverTime, 
+                                      deliver_more_preference=driverMoreDelivery,
+                                      live_outside_durham=driverOutsideDurham, 
+                                      route_preference=driver_preference)
+                db.session.add(person)
+
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
         
