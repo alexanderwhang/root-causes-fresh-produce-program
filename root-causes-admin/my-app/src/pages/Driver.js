@@ -41,6 +41,10 @@ export function Driver() {
   let numDrivers = volunteersList.length;
   let numParticipants = participantsList.length;
 
+  // const fileUpload = () => {
+  //   <Input accept="file/*" id="contained-button-file" multiple type="file"/>
+  // };
+
   const [edit_form_status, setEdit] = React.useState(true)
 
   const editInfo = () => {
@@ -69,6 +73,7 @@ export function Driver() {
     console.log("DATA: ", data);
   };
 
+
   useEffect(() => {
     fetchParticipants();
     fetchVolunteers();
@@ -88,6 +93,7 @@ export function Driver() {
 
     const handleFile = (e) => {
         console.log(e.target.files[0]);
+        editInfo();
     }
   
   return (
@@ -170,17 +176,15 @@ export function Driver() {
         {/* <Button type="submit" variant="contained"> */}
         {/* <Button variant="contained">
           <ParseExcel/> */}
-        <label htmlFor="contained-button-file">
-      <Input accept="file/*" id="contained-button-file" multiple type="file"/>
-        <Button variant="contained" component="span" id="upload">
-          Upload Routes
+        <label htmlFor="contained-button-file"> 
+      <Input accept="file/*" id="contained-button-file" multiple type="file" onChange={(e) => handleFile(e)}/>
+        <Button
+          variant="contained" 
+          component="span"
+          id="upload">
+            Upload Routes
         </Button>
         </label>
-        <div className="display_button">
-          <Button variant="contained" onClick={editInfo}>
-            Display Routes
-          </Button>
-        </div>
       </div>
       <form hidden={edit_form_status}>
       <div className="after_assign">
