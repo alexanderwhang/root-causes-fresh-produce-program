@@ -770,7 +770,7 @@ def add_signup():
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
                 person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
-                db.session.add(signup)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
