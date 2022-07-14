@@ -61,7 +61,7 @@ function Row(props) {
   
   const handleTime = () => {
     let current = new Date();
-    let date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    let date = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
     let time = current.toLocaleTimeString();
     setDate(time + " on " + date);
   }

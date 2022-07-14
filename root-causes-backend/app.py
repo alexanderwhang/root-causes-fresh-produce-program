@@ -54,6 +54,7 @@ class Participant(db.Model):
     household_size = db.Column(db.Integer, nullable=True)
     most_recent_delivery = db.Column(db.String(100), nullable=True)
     most_recent_call = db.Column(db.String(100), nullable=True)
+    sms_response = db.Column(db.Text, nullable=True)
 
     children = relationship("Status")
     children = relationship("DeliveryHistory")
@@ -62,7 +63,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -75,6 +76,7 @@ class Participant(db.Model):
         self.household_size = household_size
         self.most_recent_delivery = most_recent_delivery
         self.most_recent_call = most_recent_call
+        self.sms_response = sms_response
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -101,7 +103,8 @@ def format_participant(participant):
         "zip": address.zip,
         "apartment": address.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
-        "most_recent_call" : participant.most_recent_call
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response
     }
 
 class Status(db.Model):
@@ -705,7 +708,7 @@ def login():
                 f'{email} successfully logged in!'
             )
 
-#STATUS ON CALLS PAGE
+#STATUS AND MOST RECENT CALL - CALLS PAGE
 @app.route('/status_from_calls', methods = ['POST'])
 def get_calls():
         id = request.form['id']
@@ -720,6 +723,15 @@ def get_calls():
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
     
+# # GET PARTICIPANT BY ID
+# @app.route('/participants/<id>', methods = ['GET'])
+# def get_call_note(id):
+#     participant = Participant.query.filter_by(id=id).one()
+#     formatted_participant = format_participant(participant)
+#     return {'participant': formatted_participant}
+    
+    
+# TIME OF MOST RECENT DELIVERY - ROUTES PAGE    
 @app.route('/recent_delivery', methods = ['POST'])
 def recent_delivery():
     # if request.method == 'GET':
@@ -734,6 +746,60 @@ def recent_delivery():
         db.session.add(participant)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/routes')
+    
+# SIGN-UP PAGE
+@app.route('/signup', methods = ['POST'])
+def add_signup():
+    if request.method == 'POST' and ('callerDay1' in request.form):
+        callerDay1 = request.form.get('callerDay1')
+        callerDay2 = request.form.get('callerDay2')
+        callerDay3 = request.form.get('callerDay3')
+        callerDay4 = request.form.get('callerDay4')
+        callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
+        signup = signups(callerDay=callerDay)
+        db.session.add(signup)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
+    elif request.method == 'POST' and ('packerDay1' in request.form):
+        packerDay1 = request.form.get('packerDay1')
+        packerDay2 = request.form.get('packerDay2')
+        packerDay3 = request.form.get('packerDay3')
+        packerDay4 = request.form.get('packerDay4')
+        packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
+        signup = signups(packerDay=packerDay)
+        db.session.add(signup)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
+    elif request.method == 'POST' and ('driver_preference' in request.form):
+        driverDay1 = request.form.get('driverDay1')
+        driverDay2 = request.form.get('driverDay2')
+        driverDay3 = request.form.get('driverDay3')
+        driverDay4 = request.form.get('driverDay4')
+        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
+        
+        driverMoreDelivery = request.form.get('driverMoreDelivery')
+        driverOutsideDurham = request.form.get('driverOutsideDurham')
+        other_preference = [driverMoreDelivery, driverOutsideDurham]
+        
+        driver_preference = request.form['driver_preference']
+        
+        driverTime9 = request.form.get('driverTime9')
+        driverTime915 = request.form.get('driverTime915')
+        driverTime930 = request.form.get('driverTime930')
+        driverTime945 = request.form.get('driverTime945')
+        driverTime10 = request.form.get('driverTime10')
+        driverTime1015 = request.form.get('driverTime1015')
+        driverTime1030 = request.form.get('driverTime1030')
+        driverTime1045 = request.form.get('driverTime1045')
+        driverTime = [driverTime9, driverTime915, driverTime930, driverTime945,
+                      driverTime10, driverTime1015, driverTime1030, driverTime1045]
+        
+        signup = signups(driverDay=driverDay, other_preference=other_preference,
+                         driver_preference=driver_preference, driverTime=driverTime)
+        
+        db.session.add(signup)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
         
 
 if __name__ == '__main__':
