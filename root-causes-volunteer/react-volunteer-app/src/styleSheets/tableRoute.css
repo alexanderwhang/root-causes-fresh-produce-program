@@ -28,6 +28,10 @@
   background-color: white;
   color: #00743e;
   border: 2px solid #00743e;
+  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 12px;
 }
 
 #note_submit:hover{
@@ -40,6 +44,10 @@
   background-color: white;
   color: #fc2848;
   border: 2px solid #fc2848;
+  font-size: 12px;
+  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 #note_delete:hover{

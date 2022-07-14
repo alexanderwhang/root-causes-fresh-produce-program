@@ -135,7 +135,7 @@ export default function SignUp() {
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
         sat_label.push(i);
-        sat_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
+        sat_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
   }
@@ -148,7 +148,7 @@ export default function SignUp() {
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==2){   //if Tuesday
         tues_label.push(i);
-        tues_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
+        tues_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
   }
@@ -161,14 +161,14 @@ export default function SignUp() {
   const [driverMoreDelivery, setDriverMoreDelivery] = useState("");
   const [driverOutsideDurham, setDriverOutsideDurham] = useState("");
   const [driver_preference, setDriverPreference] = useState("");
-  const [driverTime9, setDriverTime9] = useState("");
-  const [driverTime915, setDriverTime915] = useState("");
-  const [driverTime930, setDriverTime930] = useState("");
-  const [driverTime945, setDriverTime945] = useState("");
-  const [driverTime10, setDriverTime10] = useState("");
-  const [driverTime1015, setDriverTime1015] = useState("");
-  const [driverTime1030, setDriverTime1030] = useState("");
-  const [driverTime1045, setDriverTime1045] = useState("");
+  const [driverTime, setDriverTime] = useState("");
+  // const [driverTime915, setDriverTime915] = useState("");
+  // const [driverTime930, setDriverTime930] = useState("");
+  // const [driverTime945, setDriverTime945] = useState("");
+  // const [driverTime10, setDriverTime10] = useState("");
+  // const [driverTime1015, setDriverTime1015] = useState("");
+  // const [driverTime1030, setDriverTime1030] = useState("");
+  // const [driverTime1045, setDriverTime1045] = useState("");
 
   // // packer selections
   const [packerDay1, setPackerDay1] = useState("");
@@ -193,14 +193,14 @@ export default function SignUp() {
     setDriverMoreDelivery('')
     setDriverOutsideDurham('')
     setDriverPreference('')
-    setDriverTime9('')
-    setDriverTime915('')
-    setDriverTime930('')
-    setDriverTime945('')
-    setDriverTime10('')
-    setDriverTime1015('')
-    setDriverTime1030('')
-    setDriverTime1045('')
+    setDriverTime('')
+    // setDriverTime915('')
+    // setDriverTime930('')
+    // setDriverTime945('')
+    // setDriverTime10('')
+    // setDriverTime1015('')
+    // setDriverTime1030('')
+    // setDriverTime1045('')
   }
 
   // handle submit for packer
@@ -315,11 +315,11 @@ export default function SignUp() {
                       name="driver_preference"
                       onChange={(e)=>setDriverPreference(e.target.value)}
                     >
-                      <FormControlLabel value="closer" control={<Radio />} 
+                      <FormControlLabel value="Closer with more deliveries" control={<Radio />} 
                           label="Closer with more deliveries" />
-                      <FormControlLabel value="distant" control={<Radio />} 
+                      <FormControlLabel value="More distant with fewer deliveries" control={<Radio />} 
                           label="More distant with fewer deliveries" />
-                      <FormControlLabel value="no-preference" control={<Radio />} 
+                      <FormControlLabel value="No preference" control={<Radio />} 
                           label="No preference" />
                     </RadioGroup>
                 </FormControl>
@@ -327,41 +327,66 @@ export default function SignUp() {
               
               
               <Grid item xs={12}>
-                <FormLabel id="time-questions">Please select all times that you can begin driving: </FormLabel>
+              <FormControl>
+                  <FormLabel id="time-questions">Please select all times that you can begin driving:</FormLabel>
+                    <RadioGroup
+                      aria-labelledby="radio-buttons-time-preference"
+                      name="driver_time"
+                      onChange={(e)=>setDriverTime(e.target.value)}
+                    >
+                      <FormControlLabel value="09:00" control={<Radio />} 
+                          label="9:00 AM" />
+                      <FormControlLabel value="09:15" control={<Radio />} 
+                          label="9:15 AM" />
+                      <FormControlLabel value="09:30" control={<Radio />} 
+                          label="9:30 AM" />
+                      <FormControlLabel value="09:45" control={<Radio />} 
+                          label="9:45 AM" />
+                      <FormControlLabel value="10:00" control={<Radio />} 
+                          label="10:00 AM" />
+                      <FormControlLabel value="10:15" control={<Radio />} 
+                          label="10:15 AM" />
+                      <FormControlLabel value="10:30" control={<Radio />} 
+                          label="10:30 AM" />
+                    </RadioGroup>
+                </FormControl>
+
+
+                {/* <FormLabel id="time-questions">Please select all times that you can begin driving: </FormLabel>
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} label="9:00 AM"
                         name="driverTime9"
-                        value="9:00 AM"
+                        value="09:00"
                         onChange={(e)=>setDriverTime9(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="9:15 AM"
                         name="driverTime915"
-                        value="9:15 AM"
+                        value="09:15"
                         onChange={(e)=>setDriverTime915(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="9:30 AM"
                         name="driverTime930"
-                        value="9:30 AM"
+                        value="09:30"
                         onChange={(e)=>setDriverTime930(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="9:45 AM"
                         name="driverTime945"
-                        value="9:45 AM"
+                        value="09:45"
                         onChange={(e)=>setDriverTime945(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="10:00 AM"
                         name="driverTime10"
-                        value="10 AM"
+                        value="10:00"
                         onChange={(e)=>setDriverTime10(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="10:15 AM"
                         name="driverTime1015"
-                        value="10:15 AM"
+                        value="10:15"
                         onChange={(e)=>setDriverTime1015(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="10:30 AM"
                         name="driverTime1030"
-                        value="10:30 AM"
+                        value="10:30"
                         onChange={(e)=>setDriverTime1030(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} label="10:45 AM"
                         name="driverTime1045"
-                        value="10:45 AM"
+                        value="10:45"
                         onChange={(e)=>setDriverTime1045(e.target.value)}/>
-                  </FormGroup>
+                  </FormGroup> */}
             </Grid>
             <Grid item xs={12}>
               <Button

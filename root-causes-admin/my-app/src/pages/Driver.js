@@ -41,6 +41,21 @@ export function Driver() {
   let numDrivers = volunteersList.length;
   let numParticipants = participantsList.length;
 
+  // const fileUpload = () => {
+  //   <Input accept="file/*" id="contained-button-file" multiple type="file"/>
+  // };
+
+  const [edit_form_status, setEdit] = React.useState(true)
+
+  const editInfo = () => {
+    if (edit_form_status){
+      setEdit(false);
+    }
+      
+    else if (!edit_form_status){
+      setEdit(true);
+    }
+  };
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
@@ -57,6 +72,7 @@ export function Driver() {
     setVolunteersList(volunteers);
     console.log("DATA: ", data);
   };
+
 
   useEffect(() => {
     fetchParticipants();
@@ -77,6 +93,7 @@ export function Driver() {
 
     const handleFile = (e) => {
         console.log(e.target.files[0]);
+        editInfo();
     }
   
   return (
@@ -159,19 +176,24 @@ export function Driver() {
         {/* <Button type="submit" variant="contained"> */}
         {/* <Button variant="contained">
           <ParseExcel/> */}
-        <label htmlFor="contained-button-file">
-      <Input accept="file/*" id="contained-button-file" multiple type="file"/>
-        <Button variant="contained" component="span" id="upload">
-          Upload Routes
+        <label htmlFor="contained-button-file"> 
+      <Input accept="file/*" id="contained-button-file" multiple type="file" onChange={(e) => handleFile(e)}/>
+        <Button
+          variant="contained" 
+          component="span"
+          id="upload">
+            Upload Routes
         </Button>
         </label>
       </div>
+      <form hidden={edit_form_status}>
       <div className="after_assign">
         <List
           sx={{ width: "100%", bgcolor: "#f9f8e1" }}
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
+            
             <ListSubheader component="div" id="nested-list-subheader">
               Assigned Routes
             </ListSubheader>
@@ -257,6 +279,7 @@ export function Driver() {
                     </List>
                   </Collapse>
 
+
           {/* {volunteersList.map((vol) => {
               return (
                 <div key={vol.id}>
@@ -278,9 +301,10 @@ export function Driver() {
           })} */}
         </List>
       </div>
-      <div className="driver_buttons">
-        <Button variant="contained"> Confirm Routes </Button>
-      </div>
+        <div className="driver_buttons">
+          <Button variant="contained"> Confirm Routes </Button>
+        </div>
+      </form>
       <FooterContainer />
     </div>
   );
