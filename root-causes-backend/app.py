@@ -39,7 +39,7 @@ db = SQLAlchemy(app)
 CORS(app)
 
 class Participant(db.Model):
-    __tablename__ = 'participant2'
+    __tablename__ = 'participant'
     __table_args__ = {"schema": "RC"}
 
     id = db.Column(db.Integer, primary_key=True)
@@ -57,8 +57,8 @@ class Participant(db.Model):
     most_recent_call = db.Column(db.String(100), nullable=True)
     sms_response = db.Column(db.Text, nullable=True)
 
-    # children = relationship("Status")
-    # children = relationship("DeliveryHistory")
+    children = relationship("Status")
+    children = relationship("DeliveryHistory")
 
 
     def __repr__(self):
