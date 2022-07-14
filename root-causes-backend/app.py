@@ -9,6 +9,7 @@ import json
 import pdb
 from flask_marshmallow import Marshmallow
 from datetime import datetime, timezone
+import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -307,7 +308,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -759,23 +760,33 @@ def recent_delivery():
 @app.route('/signup', methods = ['POST'])
 def add_signup():
     if request.method == 'POST' and ('callerDay1' in request.form):
+        volunteer_type = "Caller"
         callerDay1 = request.form.get('callerDay1')
         callerDay2 = request.form.get('callerDay2')
         callerDay3 = request.form.get('callerDay3')
         callerDay4 = request.form.get('callerDay4')
         callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
-        signup = signups(callerDay=callerDay)
-        db.session.add(signup)
+        for day in callerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
+        volunteer_type = "Packer"
         packerDay1 = request.form.get('packerDay1')
         packerDay2 = request.form.get('packerDay2')
         packerDay3 = request.form.get('packerDay3')
         packerDay4 = request.form.get('packerDay4')
         packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
-        signup = signups(packerDay=packerDay)
-        db.session.add(signup)
+        for day in packerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('driver_preference' in request.form):
@@ -784,14 +795,30 @@ def add_signup():
         driverDay3 = request.form.get('driverDay3')
         driverDay4 = request.form.get('driverDay4')
         driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
+        for day in driverDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
         
+        # more deliveries?
         driverMoreDelivery = request.form.get('driverMoreDelivery')
+        if (driverMoreDelivery == "moreDelivery"):
+            driverMoreDelivery = True
+        else:
+            driverMoreDelivery = False
+            
+        # outside Durham?
         driverOutsideDurham = request.form.get('driverOutsideDurham')
+        if (driverOutsideDurham == "outsideDurham"):
+            driverOutsideDurham = True
+        else:
+            driverOutsideDurham = False
+            
         other_preference = [driverMoreDelivery, driverOutsideDurham]
         
         driver_preference = request.form['driver_preference']
         
         driverTime9 = request.form.get('driverTime9')
+        
         driverTime915 = request.form.get('driverTime915')
         driverTime930 = request.form.get('driverTime930')
         driverTime945 = request.form.get('driverTime945')
@@ -799,11 +826,15 @@ def add_signup():
         driverTime1015 = request.form.get('driverTime1015')
         driverTime1030 = request.form.get('driverTime1030')
         driverTime1045 = request.form.get('driverTime1045')
-        driverTime = [driverTime9, driverTime915, driverTime930, driverTime945,
+        driverTimes = [driverTime9, driverTime915, driverTime930, driverTime945,
                       driverTime10, driverTime1015, driverTime1030, driverTime1045]
         
+        for driverTime in driverTimes:
+            if (driverTime != None):
+                driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
+        
         signup = signups(driverDay=driverDay, other_preference=other_preference,
-                         driver_preference=driver_preference, driverTime=driverTime)
+                         driver_preference=driver_preference, driverTime=driverTimes)
         
         db.session.add(signup)
         db.session.commit()
