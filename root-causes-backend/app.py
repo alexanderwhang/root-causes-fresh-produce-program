@@ -505,12 +505,12 @@ def create_volunteer():
     volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
     db.session.add(volunteer)
     db.session.commit()
-    return format_participant(volunteer)
+    return format_volunteer(volunteer)
 
 # GET ALL VOLUNTEERS
 @app.route('/volunteers', methods = ['GET'])
 def get_volunteers():
-    volunteers = Volunteer.query.order_by(Volunteer.volunteer_id.asc()).all()
+    volunteers = Volunteer.query.order_by(Volunteer.id.asc()).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -584,7 +584,7 @@ def get_volunteers_by_type(type):
 #     volunteer_list = []
 #     for volunteer in volunteers:
 #         volunteer_list.append(format_volunteer(volunteer))
-    
+
 #     return {'volunteers': volunteer_list}
 
 # GET AVAILABLE DRIVERS BY DATE
