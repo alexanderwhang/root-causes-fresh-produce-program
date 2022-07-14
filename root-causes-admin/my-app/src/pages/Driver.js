@@ -41,6 +41,17 @@ export function Driver() {
   let numDrivers = volunteersList.length;
   let numParticipants = participantsList.length;
 
+  const [edit_form_status, setEdit] = React.useState(true)
+
+  const editInfo = () => {
+    if (edit_form_status){
+      setEdit(false);
+    }
+      
+    else if (!edit_form_status){
+      setEdit(true);
+    }
+  };
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
@@ -165,13 +176,20 @@ export function Driver() {
           Upload Routes
         </Button>
         </label>
+        <div className="display_button">
+          <Button variant="contained" onClick={editInfo}>
+            Display Routes
+          </Button>
+        </div>
       </div>
+      <form hidden={edit_form_status}>
       <div className="after_assign">
         <List
           sx={{ width: "100%", bgcolor: "#f9f8e1" }}
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
+            
             <ListSubheader component="div" id="nested-list-subheader">
               Assigned Routes
             </ListSubheader>
@@ -257,6 +275,7 @@ export function Driver() {
                     </List>
                   </Collapse>
 
+
           {/* {volunteersList.map((vol) => {
               return (
                 <div key={vol.id}>
@@ -278,9 +297,10 @@ export function Driver() {
           })} */}
         </List>
       </div>
-      <div className="driver_buttons">
-        <Button variant="contained"> Confirm Routes </Button>
-      </div>
+        <div className="driver_buttons">
+          <Button variant="contained"> Confirm Routes </Button>
+        </div>
+      </form>
       <FooterContainer />
     </div>
   );
