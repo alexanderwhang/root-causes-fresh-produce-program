@@ -78,7 +78,9 @@ export function Driver() {
    const handleFile = (e) => {
         console.log(e.target.files[0]);
     }
- 
+
+
+
   return (
     <div className="drivers">
       <Navbar />
@@ -160,7 +162,7 @@ export function Driver() {
         {/* <Button variant="contained">
           <ParseExcel/> */}
         <label htmlFor="contained-button-file">
-      <Input accept="image/*" id="contained-button-file" multiple type="file"/>
+      <Input accept="file" id="contained-button-file" multiple type="file" onChange={(e) => handleFile(e)}/>
         <Button variant="contained" component="span" id="upload">
           Upload Routes
         </Button>
@@ -189,7 +191,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time, Route, Duration, Addresses
+                          
                         </ListItemText>
                       </ListItemButton>
                     </List>

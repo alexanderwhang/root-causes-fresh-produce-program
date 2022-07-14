@@ -65,16 +65,14 @@ export function BasicSelect() {
 
 export default function Texts(){
     const [value, setValue] = React.useState('');
-    const [participantsList, setParticipantsList] = useState([]);
-    const [openA, setOpenA] = React.useState(true);
-    const [openB, setOpenB] = React.useState(true);
+    const [caughtParticipants, setCaughtParticipants] = useState([]);
 
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS READY FOR DELIVERY (GREEN)
+    const data = await axios.get(`${baseUrl}/participants/group/A/sms_response/yes`); // GET PATIENTS READY FOR DELIVERY (GREEN)
     const { participants } = data.data;
-    setParticipantsList(participants);
+    setCaughtParticipants(participants);
     console.log("DATA: ", data);
   };
 

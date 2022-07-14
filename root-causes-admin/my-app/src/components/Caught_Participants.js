@@ -8,11 +8,9 @@ import React from "react";
 import "../pages/Texts.css";
 import SvgEllipse from "../symbolComponents/Ellipse";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ListSubheader from "@mui/material/ListSubheader";
@@ -22,17 +20,28 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-
 import MenuItem from "@mui/material/MenuItem";
 // import { Container, Wrapper, Row, Column, Link, Title } from './styles/footer'
 
 // const baseUrl = "http://127.0.0.1:5000";
 const baseUrl = "http://localhost:5000";
 
-export function Caught_Participants(props) {
+export function Caught_Participants() {
     const [status, setStatus] = React.useState('');
     const [open, setOpen] = React.useState(true);
+    const [caughtParticipants, setCaughtParticipants] = useState([]);
 
+    // GET PARTICIPANTS
+    const fetchParticipants = async () => {
+      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH DESIRED ANSWERS
+      const { participants } = data.data;
+      setCaughtParticipants(participants);
+      console.log("DATA: ", data);
+    };
+
+    useEffect(() => {
+    fetchParticipants();
+    }, []);
     const handleStatusChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value);
     };
@@ -43,9 +52,12 @@ export function Caught_Participants(props) {
 
     return (
       <div>
+      {caughtParticipants.map((participant) => {
+        return (
+          <div>
         <ListItemButton onClick={handleClick}>
           <SvgEllipse id="text_status"/>
-          <ListItemText primary=" Pt" />
+          <ListItemText primary= {participant.first_name} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -73,6 +85,8 @@ export function Caught_Participants(props) {
               </ListItemButton>
             </List>
           </Collapse>
+          </div>
+      )})}
           </div>
     );
 }

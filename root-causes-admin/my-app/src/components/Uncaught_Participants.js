@@ -30,6 +30,16 @@ const baseUrl = "http://localhost:5000";
 export function Uncaught_Participants() {
     const [status, setStatus] = React.useState('');
     const [open, setOpen] = React.useState(true);
+    const [uncaughtParticipants, setUncaughtParticipants] = useState([]);
+
+    // GET PARTICIPANTS
+    const fetchParticipants = async () => {
+      const data = await axios.get(`${baseUrl}/participants/group/B`); // GET PATIENTS WITH DESIRED ANSWERS
+      const { participants } = data.data;
+      setUncaughtParticipants(participants);
+      console.log(uncaughtParticipants);
+      console.log("DATA: ", data);
+    };
 
     const handleStatusChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value);
@@ -41,9 +51,12 @@ export function Uncaught_Participants() {
 
     return (
       <div>
+      {uncaughtParticipants.map((participant) => {
+        return (
+          <div>
         <ListItemButton onClick={handleClick}>
           <SvgEllipse id="text_status"/>
-          <ListItemText primary=" Pt" />
+          <ListItemText primary= {participant.first_name} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -71,6 +84,8 @@ export function Uncaught_Participants() {
               </ListItemButton>
             </List>
           </Collapse>
+          </div>
+      )})}
           </div>
     );
 }
