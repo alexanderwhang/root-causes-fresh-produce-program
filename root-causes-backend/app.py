@@ -168,7 +168,7 @@ class Volunteer(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(320), nullable=False)
-    password = db.Column(db.Text, nullable=True)
+    password = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.Text, nullable=False)
     affiliation = db.Column(db.Text, nullable=True)
     language = db.Column(db.Text, nullable=False)
