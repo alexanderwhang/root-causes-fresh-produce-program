@@ -296,7 +296,7 @@ export default function CollapsibleTable() {
     const fetchRows = async () => {
       const data3 = await axios.get(`${baseUrl}/participants/status/3`);
       const data5 = await axios.get(`${baseUrl}/participants/status/5`);
-      const data = {...data3, ...data5}
+      const data = {...data5, ...data3}
       const { participants } = data.data;
       setRows(participants);
       console.log("DATA: ", data);
