@@ -1,3 +1,4 @@
+from re import I
 from flask import Flask, request, jsonify, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -515,12 +516,12 @@ def get_volunteers():
         volunteer_list.append(format_volunteer(volunteer))
     return {'volunteers': volunteer_list}
 
-# GET VOLUNTEER
+# GET VOLUNTEER BY ID
 @app.route('/volunteers/<id>', methods = ['GET'])
 def get_volunteer(id):
-    volunteer = Participant.query.filter_by(volunteer_id=id).one()
+    volunteer = Volunteer.query.filter_by(id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
-    return {'volunteers': formatted_volunteer}
+    return {'volunteer': formatted_volunteer}
 
 # GET VOLUNTEERS BY LANGUAGE
 @app.route('/volunteers/language/<language>', methods = ['GET'])
@@ -545,15 +546,15 @@ def delete_volunteer(id):
 def update_volunteer(id):
     volunteer = Volunteer.query.filter_by(volunteer_id=id)
     #first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email
-    first_name = request.json['particpant']['first_name']
-    last_name = request.json['particpant']['last_name']
-    email = request.json['particpant']['email']
-    phone = request.json['particpant']['phone']
-    language = request.json['particpant']['language']
-    affiliation = request.json['particpant']['affiliation']
-    first_time = request.json['particpant']['first_time']
-    hipaa = request.json['particpant']['hipaa']
-    credit = request.json['particpant']['credit']
+    first_name = request.json['volunteer']['first_name']
+    last_name = request.json['volunteer']['last_name']
+    email = request.json['volunteer']['email']
+    phone = request.json['volunteer']['phone']
+    language = request.json['volunteer']['language']
+    affiliation = request.json['volunteer']['affiliation']
+    first_time = request.json['volunteer']['first_time']
+    hipaa = request.json['volunteer']['hipaa']
+    credit = request.json['volunteer']['credit']
     volunteer.update(dict(first_name=first_name))
     volunteer.update(dict(last_name=last_name))
     volunteer.update(dict(email=email))
@@ -674,13 +675,21 @@ def format_sortedVolunteers(volunteers):
     ids = "{"
     # for participant in volunteers.participant_list:
     for i in range(len(volunteers.participant_list)):
+        ids+='"'
+        ids+=str(i)
+        ids+='"'
+        ids+=": "
         ids+=str(volunteers.participant_list[i].id)
         if(i < len(volunteers.participant_list) -1 ):
             ids+=", "
     ids+="}"
+
+    idArr = []
+    for i in range(len(volunteers.participant_list)):
+        idArr.append(volunteers.participant_list[i].id)
     return {
         "id": volunteers.id,
-        "items": ids # {1, 2, 3, 4, 5}
+        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
     }
 
 

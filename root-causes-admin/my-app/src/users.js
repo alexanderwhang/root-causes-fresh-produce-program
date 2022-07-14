@@ -211,16 +211,19 @@ let users = [];
 
 
 export function Users(){ 
-  const [userList, setUserList]= useState([]);
+  // const [userList, setUserList]= useState([{}]);
+  // const [userObjs, setUserObjs]= useState([]);
+
+  let userList = [{}];
 
   // GET
   const fetchUserList = async () => {
     const data = await axios.get(`${baseUrl}/callermanagement`);
-    const users2 = data.data.sortedVolunteers;
-    setUserList(users2);
+    userList = data.data.sortedVolunteers;
+    // setUserList(userList);
     // console.log("USER LIST: ", data);\
     console.log("USER LIST: ");
-    console.log(users2);
+    console.log(userList);
     getUserObjs();
   };
 
@@ -228,21 +231,48 @@ export function Users(){
     fetchUserList();
   }, []);
 
-  let userObjs = [];
+  let userObjs = [{}];
+  console.log("length: ", userObjs.length)
   const getUserObjs = async () => {
+    console.log(userList.length);
     for (let i = 0; i < userList.length; i++) {
-      let vol = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
+      let volData = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
+      let vol = volData.data.volunteer;
+
       let pts = [];
-      for(let j = 0; j <userList[i].items.length; j++) {
-        let pt = await axios.get(`${baseUrl}/participants/${userList[i].items[j].id}`);
-        pts.append(pt);
+      let ptIds = getArr(userList[i].items);
+      for(let j = 0; j <ptIds.length; j++) {
+        let ptData = await axios.get(`${baseUrl}/participants/${ptIds[j]}`);
+        let pt = ptData.data.participant;
+        pts.push(pt);
       }
-      userObjs[i].append({"vol": vol, "pts": pts});
+
+      if (i==0) {
+        userObjs[0]=({"vol": vol, "pts": pts});
+      } else {
+        userObjs.push({"vol": vol, "pts": pts});
+      }
+      // userObjs.push({"vol": vol, "pts": pts});
     }
-    console.log("-------------------------")
-    console.log("userObjs: ")
+    console.log("-------------------------");
+    console.log("userObjs: ");
     console.log(userObjs);
   };
+
+  const getArr = (str) => {
+    let intStr = "";
+    let arr = [];
+    for (let i = 0; i < str.length; i++) {
+      let char = str[i];
+      if (!(char == ' ' || char == ',' || char == '[' || char ==']')) {
+        intStr += char;
+      } else if (intStr != "") {
+        arr.push(intStr)
+        intStr = "";
+      }
+    }
+    return arr;
+  }
 
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
@@ -252,13 +282,13 @@ export function Users(){
     const data = await axios.get(`${baseUrl}/participants/status/3`);
     const { participants } = data.data;
     setParticipantsList(participants);
-    console.log("DATA: ", data); 
+    // console.log("DATA: ", data); 
     
   };
 
   useEffect(() => {
     fetchParticipants();
-    fetchVolunteers();
+    // fetchVolunteers();
   }, []);
 
   // GET VOLUNTEERS
@@ -266,7 +296,7 @@ export function Users(){
     const data = await axios.get(`${baseUrl}/volunteers`);
     const { volunteers } = data.data;
     setVolunteersList(volunteers);
-    console.log("DATA: ", data);
+    // console.log("DATA: ", data);
   };
 
    
@@ -275,10 +305,10 @@ export function Users(){
       users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language}) 
     );
   }); 
-  console.log(users)
+  // console.log(users)
   
   users.push({index:users.length+1,title: "Participants", items: participantsList,language:null});  
-  console.log(users)
+  // console.log(users)
   return (users);
 }
   
