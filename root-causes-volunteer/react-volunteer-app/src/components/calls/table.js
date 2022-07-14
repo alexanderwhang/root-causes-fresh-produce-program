@@ -170,7 +170,7 @@ function Row(props) {
               defaultValue = "No Response"
               >
               <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No Response" />
               <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
             {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
