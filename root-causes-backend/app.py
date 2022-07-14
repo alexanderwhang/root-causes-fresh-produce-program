@@ -519,9 +519,6 @@ def create_volunteer():
     volunteer = Volunteer(first_name=first_name, last_name=last_name, email=email, password=password, phone=phone, affiliation=affiliation, language=language, first_time=first_time, credit=credit, hipaa=hipaa)
     db.session.add(volunteer)
     db.session.commit()
-<<<<<<< HEAD
-    return format_volunteer(volunteer)
-=======
     return redirect('http://127.0.0.1:3000/')
     
     # first_name = request.json['volunteer']['first_name']
@@ -538,7 +535,6 @@ def create_volunteer():
     # db.session.add(volunteer)
     # db.session.commit()
     # return format_participant(volunteer)
->>>>>>> 7580013e715a5f046585e1060a344b81b852f4fc
 
 # GET ALL VOLUNTEERS
 @app.route('/volunteers', methods = ['GET'])
