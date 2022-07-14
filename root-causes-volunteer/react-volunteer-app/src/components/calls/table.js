@@ -149,8 +149,8 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
-            >
-            {row.status}
+            >Coming Soon
+            {/* {row.status} */}
           </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
@@ -160,9 +160,9 @@ function Row(props) {
           
         </TableCell>        
         <TableCell>  
-          <form noValidate method = "post" action="http://127.0.0.1:5000/calls">
+          <form noValidate method = "post" action="http://127.0.0.1:5000/status_from_calls">
             <input type="hidden" name="id" value={row.id} />
-            {/* <input type="hidden" name="status_time" value={status_time} /> */}
+            <input type="hidden" name="status_time" value={status_time} />
             <FormControl>
             <FormLabel id="radio-buttons-availability">Please mark participant availability: </FormLabel>
             <RadioGroup
@@ -170,11 +170,11 @@ function Row(props) {
               name="radio-buttons-group"
               defaultValue = "No Response"
               >
-              <FormControlLabel name = 'status' control={<Radio />} value="Available" label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value="No Response" label="No Response" />
-              <FormControlLabel name = 'status' control={<Radio />} value="Not Available" label="Not Available" />
+              <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
+              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
-            
+            {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
             
         <Button className="submitCall"
             style={{backgroundColor: "#00743e"}}
@@ -295,7 +295,9 @@ export default function CollapsibleTable() {
     // 1 = GREEN, ready for delivery
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
-      const data = await axios.get(`${baseUrl}/participants/status/3`);
+      const data3 = await axios.get(`${baseUrl}/participants/status/3`);
+      const data5 = await axios.get(`${baseUrl}/participants/status/5`);
+      const data = {...data3, ...data5}
       const { participants } = data.data;
       setRows(participants);
       console.log("DATA: ", data);

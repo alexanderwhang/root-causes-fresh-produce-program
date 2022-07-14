@@ -57,6 +57,14 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [delivery_status, setDeliveryStatus] = useState("");
   const [notes, setNotes] = useState("");
+  const [status_time, setDate] = useState(""); 
+  
+  const handleTime = () => {
+    let current = new Date();
+    let date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    let time = current.toLocaleTimeString();
+    setDate(time + " on " + date);
+  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -159,13 +167,14 @@ function Row(props) {
           <br />
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: Coming soon...
+          <br /> Most Recent Delivery Status: Coming soon... {row.most_recent_delivery}
           <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>
 
-      <form noValidate method = "post" action="http://127.0.0.1:5000/routes" >
+      <form noValidate method = "post" action="http://127.0.0.1:5000/recent_delivery" >
         <input type="hidden" name="id" value={row.id} />
+        <input type="hidden" name="status_time" value={status_time} />
           <FormLabel id="radio-buttons-availability"></FormLabel>
             <RadioGroup
               aria-labelledby="radio-buttons-availability"
@@ -179,6 +188,7 @@ function Row(props) {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
           onSubmit={handleSubmit}
+          onClick={handleTime}
           onMouseOver={changeBackground1}
           onMouseOut={changeBackground2}
           >

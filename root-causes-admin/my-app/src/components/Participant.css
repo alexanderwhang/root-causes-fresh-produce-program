@@ -7,20 +7,88 @@
     align-items: start;
 }
 
-.editButton{
-    align-items: center;
-}
-
 .age{
     position: absolute;
     margin-top: 3.5rem;
+    margin-left: 450px;
 }
 
 .textInputs{
-    margin-right: 750px;
+    margin-left: 250px;
     margin-top: -3.5rem;
 }
 
 .language{
     margin-top: -21rem;
+    margin-left: 225px;
+}
+
+.status-dropdown{
+    margin-left: 450px;
+}
+
+.group-dropdown{
+    margin-left: 450px;
+}
+
+.household-dropdown{
+    margin-left: 450px;
+}
+
+.pronouns-dropdown{
+    margin-left: 450px;
+}
+
+.race-dropdown{
+    margin-left: 450px;
+}
+
+.submit-button button{
+    background-color: #72bb44;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 7rem;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    margin-left: 60px;
+    width: 60%;
+}
+
+.submit-button button:hover{
+    background-color: #68ab3e;
+}
+
+.submit-button{
+    margin: 0 auto;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-left: 120px;
+    margin-top: 1.5rem;
+}
+
+.edit_button button{
+    background-color: #72bb44;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 0.7rem;
+    margin-top: 0.2rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.edit_button button:hover{
+    background-color: #68ab3e;
+}
+
+.edit_button{
+    margin: 0 auto;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }

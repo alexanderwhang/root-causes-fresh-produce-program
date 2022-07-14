@@ -160,14 +160,14 @@ class Volunteer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
+    email = db.Column(db.String(320), nullable=False)
+    password = db.Column(db.Text, nullable=True)
     phone = db.Column(db.Text, nullable=False)
     affiliation = db.Column(db.Text, nullable=True)
     language = db.Column(db.Text, nullable=False)
     first_time = db.Column(db.Boolean, nullable=False)
-    hipaa = db.Column(db.Boolean, nullable=False)
     credit = db.Column(db.Boolean, nullable=False)
-    email = db.Column(db.String(320), nullable=False)
-    password = db.Column(db.Text, nullable=True)
+    hipaa = db.Column(db.Boolean, nullable=False)
 
     children = relationship("DriverLog")
     children = relationship("DeliveryAssignment")
@@ -179,17 +179,18 @@ class Volunteer(db.Model):
     def __repr__(self):
         return f"Volunteer: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password):
+    def __init__(self, first_name, last_name, email, password, phone, affiliation, language, first_time, credit, hipaa):
         self.first_name = first_name
         self.last_name = last_name
+        self.email = email
+        self.password = password
         self.phone = phone
         self.affiliation = affiliation
         self.language = language
         self.first_time = first_time
+        self.credit = credit
         self.hipaa = hipaa
-        self.email = credit
-        self.email = email
-        self.password = password
+        
 
 def format_volunteer(volunteer):
     return {
@@ -331,6 +332,7 @@ class DeliveryHistory(db.Model):
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
+    most_recent_delivery = db.Column(db.String(100))
 
     def __repr__(self):
         return f"Volunteer #{self.volunteer_id} delivered to Participant #{self.participant_id} on Date {self.delivery_date}"
@@ -492,20 +494,51 @@ def update_participant(id):
 # CREATE VOLUNTEER
 @app.route('/volunteers', methods = ['POST'])
 def create_volunteer():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    affiliation = request.json['affiliation']
-    first_time = request.json['first_time']
-    hipaa = request.json['hipaa']
-    credit = request.json['credit']
-    password = request.json['password']
-    volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    phone = request.form.get('phone')
+    affiliation = request.form.get('affiliation')
+    language = request.form.get('language')
+    first_time = request.form.get('first_time')
+    if (first_time == "true"):
+        first_time = True
+    else:
+        first_time = False
+    credit = request.form.get('credit')
+    if (credit == "true"):
+        credit = True
+    else:
+        credit = False
+    hipaa = request.form.get('hipaa')
+    if (hipaa == "true"):
+        hipaa = True
+    else:
+        hipaa = False
+    volunteer = Volunteer(first_name=first_name, last_name=last_name, email=email, password=password, phone=phone, affiliation=affiliation, language=language, first_time=first_time, credit=credit, hipaa=hipaa)
     db.session.add(volunteer)
     db.session.commit()
+<<<<<<< HEAD
     return format_volunteer(volunteer)
+=======
+    return redirect('http://127.0.0.1:3000/')
+    
+    # first_name = request.json['volunteer']['first_name']
+    # last_name = request.json['volunteer']['last_name']
+    # email = request.json['volunteer']['email']
+    # phone = request.json['volunteer']['phone']
+    # language = request.json['volunteer']['language']
+    # affiliation = request.json['volunteer']['affiliation']
+    # first_time = request.json['volunteer']['first_time']
+    # hipaa = request.json['volunteer']['hipaa']
+    # credit = request.json['volunteer']['credit']
+    # password = request.json['volunteer']['password']
+    # volunteer = Volunteer(first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email, password)
+    # db.session.add(volunteer)
+    # db.session.commit()
+    # return format_participant(volunteer)
+>>>>>>> 7580013e715a5f046585e1060a344b81b852f4fc
 
 # GET ALL VOLUNTEERS
 @app.route('/volunteers', methods = ['GET'])
@@ -544,7 +577,7 @@ def delete_volunteer(id):
 # UPDATE VOLUNTEER
 @app.route('/volunteers/<id>', methods = ['PUT'])
 def update_volunteer(id):
-    volunteer = Volunteer.query.filter_by(volunteer_id=id)
+    volunteer = Volunteer.query.filter_by(id=id)
     #first_name, last_name, phone, affiliation, language, first_time, hipaa, credit, email
     first_name = request.json['volunteer']['first_name']
     last_name = request.json['volunteer']['last_name']
@@ -570,7 +603,7 @@ def update_volunteer(id):
 # GET VOLUNTEERS BY TYPE
 @app.route('/volunteers/type/<type>', methods = ['GET'])
 def get_volunteers_by_type(type):
-    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.volunteer_id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).all()
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -580,7 +613,7 @@ def get_volunteers_by_type(type):
 # GET ALL DRIVERS
 # @app.route('/volunteers/drivers', methods = ['GET'])
 # def get_drivers():
-#     volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter = False, full = False).all()
+#     volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.id == DriverLog.volunteer_id, isouter = False, full = False).all()
 #     volunteer_list = []
 #     for volunteer in volunteers:
 #         volunteer_list.append(format_volunteer(volunteer))
@@ -590,7 +623,7 @@ def get_volunteers_by_type(type):
 # GET AVAILABLE DRIVERS BY DATE
 @app.route('/volunteers/drivers/<date>', methods = ['GET'])
 def get_drivers_by_date(date):
-    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.volunteer_id == DriverLog.volunteer_id, isouter=True).filter(DriverLog.date_available==date).all()
+    volunteers = db.session.query(Volunteer).join(DriverLog, Volunteer.id == DriverLog.volunteer_id, isouter=True).filter(DriverLog.date_available==date).all()
     volunteer_list = []
     for volunteer in volunteers:
         volunteer_list.append(format_volunteer(volunteer))
@@ -704,12 +737,8 @@ def format_sortedVolunteers(volunteers):
 
 
 
-    
 
-
-
-
-#VOLUNTEER APP
+########VOLUNTEER APP##########
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
@@ -763,9 +792,29 @@ def login():
                 f'{email} successfully logged in!'
             )
 
-
-
-
+#STATUS ON CALLS PAGE
+@app.route('/status_from_calls', methods = ['POST'])
+def get_calls():
+        id = request.form['id']
+        status = request.form['status']
+        # time = request.form['status_time']
+        call = Status.query.get(id)
+        call.status_type_id = status
+        # call.status_time = time
+        db.session.add(call)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/calls')
+    
+@app.route('/recent_delivery', methods = ['POST'])
+def recent_delivery():
+        id = request.form['id']
+        time = request.form['status_time']
+        participant = DeliveryHistory.query.filter_by(participant_id=id).one()
+        participant.most_recent_delivery = time
+        db.session.add(participant)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
+        
 
 if __name__ == '__main__':
     app.run()
