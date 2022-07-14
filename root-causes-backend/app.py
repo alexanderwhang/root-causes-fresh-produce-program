@@ -369,12 +369,20 @@ def hello():
 def create_participant():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
+    date_of_birth = request.json['date_of_birth']
+    age = request.json['age']
     email = request.json['email']
-    phone = request.json['phone_number']
+    phone = request.json['phone']
     language = request.json['language']
     group = request.json['group']
     pronouns = request.json['pronouns']
-    participant = Participant(first_name, last_name,email,phone,language, group, pronouns)
+    household_size = request.json['household_size']
+    most_recent_delivery = request.json['most_recent_delivery']
+    most_recent_call = request.json['most_recent_call']
+    sms_response = request.json['sms_response']
+    
+    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
+    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
     db.session.add(participant)
     db.session.commit()
     return format_participant(participant)
