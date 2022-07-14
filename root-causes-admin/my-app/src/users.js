@@ -5,6 +5,7 @@ import { cardClasses } from "@mui/material";
 
 const baseUrl = "http://127.0.0.1:5000";   
 let users = [];
+let users2 = [];
 
 
 export function Users(){ 
@@ -78,25 +79,36 @@ export function Users(){
     const data = await axios.get(`${baseUrl}/participants/status/3`);
     const { participants } = data.data;
     setParticipantsList(participants);
-    // console.log("DATA: ", data); 
+    console.log("DATA1: ", data); 
     
+  };
+
+  // GET VOLUNTEERS
+  const fetchVolunteers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
+    const { volunteers } = data.data;
+    setVolunteersList(volunteers);
+    console.log("DATA2: ", data);
   };
 
   useEffect(() => {
     fetchParticipants();
-    // fetchVolunteers();
+    fetchVolunteers();
   }, []);
 
-  // GET VOLUNTEERS
-  const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers`);
-    const { volunteers } = data.data;
-    setVolunteersList(volunteers);
-    // console.log("DATA: ", data);
-  };
 
+  users2[0]=({"vol": {}, "pts": participantsList});  
    
    volunteersList.map((vol) => {
+    return (
+      users2.push({"vol": vol, "pts": []}) 
+    );
+  }); 
+  console.log(users)
+    console.log("users2: ", users2)
+  // return (users2);
+
+  volunteersList.map((vol) => {
     return (
       users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language}) 
     );

@@ -722,7 +722,19 @@ def format_sortedVolunteers(volunteers):
     }
 
 
+# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
+@app.route('/callermanagement/unsorted', methods = ['GET'])
+def get_unsoreted_call_assignments():
+    type="Caller"
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
 
+    ret = [{}]
+    for volunteer in volunteers:
+        ret.append({"vol": volunteer, "pts": []})
+    ret.append({"vol": {}, "pts": participants})
+
+    return { json.dumps(ret)}
 
 
 
