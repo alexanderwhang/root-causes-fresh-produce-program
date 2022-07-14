@@ -775,6 +775,7 @@ def add_signup():
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
+        volunteer_type = "Packer"
         packerDay1 = request.form.get('packerDay1')
         packerDay2 = request.form.get('packerDay2')
         packerDay3 = request.form.get('packerDay3')
@@ -782,9 +783,10 @@ def add_signup():
         packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
         for day in packerDay:
             if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
-        signup = signups(packerDay=packerDay)
-        db.session.add(signup)
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('driver_preference' in request.form):
