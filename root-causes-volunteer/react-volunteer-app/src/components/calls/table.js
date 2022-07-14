@@ -154,8 +154,7 @@ function Row(props) {
           </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
-          <br /> Status Last Changed: 
-            {/* {row.status_time} */}
+          <br /> Most Recent Call: {row.most_recent_call}
 
           
         </TableCell>        
@@ -171,7 +170,7 @@ function Row(props) {
               defaultValue = "No Response"
               >
               <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No Response" />
               <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
             {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
@@ -182,7 +181,7 @@ function Row(props) {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onSubmit={handleSubmit}
-            pk={handleTime}
+            onClick={handleTime}
             onMouseOver={changeBackground1}
             onMouseOut={changeBackground2}
             >
