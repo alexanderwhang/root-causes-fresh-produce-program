@@ -126,24 +126,33 @@ export default function SignUp() {
   var d = new Date();
   var month = d.toLocaleString("en-US", { month: "long" })
   var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
-  var sat = new Array();   //Declaring array for inserting Saturdays
-  var tues = new Array();   //Declaring array for inserting Tuesdays
+  var sat_label = new Array();   //Declaring array for inserting Saturdays
+  var sat_value = new Array();
+  var tues_label = new Array();   //Declaring array for inserting Tuesdays
+  var tues_value = new Array();
 
   for(var i=1;i<=getTot;i++){    //looping through days in month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
-        sat.push(i);
+        sat_label.push(i);
+        sat_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
+        //  day/month/year
     }
   }
+
+  // let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+  // let time = current.toLocaleTimeString();
+  // setDate(date + " " + time);
 
   for(var i=1;i<=getTot;i++){    //looping through days in month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==2){   //if Tuesday
-        tues.push(i);
+        tues_label.push(i);
+        tues_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
+        //  day/month/year
     }
   }
 
-  
   // driver selections
   const [driverDay1, setDriverDay1] = useState("");
   const [driverDay2, setDriverDay2] = useState("");
@@ -259,23 +268,23 @@ export default function SignUp() {
                 <FormGroup>
                   <FormControlLabel control={<Checkbox />} 
                       name="driverDay1"
-                      label={month + " " + sat[0]}
-                      value={month + " " + sat[0]}
+                      label={month + " " + sat_label[0]}
+                      value={sat_value[0]}
                       onChange={(e)=>setDriverDay1(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay2"
-                      label={month + " " + sat[1]}
-                      value={month + " " + sat[1]}
+                      label={month + " " + sat_label[1]}
+                      value={sat_value[1]}
                       onChange={(e)=>setDriverDay2(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay3"
-                      label={month + " " + sat[2]}
-                      value={month + " " + sat[2]}
+                      label={month + " " + sat_label[2]}
+                      value={sat_value[2]}
                       onChange={(e)=>setDriverDay3(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay4"
-                      label={month + " " + sat[3]}
-                      value={month + " " + sat[3]}
+                      label={month + " " + sat_label[3]}
+                      value={sat_value[3]}
                       onChange={(e)=>setDriverDay4(e.target.value)}/>
                 </FormGroup>  
               </FormLabel>
@@ -384,23 +393,23 @@ export default function SignUp() {
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
-                        label={month + " " + sat[0]}
-                        value={month + " " + sat[0]}
+                        label={month + " " + sat_label[0]}
+                        value={sat_value[0]}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
-                        label={month + " " + sat[1]}
-                        value={month + " " + sat[1]}
+                        label={month + " " + sat_label[1]}
+                        value={sat_value[1]}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
-                        label={month + " " + sat[2]}
-                        value={month + " " + sat[2]}
+                        label={month + " " + sat_label[2]}
+                        value={sat_value[2]}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
-                        label={month + " " + sat[3]}
-                        value={month + " " + sat[3]}
+                        label={month + " " + sat_label[3]}
+                        value={sat_value[3]}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
                   </FormGroup>  
                 </FormLabel>
@@ -438,26 +447,26 @@ export default function SignUp() {
                 <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 
-                        label={month + " " + tues[0] + " - " + (tues[0] + 2)}
-                        value={month + " " + tues[0] + " - " + (tues[0] + 2)}
+                        label={month + " " + tues_label[0] + " - " + (tues_label[0] + 2)}
+                        value={tues_value[0]}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
-                        label= {month + " " + tues[1] + " - " + (tues[1] + 2)}
-                        value= {month + " " + tues[1] + " - " + (tues[1] + 2)}
+                        label= {month + " " + tues_label[1] + " - " + (tues_label[1] + 2)}
+                        value= {tues_value[1]}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
-                        label= {month + " " + tues[2] + " - " + (tues[2] + 2)}
-                        value= {month + " " + tues[2] + " - " + (tues[2] + 2)}
+                        label= {month + " " + tues_label[2] + " - " + (tues_label[2] + 2)}
+                        value= {tues_value[2]}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
-                        label= {month + " " + tues[3] + " - " + (tues[3] + 2)}
-                        value= {month + " " + tues[3] + " - " + (tues[3] + 2)}
+                        label= {month + " " + tues_label[3] + " - " + (tues_label[3] + 2)}
+                        value= {tues_value[3]}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
                 </FormGroup>
