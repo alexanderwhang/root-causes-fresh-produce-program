@@ -1,8 +1,6 @@
-
-// USED IN TEXTS.SMS
-  // Component for participants whose texts have been automatically sorted
-  // by our API and will have their status automatically changed
-
+ // USED IN TEXTS.SMS
+  // Component for participants whose texts are more complicated
+  // for the API to sort, so these will have to be manually changed
 
 import React from "react";
 import "../pages/Texts.css";
@@ -29,7 +27,7 @@ import MenuItem from "@mui/material/MenuItem";
 // const baseUrl = "http://127.0.0.1:5000";
 const baseUrl = "http://localhost:5000";
 
-export function Caught_Participants(props) {
+export function Uncaught_Participants() {
     const [status, setStatus] = React.useState('');
     const [open, setOpen] = React.useState(true);
 
