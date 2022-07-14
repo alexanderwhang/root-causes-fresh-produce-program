@@ -154,8 +154,8 @@ function Row(props) {
           </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
-          <br /> Status Last Changed: 
-            {/* {row.status_time} */}
+          <br /> Most Recent Call: 
+            {row.most_recent_call}
 
           
         </TableCell>        
