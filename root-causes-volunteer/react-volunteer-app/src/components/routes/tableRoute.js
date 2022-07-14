@@ -167,7 +167,7 @@ function Row(props) {
           <br />
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Delivery Status: Coming soon... {row.most_recent_delivery}
+          <br /> Most Recent Delivery: {row.most_recent_delivery}
           <br /> Notes: {row.routes_notes} 
         </TableCell>
         <TableCell>

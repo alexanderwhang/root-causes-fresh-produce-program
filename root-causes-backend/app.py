@@ -99,7 +99,9 @@ def format_participant(participant):
         "city": address.city,
         "state": address.state,
         "zip": address.zip,
-        "apartment": address.apartment
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call" : participant.most_recent_call
     }
 
 class Status(db.Model):
@@ -718,9 +720,14 @@ def get_calls():
     
 @app.route('/recent_delivery', methods = ['POST'])
 def recent_delivery():
+    # if request.method == 'GET':
+    #     all_routes = Participant.query,all()
+    #     results_routes = routes_schema.dump(all_routes)
+    #     return jsonify(results_routes)    
+    # else:
         id = request.form['id']
         time = request.form['status_time']
-        participant = DeliveryHistory.query.filter_by(participant_id=id).one()
+        participant = Participant.query.get(id)
         participant.most_recent_delivery = time
         db.session.add(participant)
         db.session.commit()
