@@ -1,0 +1,73 @@
+.email-input{
+    align-items: start;
+}
+
+.age-input{
+    position: absolute;
+    margin-top: 3.5rem;
+    margin-left: 520px;
+}
+
+.text-inputs{
+    margin-left: 740px;
+    margin-top: -3.5rem;
+}
+
+.language-input{
+    margin-top: -21rem;
+    margin-left: 295px;
+}
+
+.status_dropdown{
+    margin-left: 520px;
+}
+
+.group_dropdown{
+    margin-left: 520px;
+}
+
+.household_dropdown{
+    margin-left: 520px;
+}
+
+.pronouns_dropdown{
+    margin-left: 520px;
+}
+
+.race_dropdown{
+    margin-left: 520px;
+}
+
+.submit_button button{
+    background-color: #72bb44;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 0.7rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    width: 10%;
+}
+
+.submit_button button:hover{
+    background-color: #68ab3e;
+}
+
+.submit_button{
+    margin: 0 auto;
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 3.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 300px;
+    width: 60%;
+}
+
+.add_new{
+    margin-left: 600px;
+    margin-bottom: 1rem;
+}
+

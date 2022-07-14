@@ -15,6 +15,10 @@ const baseUrl = "http://127.0.0.1:5000";
 export function VolInfoPage() {
   const [volunteersList, setVolunteerList] = useState([]);
   const [driversList, setDriversList] = useState([]);
+  const [packersList, setPackersList] = useState([]);
+  const [callersList, setCallersList] = useState([]);
+
+
 
   // GET ALL VOLUNTEERS
   const fetchVolunteers = async () => {
@@ -24,9 +28,19 @@ export function VolInfoPage() {
     console.log("DATA2: ", data);
   };
 
+  // GET PACKERS
+  const fetchPackers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers/type/Packer`);
+    const packers = data.data.volunteers;
+    console.log("DATA1: ", data);
+    console.log("DRIVERS: ");
+    console.log(packers);
+    setPackersList(packers);
+  };
+
   // GET DRIVERS
   const fetchDrivers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/Driver`);
+    const data = await axios.get(`${baseUrl}/volunteers/type/Driver`);
     const drivers = data.data.volunteers;
     console.log("DATA1: ", data);
     console.log("DRIVERS: ");
@@ -34,10 +48,21 @@ export function VolInfoPage() {
     setDriversList(drivers);
   };
 
+  // GET CALLERS
+  const fetchCallers = async () => {
+    const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
+    const callers = data.data.volunteers;
+    console.log("DATA1: ", data);
+    console.log("DRIVERS: ");
+    console.log(callers);
+    setCallersList(callers);
+  };
+
   useEffect(() => {
     fetchVolunteers();
     fetchDrivers();
-
+    fetchPackers();
+    fetchCallers();
   }, []);
 
   const Root = styled("div")(({ theme }) => ({
@@ -133,18 +158,22 @@ export function VolInfoPage() {
                   <th>Email</th>
                   <th>Language</th>
                   <th>HIPAA?</th>
-                  <th>First Time? </th>
+                  <th>First Time?</th>
+                  <th>Credit?</th>
                   <th>Availability </th>
                 </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
+                  {callersList.map((caller) => {
+                    return <tr key={caller.id}>
+                            <td>{caller.first_name} {caller.last_name}</td>
+                            <td>{caller.phone}</td>
+                            <td>{caller.email}</td>
+                            <td>{caller.language}</td>
+                            <td> {boolMap.get(caller.first_time)}</td>
+                            <td>{boolMap.get(caller.hipaa)}</td>
+                            <td>{boolMap.get(caller.credit)}</td>
+                            <td>...</td>
+                        </tr>;
+                  })}
               </tbody>
             </table>
           </div>
@@ -160,11 +189,13 @@ export function VolInfoPage() {
                   <th>Email</th>
                   <th>Language</th>
                   <th>HIPAA?</th>
-                  <th>First Time? </th>
+                  <th>First Time?</th>
+                  <th>Credit?</th>
                   <th>Availability </th>
                 </tr>
                   {driversList.map((driver) => {
                     return <tr key={driver.id}>
+                            <td>{driver.first_name} {driver.last_name}</td>
                             <td>{driver.phone}</td>
                             <td>{driver.email}</td>
                             <td>{driver.language}</td>
@@ -187,18 +218,22 @@ export function VolInfoPage() {
                   <th>Email</th>
                   <th>Language</th>
                   <th>HIPAA?</th>
-                  <th>First Time? </th>
+                  <th>First Time?</th>
+                  <th>Credit?</th>
                   <th>Availability </th>
                 </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
+                {packersList.map((packer) => {
+                    return <tr key={packer.id}>
+                            <td>{packer.first_name} {packer.last_name}</td>
+                            <td>{packer.phone}</td>
+                            <td>{packer.email}</td>
+                            <td>{packer.language}</td>
+                            <td> {boolMap.get(packer.first_time)}</td>
+                            <td>{boolMap.get(packer.hipaa)}</td>
+                            <td>{boolMap.get(packer.credit)}</td>
+                            <td>...</td>
+                        </tr>;
+                  })}
               </tbody>
             </table>
           </div>
@@ -221,7 +256,7 @@ export function VolInfoPage() {
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Language</th>
-                <th>Type</th>
+                {/* <th>Type</th> */}
                 <th>HIPPA?</th>
                 <th>Affiliation</th>
                 <th>For Credit?</th>
@@ -237,7 +272,7 @@ export function VolInfoPage() {
                     <td>{volunteer.phone}</td>
                     <td>{volunteer.email}</td>
                     <td>{volunteer.language}</td>
-                    <td></td>
+                    {/* <td></td> */}
                     <td> {boolMap.get(volunteer.first_time)}</td>
                     <td>{boolMap.get(volunteer.hipaa)}</td>
                     <td>{boolMap.get(volunteer.credit)}</td>
