@@ -307,7 +307,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -759,6 +759,7 @@ def recent_delivery():
 @app.route('/signup', methods = ['POST'])
 def add_signup():
     if request.method == 'POST' and ('callerDay1' in request.form):
+        volunteer_type = "Caller"
         callerDay1 = request.form.get('callerDay1')
         callerDay2 = request.form.get('callerDay2')
         callerDay3 = request.form.get('callerDay3')
@@ -768,8 +769,8 @@ def add_signup():
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
-        signup = signups(callerDay=callerDay)
-        db.session.add(signup)
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                db.session.add(signup)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
