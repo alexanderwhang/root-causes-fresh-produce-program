@@ -78,27 +78,7 @@ export function Driver() {
    const handleFile = (e) => {
         console.log(e.target.files[0]);
     }
-  // const [file, setFile] = useState();
-
-  // function handleChange(event) {
-  //   setFile(event.target.files[0]);
-  // }
-
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   const url = "http://localhost:3000/uploadFile";
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-  //   formData.append("fileName", file.name);
-  //   const config = {
-  //     headers: {
-  //       "content-type": "multipart/form-data",
-  //     },
-  //   };
-  //   axios.post(url, formData, config).then((response) => {
-  //     console.log(response.data);
-  //   });
-  // }
+ 
   return (
     <div className="drivers">
       <Navbar />
@@ -198,19 +178,18 @@ export function Driver() {
           }
           className="indiv_routes"
         >
-          {Vol_data.map((vol) => {
-            if (vol.type === "Driver")
+          {volunteersList.map((vol) => {
               return (
                 <div key={vol.id}>
                   <ListItemButton key={vol.id} onClick={handleClick}>
-                    <ListItemText> Route {vol.route} -  {vol.firstName} {vol.lastName} </ListItemText>
+                    <ListItemText>{vol.first_name} {vol.last_name} </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time, Duration, Addresses
+                          Start Time, Route, Duration, Addresses
                         </ListItemText>
                       </ListItemButton>
                     </List>

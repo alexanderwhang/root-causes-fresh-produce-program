@@ -753,11 +753,13 @@ def login():
 def get_calls():
         id = request.form['id']
         status = request.form['status']
-        # time = request.form['status_time']
+        time = request.form['status_time']
         call = Status.query.get(id)
+        recent_call = Participant.query.get(id)
         call.status_type_id = status
-        # call.status_time = time
+        recent_call.most_recent_call = time
         db.session.add(call)
+        db.session.add(recent_call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
     

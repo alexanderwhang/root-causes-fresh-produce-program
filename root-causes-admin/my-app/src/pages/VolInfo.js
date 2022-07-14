@@ -13,117 +13,121 @@ import { FooterContainer } from "../containers/footer";
 const baseUrl = "http://127.0.0.1:5000";
 
 export function VolInfoPage() {
-  const [volunteersList, setVolunteerList] = useState([]);
+  const [volunteersList, setVolunteersList] = useState([]);
   const [driversList, setDriversList] = useState([]);
   const [packersList, setPackersList] = useState([]);
   const [callersList, setCallersList] = useState([]);
 
+  //search
+    const [value, setValue] = useState("");
+    const [tableFilter, setTableFilter] = useState([]);
+
+    const filterData = (event) => {
+      if(event.target.value !== ""){
+        setValue(event.target.value);
+        const filterTable = volunteersList.filter(o=>Object.keys(o).some(k=>
+            String(o[k]).toLowerCase().includes(event.target.value.toLowerCase())));
+            setTableFilter([...filterTable])
+            event.stopPropagation();
+        event.preventDefault();
+      } else{
+        event.stopPropagation();
+        event.preventDefault();
+        setValue(event.target.value);
+        setVolunteersList([...volunteersList]);
+      }
+    }
+  
 
 
-  // GET ALL VOLUNTEERS
-  const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers`);
-    const { volunteers } = data.data;
-    setVolunteerList(volunteers);
-    console.log("DATA2: ", data);
-  };
+  //backend calls
 
-  // GET PACKERS
-  const fetchPackers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/type/Packer`);
-    const packers = data.data.volunteers;
-    console.log("DATA1: ", data);
-    console.log("DRIVERS: ");
-    console.log(packers);
-    setPackersList(packers);
-  };
-
-  // GET DRIVERS
-  const fetchDrivers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/type/Driver`);
-    const drivers = data.data.volunteers;
-    console.log("DATA1: ", data);
-    console.log("DRIVERS: ");
-    console.log(drivers);
-    setDriversList(drivers);
-  };
-
-  // GET CALLERS
-  const fetchCallers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
-    const callers = data.data.volunteers;
-    console.log("DATA1: ", data);
-    console.log("DRIVERS: ");
-    console.log(callers);
-    setCallersList(callers);
-  };
-
-  useEffect(() => {
-    fetchVolunteers();
-    fetchDrivers();
-    fetchPackers();
-    fetchCallers();
-  }, []);
-
-  const Root = styled("div")(({ theme }) => ({
-    width: "100%",
-    ...theme.typography.body2,
-    "& > :not(style) + :not(style)": {
-      marginTop: theme.spacing(2),
-    },
-  }));
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
+    // GET ALL VOLUNTEERS
+    const fetchVolunteers = async () => {
+      const data = await axios.get(`${baseUrl}/volunteers`);
+      const { volunteers } = data.data;
+      setVolunteersList(volunteers);
+      console.log("DATA2: ", data);
     };
-  }
-  const [query, setQuery] = React.useState("");
-  const [value, setValue] = useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+    // GET PACKERS
+    const fetchPackers = async () => {
+      const data = await axios.get(`${baseUrl}/volunteers/type/Packer`);
+      const packers = data.data.volunteers;
+      console.log("DATA1: ", data);
+      console.log("DRIVERS: ");
+      console.log(packers);
+      setPackersList(packers);
+    };
 
-  const keys = [
-    "firstName",
-    "lastName",
-    "phoneNumber",
-    "email",
-    "language",
-    "type",
-    // "hippa",
-    // "credit"
-  ];
+    // GET DRIVERS
+    const fetchDrivers = async () => {
+      const data = await axios.get(`${baseUrl}/volunteers/type/Driver`);
+      const drivers = data.data.volunteers;
+      console.log("DATA1: ", data);
+      console.log("DRIVERS: ");
+      console.log(drivers);
+      setDriversList(drivers);
+    };
 
-  const search = (data) => {
-    return data.filter((item) =>
-      keys.some((key) =>
-        item[key].toLowerCase().includes(value.query.toLowerCase())
-      )
-    );
-  };
+    // GET CALLERS
+    const fetchCallers = async () => {
+      const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
+      const callers = data.data.volunteers;
+      console.log("DATA1: ", data);
+      console.log("DRIVERS: ");
+      console.log(callers);
+      setCallersList(callers);
+    };
+
+    useEffect(() => {
+      fetchVolunteers();
+      fetchDrivers();
+      fetchPackers();
+      fetchCallers();
+    }, []);
+
+    // const Root = styled("div")(({ theme }) => ({
+    //   width: "100%",
+    //   ...theme.typography.body2,
+    //   "& > :not(style) + :not(style)": {
+    //     marginTop: theme.spacing(2),
+    //   },
+    // }));
+
+
+  //tabs
+    function TabPanel(props: TabPanelProps) {
+      const { children, value, index, ...other } = props;
+
+      return (
+        <div
+          role="tabpanel"
+          hidden={value !== index}
+          id={`simple-tabpanel-${index}`}
+          aria-labelledby={`simple-tab-${index}`}
+          {...other}
+        >
+          {value === index && (
+            <Box sx={{ p: 3 }}>
+              <Typography>{children}</Typography>
+            </Box>
+          )}
+        </div>
+      );
+      }
+
+      function a11yProps(index: number) {
+        return {
+          id: `simple-tab-${index}`,
+          "aria-controls": `simple-tabpanel-${index}`,
+        };
+      }
+      const [val, setVal] = useState(0);
+
+      const handleChange = (event, newValue: number) => {
+        setVal(newValue);
+      };
 
   let boolMap = new Map([
     [true, "Y"],
@@ -136,7 +140,7 @@ export function VolInfoPage() {
       <h2> Volunteer Info </h2>
       <Box sx={{ borderBottom: 0, borderColor: "#f7c86d", color: "black" }}>
         <Tabs
-          value={value}
+          value={val}
           onChange={handleChange}
           aria-label="basic tabs example"
           centered
@@ -145,7 +149,7 @@ export function VolInfoPage() {
           <Tab label="All Volunteers" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={val} index={0}>
         <div className="curr_vols">
           <h3> Callers </h3>
           {/* date of availability? */}
@@ -239,18 +243,19 @@ export function VolInfoPage() {
           </div>
         </div>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={val} index={1}>
         <div className="all_vols">
           <div id="search">
             <TextField
-              id="searchField"
-              label="Search"
-              onChange={(e) => setQuery(e.target.value)}
-              type="search"
-            />
+            id="searchField"
+            label="Search"
+            defaultValue={value}
+            onChange={filterData}
+            type="search"
+          />
           </div>
           <table class="vol_list">
-            <tbody>
+            <thead>
               <tr>
                 <th>Name</th>
                 <th>Phone Number</th>
@@ -261,8 +266,10 @@ export function VolInfoPage() {
                 <th>Affiliation</th>
                 <th>For Credit?</th>
                 {/* Last date of activity?? */}
-              </tr>
-              {volunteersList.map((volunteer) => {
+                </tr>
+              </thead>
+              <tbody>
+              {(value.length > 0) ? tableFilter.map((volunteer) => {
                 return (
                   <tr key={volunteer.id}>
                     <td>
@@ -277,9 +284,28 @@ export function VolInfoPage() {
                     <td>{boolMap.get(volunteer.hipaa)}</td>
                     <td>{boolMap.get(volunteer.credit)}</td>
                   </tr>
-                );
-              })}
-            </tbody>
+                )
+                })
+                :
+                 volunteersList.map((volunteer) => {
+                    return (
+                      <tr key={volunteer.id}>
+                    <td>
+                      {" "}
+                      {volunteer.first_name} {volunteer.last_name}{" "}
+                    </td>
+                    <td>{volunteer.phone}</td>
+                    <td>{volunteer.email}</td>
+                    <td>{volunteer.language}</td>
+                    {/* <td></td> */}
+                    <td> {boolMap.get(volunteer.first_time)}</td>
+                    <td>{boolMap.get(volunteer.hipaa)}</td>
+                    <td>{boolMap.get(volunteer.credit)}</td>
+                  </tr>
+              )
+        })
+} 
+        </tbody>
           </table>
         </div>
       </TabPanel>
