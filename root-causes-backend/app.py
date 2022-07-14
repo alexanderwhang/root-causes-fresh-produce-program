@@ -307,7 +307,7 @@ class VolunteerLog(db.Model):
     __tablename__ = 'volunteer_log'
     __table_args__ = {"schema":"RC"}
 
-    volunteer_log_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column("volunteer_log_id", db.Integer, primary_key=True)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
@@ -770,7 +770,7 @@ def add_signup():
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                person = VolunteerLog(volunteer_id=None, volunteer_type=volunteer_type, week_available=day, notes=None)
                 db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
