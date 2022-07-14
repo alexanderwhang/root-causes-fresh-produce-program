@@ -1,34 +1,34 @@
 import React from "react";
-import axios from "axios"; 
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { cardClasses } from "@mui/material";
 
-const baseUrl = "http://127.0.0.1:5000";   
+const baseUrl = "http://127.0.0.1:5000";
 let users = [];
 let users2 = [];
 
-export function UserIdList() {
-  let userIdList = [{}];
+// export function UserIdList() {
+//   let userIdList = [{}];
 
-  // GET
-  const fetchUserIdList = async () => {
-    const data = await axios.get(`${baseUrl}/callermanagement`);
-    userIdList = data.data.sortedVolunteers;
-    // setUserList(userList);
-    // console.log("USER LIST: ", data);\
-    console.log("USER LIST: ");
-    console.log(userIdList);
-    // getUserObjs();
-    return userIdList;
-  };
+//   // GET
+//   const fetchUserIdList = async () => {
+//     const data = await axios.get(`${baseUrl}/callermanagement`);
+//     userIdList = data.data.sortedVolunteers;
+//     // setUserList(userList);
+//     // console.log("USER LIST: ", data);\
+//     console.log("USER LIST: ");
+//     console.log(userIdList);
+//     // getUserObjs();
+//     return userIdList;
+//   };
 
-  useEffect(() => {
-    fetchUserIdList();
-  }, []);
+//   useEffect(() => {
+//     fetchUserIdList();
+//   }, []);
 
-  // return userIdList;
-}
-export function Users(){ 
+//   // return userIdList;
+// }
+export function Users() {
   // const [userList, setUserList]= useState([{}]);
   // const [userObjs, setUserObjs]= useState([]);
 
@@ -58,16 +58,16 @@ export function Users(){
 
       let pts = [];
       let ptIds = getArr(userList[i].items);
-      for(let j = 0; j <ptIds.length; j++) {
+      for (let j = 0; j < ptIds.length; j++) {
         let ptData = await axios.get(`${baseUrl}/participants/${ptIds[j]}`);
         let pt = ptData.data.participant;
         pts.push(pt);
       }
 
-      if (i==0) {
-        userObjs[0]=({"vol": vol, "pts": pts});
+      if (i == 0) {
+        userObjs[0] = { vol: vol, pts: pts };
       } else {
-        userObjs.push({"vol": vol, "pts": pts});
+        userObjs.push({ vol: vol, pts: pts });
       }
       // userObjs.push({"vol": vol, "pts": pts});
     }
@@ -81,15 +81,20 @@ export function Users(){
     let arr = [];
     for (let i = 0; i < str.length; i++) {
       let char = str[i];
-      if (!(char == ' ' || char == ',' || char == '[' || char ==']')) {
+      if (!(char == " " || char == "," || char == "[" || char == "]")) {
         intStr += char;
       } else if (intStr != "") {
-        arr.push(intStr)
+        arr.push(intStr);
         intStr = "";
       }
     }
     return arr;
-  }
+  };
+  console.log("-------------------------");
+  console.log("userObjs: ");
+  console.log(userObjs);
+
+  return userObjs;
 
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
@@ -99,8 +104,7 @@ export function Users(){
     const data = await axios.get(`${baseUrl}/participants/status/3`);
     const { participants } = data.data;
     setParticipantsList(participants);
-    console.log("DATA1: ", data); 
-    
+    console.log("DATA1: ", data);
   };
 
   // GET VOLUNTEERS
@@ -116,33 +120,40 @@ export function Users(){
     fetchVolunteers();
   }, []);
 
-//  USERS 2
-  users2[0]=({"vol": {}, "pts": participantsList});  
-   
-   volunteersList.map((vol) => {
-    return (
-      users2.push({"vol": vol, "pts": []}) 
-    );
-  }); 
-  console.log(users)
-    console.log("users2: ", users2)
-  // return (users2);
+  //  USERS 2
+  // users2[0]=({"vol": {}, "pts": participantsList});
 
+  //  volunteersList.map((vol) => {
+  //   return (
+  //     users2.push({"vol": vol, "pts": []})
+  //   );
+  // });
+  // console.log(users)
+  //   console.log("users2: ", users2)
+  // // return (users2);
 
-  // USERS
-  volunteersList.map((vol) => {
-    return (
-      users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language}) 
-    );
-  }); 
+  // // USERS
+  // volunteersList.map((vol) => {
+  //   return (
+  //     users.push({index:vol.id,title: vol.first_name, items: [],language:vol.language})
+  //   );
+  // });
+  // // console.log(users)
+
+  // users.push({index:users.length+1,title: "Participants", items: participantsList,language:null});
   // console.log(users)
-  
-  users.push({index:users.length+1,title: "Participants", items: participantsList,language:null});  
-  // console.log(users)
-  return (users);
+  // return (users);
 }
-  
-{/*export const Users=[{
+
+
+
+
+
+
+
+
+{
+  /*export const Users=[{
     "key": 1,
     "status": "green",
     "firstName": "Gelya",
@@ -345,4 +356,5 @@ export function Users(){
     "group": "A."
   }
   ] 
-*/} 
+*/
+}

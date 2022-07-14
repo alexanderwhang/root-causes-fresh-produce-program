@@ -1,10 +1,28 @@
 import React from "react";
 import { useState, useRef } from "react";
 import Navbar from "./components/Navbar/Navbar";
+import Button from "@mui/material/Button";
+// import { UserIdList } from "./users"
+import axios from "axios";
 import { Users } from "./users";
 // import { FooterContainer } from './containers/footer';
 
+const baseUrl = "http://127.0.0.1:5000";
+
 export const DataDragPractice = ({ data }) => {
+//   let userIdList = UserIdList();
+//   console.log("userIdList: ", userIdList);
+
+  const handleConfirmAssignments = async (e) => {
+    // for (let i = 0; i < userIdList.length; i++) {
+    //   const data = userIdList[0];
+    //   console.log("confirm assignments");
+    //   console.log("userIdList: ", userIdList);
+    //   console.log("data: ", data);
+    //   const response = await axios.post(`${baseUrl}/callassignment`, data);
+    // }
+  };
+
   const [list, setList] = useState(data);
   const [dragging, setDragging] = useState(false);
   const dragItem = useRef();
@@ -117,6 +135,19 @@ export const DataDragPractice = ({ data }) => {
           ))}
         </div>
       </header>
+      {/* buttons */}
+      <section id="call_assign">
+        <div className="call_buttons">
+          <Button variant="contained">Generate Assignments</Button>
+          <Button
+            color="success"
+            variant="contained"
+            onClick={handleConfirmAssignments}
+          >
+            Confirm Assignments{" "}
+          </Button>
+        </div>
+      </section>
     </div>
   );
 };
