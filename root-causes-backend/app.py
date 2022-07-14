@@ -38,7 +38,7 @@ db = SQLAlchemy(app)
 CORS(app)
 
 class Participant(db.Model):
-    __tablename__ = 'participant'
+    __tablename__ = 'participant2'
     __table_args__ = {"schema": "RC"}
 
     id = db.Column(db.Integer, primary_key=True)
@@ -56,8 +56,8 @@ class Participant(db.Model):
     most_recent_call = db.Column(db.String(100), nullable=True)
     sms_response = db.Column(db.Text, nullable=True)
 
-    children = relationship("Status")
-    children = relationship("DeliveryHistory")
+    # children = relationship("Status")
+    # children = relationship("DeliveryHistory")
 
 
     def __repr__(self):
@@ -390,7 +390,7 @@ def create_participant():
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])
 def get_participants():
-    participants = Participant.query.order_by(Participant.id.asc()).all()
+    participants = Participant.query.order_by(Participant.last_name.asc()).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
