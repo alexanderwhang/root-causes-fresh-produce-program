@@ -613,7 +613,7 @@ def get_volunteers_by_type(type):
 #     volunteer_list = []
 #     for volunteer in volunteers:
 #         volunteer_list.append(format_volunteer(volunteer))
-    
+
 #     return {'volunteers': volunteer_list}
 
 # GET AVAILABLE DRIVERS BY DATE
