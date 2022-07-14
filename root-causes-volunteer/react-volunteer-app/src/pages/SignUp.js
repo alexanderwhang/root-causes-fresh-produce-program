@@ -135,7 +135,7 @@ export default function SignUp() {
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
         sat_label.push(i);
-        sat_value.push(i + "/" + (d.getMonth()+1) + "/" + d.getFullYear())
+        sat_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
         //  day/month/year
     }
   }
@@ -148,13 +148,11 @@ export default function SignUp() {
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==2){   //if Tuesday
         tues_label.push(i);
-        tues_value.push(i + "/" + (d.getMonth()+1) + "/" + d.getFullYear())
+        tues_value.push(i + "-" + (d.getMonth()+1) + "-" + d.getFullYear())
         //  day/month/year
     }
   }
 
-
-  
   // driver selections
   const [driverDay1, setDriverDay1] = useState("");
   const [driverDay2, setDriverDay2] = useState("");
@@ -396,22 +394,22 @@ export default function SignUp() {
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
                         label={month + " " + sat_label[0]}
-                        value={month + " " + sat_value[0]}
+                        value={sat_value[0]}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
                         label={month + " " + sat_label[1]}
-                        value={month + " " + sat_value[1]}
+                        value={sat_value[1]}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
                         label={month + " " + sat_label[2]}
-                        value={month + " " + sat_value[2]}
+                        value={sat_value[2]}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
                         label={month + " " + sat_label[3]}
-                        value={month + " " + sat_value[3]}
+                        value={sat_value[3]}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
                   </FormGroup>  
                 </FormLabel>
@@ -450,25 +448,25 @@ export default function SignUp() {
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 
                         label={month + " " + tues_label[0] + " - " + (tues_label[0] + 2)}
-                        value={month + " " + tues_value[0]}
+                        value={tues_value[0]}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
                         label= {month + " " + tues_label[1] + " - " + (tues_label[1] + 2)}
-                        value= {month + " " + tues_value[1]}
+                        value= {tues_value[1]}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
                         label= {month + " " + tues_label[2] + " - " + (tues_label[2] + 2)}
-                        value= {month + " " + tues_value[2]}
+                        value= {tues_value[2]}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
-                        label= {month + " " + tues[3] + " - " + (tues[3] + 2)}
-                        value= {month + " " + tues_value[3]}
+                        label= {month + " " + tues_label[3] + " - " + (tues_label[3] + 2)}
+                        value= {tues_value[3]}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
                 </FormGroup>
