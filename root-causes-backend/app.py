@@ -454,6 +454,16 @@ def get_participants_by_group_and_language(group, language):
     
     return {'participants': participant_list}
 
+# GET PARTICIPANTS BY GROUP AND SMS RESPONSE
+@app.route('/participants/group/<group>/sms_response/<sms_response>', methods = ['GET'])
+def get_participants_by_group_and_sms_response(group, sms_response):
+    participants = Participant.query.filter_by(group=group).filter_by(sms_response=sms_response).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant(participant))
+    
+    return {'participants': participant_list}
+
 # DELETE PARTICIPANT
 @app.route('/participants/<id>', methods = ['DELETE'])
 def delete_participant(id):
