@@ -491,8 +491,20 @@ def register_volunteer():
     language = request.form['language']
     affiliation = request.form['affiliation']
     first_time = request.form['first_time']
+    # if (request.form['first_time'] == "yes"):
+    #     first_time = True
+    # elif (request.form['first_time'] == "no"):
+    #     first_time = False
     hipaa = request.form['hipaa']
+    # if (request.form['hipaa'] == "yes"):
+    #     hipaa = True
+    # elif (request.form['hipaa'] == "no"):
+    #     hipaa = False
     credit = request.form['credit']
+    # if (request.form['credit'] == "yes"):
+    #     credit = True
+    # elif (request.form['credit'] == "no"):
+    #     credit = False
         
     if email:
         existing_volunteer = Volunteer.query.filter(
@@ -506,7 +518,6 @@ def register_volunteer():
         db.session.add(new_volunteer)
         db.session.commit()
     return redirect('http://127.0.0.1:3000/')
-
 
 #LOGIN PAGE -- test
 @app.route('/', methods = ['GET', 'POST'])
@@ -532,9 +543,6 @@ def login():
                 f'{email} successfully logged in!'
             )
 
-
-
-
-
 if __name__ == '__main__':
+    app.debug = True
     app.run()

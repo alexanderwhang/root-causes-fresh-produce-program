@@ -51,6 +51,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 function Row(props) {
   const { row } = props;
+  
   const [open, setOpen] = React.useState(false);
   const [delivery_status, setDeliveryStatus] = useState("");
 
@@ -230,18 +231,6 @@ Row.propTypes = {
 };
 
 export default function RouteTable() {
-  // const [rowsRoutes, setRowsRoutes] = useState([])
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5000/routes', {
-  //     'methods':'GET',
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     }
-  //   })
-  //   .then(resp => resp.json())
-  //   .then(resp => setRowsRoutes(resp))
-  //   .catch(error => console.log(error))
-  // },[])
 
   // axios!
   const [rowsRoutes, setRowsRoutes] = useState([]);
@@ -253,6 +242,16 @@ export default function RouteTable() {
     .catch((err) => {console.log(err)
     })
     }, [])
+
+    const [notesRoutes, setNotesRoutes] = useState([]);
+    useEffect(() => {
+      axios
+      .get('http://127.0.0.1:5000/routes')
+      .then((res) => {console.log(res)
+         setNotesRoutes(res.data)})
+      .catch((err) => {console.log(err)
+      })
+      }, [])
   
   return (
     <TableContainer 
@@ -270,6 +269,10 @@ export default function RouteTable() {
           {rowsRoutes.map((row) => (
             <Row key={row.id} row={row} />
           ))}
+          {notesRoutes.map((row) => (
+            <Row key={row.id} row={row} />
+          ))}
+
         </TableBody>
       </Table>
     </TableContainer>
