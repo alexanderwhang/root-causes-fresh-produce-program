@@ -33,8 +33,22 @@ export function Caught_Participants() {
 
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
-      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH DESIRED ANSWERS
-      const participants = data.data.participants;
+      const data = await axios.get(`${baseUrl}/participants/group/A/sms_response/Yes`); // GET PATIENTS WITH DESIRED ANSWERS
+      const data2 = await axios.get(`${baseUrl}/participants/group/A/sms_response/yes`);
+      const data3 = await axios.get(`${baseUrl}/participants/group/A/sms_response/No`);
+      const data4 = await axios.get(`${baseUrl}/participants/group/A/sms_response/no`);
+      const data5 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Si`);
+      const data6 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
+      const data7 = await axios.get(`${baseUrl}/participants/group/A/sms_response/si`);
+      const data8 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
+      let participants = data.data.participants;
+      participants = participants.concat(data2.data.participants);
+      participants = participants.concat(data3.data.participants);
+      participants = participants.concat(data4.data.participants);
+      participants = participants.concat(data5.data.participants);
+      participants = participants.concat(data6.data.participants);
+      participants = participants.concat(data7.data.participants);
+      participants = participants.concat(data8.data.participants);
       setCaughtParticipants(participants);
       console.log("DATA: ", data);
     };
@@ -57,6 +71,13 @@ export function Caught_Participants() {
         [2, "tan"],
         [3, "salmon"],
       ]);
+
+    // let setStatusMap = new Map([
+    //   ["Yes", "green"],
+    //   ["yes", "green"],
+    //   [2, "tan"],
+    //   [3, "salmon"],
+    // ])
 
     return (
       <div>
