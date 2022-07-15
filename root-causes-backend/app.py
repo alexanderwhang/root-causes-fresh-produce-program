@@ -34,6 +34,9 @@ from twilio.rest import Client
 # pipenv shell
 # Flask run
 
+# To get Twilio working (open your computer terminal)
+# run ' brew tap twilio/brew && brew install twilio '
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://rootcauses_user:ztx9xdh.yga7cnv2PHX@codeplus-postgres-test-01.oit.duke.edu/rootcauses'
