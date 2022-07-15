@@ -31,6 +31,7 @@ export function Caught_Participants() {
     const [open, setOpen] = React.useState(true);
     const [caughtParticipants, setCaughtParticipants] = useState([]);
 
+
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
       const data = await axios.get(`${baseUrl}/participants/group/A/sms_response/Yes`); // GET PATIENTS WITH DESIRED ANSWERS

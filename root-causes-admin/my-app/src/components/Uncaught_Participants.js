@@ -32,12 +32,27 @@ export function Uncaught_Participants() {
     const [open, setOpen] = React.useState(true);
     const [uncaughtParticipants, setUncaughtParticipants] = useState([]);
 
+    function arrayRemove(arr, value) { 
+    
+        return arr.filter(function(ele){ 
+            return ele != value; 
+        });
+    }
+
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
-      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH COMPLICATED ANSWERS
-      const { participants } = data.data;
+      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH DESIRED ANSWERS
+      const data2 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Yes`);
+      const data3 = await axios.get(`${baseUrl}/participants/group/A/sms_response/yes`);
+      const data4 = await axios.get(`${baseUrl}/participants/group/A/sms_response/No`);
+      const data5 = await axios.get(`${baseUrl}/participants/group/A/sms_response/no`);
+      const data6 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Si`);
+      const data7 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
+      const data8 = await axios.get(`${baseUrl}/participants/group/A/sms_response/si`);
+      const data9 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
+      let participants = data.data.participants;
+      var result = arrayRemove(participants, data2.data.participants);
       setUncaughtParticipants(participants);
-      console.log(uncaughtParticipants);
       console.log("DATA: ", data);
     };
 
