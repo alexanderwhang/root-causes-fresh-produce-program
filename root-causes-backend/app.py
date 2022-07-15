@@ -220,7 +220,7 @@ class DriverLog(db.Model):
     __table_args__ = {"schema": "RC"}
 
     driver_log_preferences_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     date_available = db.Column(db.Date, nullable=False)
     time_available = db.Column(db.TIMESTAMP, nullable=False)
     deliver_more_preference = db.Column(db.Boolean, nullable=False)
@@ -391,7 +391,7 @@ def create_participant():
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])
 def get_participants():
-    participants = Participant.query.order_by(Participant.id.asc()).all()
+    participants = Participant.query.order_by(Participant.last_name.asc()).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -448,6 +448,16 @@ def get_participants_by_group_and_status(group, status):
 @app.route('/participants/group/<group>/language/<language>', methods = ['GET'])
 def get_participants_by_group_and_language(group, language):
     participants = Participant.query.filter_by(group=group).filter_by(language=language).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant(participant))
+    
+    return {'participants': participant_list}
+
+# GET PARTICIPANTS BY GROUP AND SMS RESPONSE
+@app.route('/participants/group/<group>/sms_response/<sms_response>', methods = ['GET'])
+def get_participants_by_group_and_sms_response(group, sms_response):
+    participants = Participant.query.filter_by(group=group).filter_by(sms_response=sms_response).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -694,28 +704,28 @@ def register_volunteer():
 
 
 #LOGIN PAGE
-@app.route('/', methods = ['GET', 'POST'])
-def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    existing_volunteer = Volunteer.query.filter_by(email=email).first()
+# @app.route('/', methods = ['GET', 'POST'])
+# def login():
+#     email = request.form.get('email')
+#     password = request.form.get('password')
+#     existing_volunteer = Volunteer.query.filter_by(email=email).first()
 
-    if not existing_volunteer:
-        return make_response(
-                f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
-        )
-        return redirect('http://127.0.0.1:3000/profile')
+#     if not existing_volunteer:
+#         return make_response(
+#                 f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
+#         )
+#         return redirect('http://127.0.0.1:3000/profile')
 
-    if existing_volunteer and not (existing_volunteer.password==password):
-        return make_response(
-                f'{email} password is incorrect.'
-        )
-        return redirect('http://127.0.0.1:3000/profile')
+#     if existing_volunteer and not (existing_volunteer.password==password):
+#         return make_response(
+#                 f'{email} password is incorrect.'
+#         )
+#         return redirect('http://127.0.0.1:3000/profile')
     
-    if existing_volunteer and (existing_volunteer.password==password):
-        return make_response(
-                f'{email} successfully logged in!'
-            )
+#     if existing_volunteer and (existing_volunteer.password==password):
+#         return make_response(
+#                 f'{email} successfully logged in!'
+#             )
 
 #STATUS AND MOST RECENT CALL - CALLS PAGE
 @app.route('/status_from_calls', methods = ['POST'])
@@ -770,7 +780,7 @@ def add_signup():
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
                 db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
@@ -785,11 +795,12 @@ def add_signup():
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
                 db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('driver_preference' in request.form):
+        volunteer_type = "Driver"
         # more deliveries?
         driverMoreDelivery = request.form.get('driverMoreDelivery')
         if (driverMoreDelivery == "moreDelivery"):
@@ -817,11 +828,16 @@ def add_signup():
         for day in driverDay:
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d").date()
-                person = VolunteerLog(date_available=day, time_available=driverTime, 
+                # person for VolunteerLog
+                person_vl = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                # person for DriverLog
+                person_dlp = DriverLog(volunteer_id=None, date_available=day, time_available=driverTime, 
                                       deliver_more_preference=driverMoreDelivery,
                                       live_outside_durham=driverOutsideDurham, 
-                                      route_preference=driver_preference)
-                db.session.add(person)
+                                      route_preference=driver_preference, comments=None)
+                
+                db.session.add(person_vl)
+                db.session.add(person_dlp)
 
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')

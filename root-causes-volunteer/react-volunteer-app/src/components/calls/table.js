@@ -127,6 +127,21 @@ function Row(props) {
     }
   }
 
+  {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
+  function numToString(int) {
+    if (int == 1) {
+      return "Ready for delivery"
+    } else if (int == 2) {
+      return "Not this week"
+    } else if (int == 3) {
+      return "Requires follow-up call"
+    } else if (int == 4) {
+      return "No status set"
+    } else {
+      return "No response"
+    }
+  }
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -149,8 +164,7 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
-            >Coming Soon
-            {/* {row.status} */}
+            > {numToString(row.status)}
           </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
@@ -294,17 +308,28 @@ export default function CollapsibleTable() {
     // 1 = GREEN, ready for delivery
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
-      const data3 = await axios.get(`${baseUrl}/participants/status/3`);
-      const data5 = await axios.get(`${baseUrl}/participants/status/5`);
-      const data = {...data5, ...data3}
+      // const data3 = await axios.get(`${baseUrl}/participants/status/3`);
+      const data = await axios.get(`${baseUrl}/participants/status/5`);
       const { participants } = data.data;
+      // const participants3 = data3.data;
       setRows(participants);
-      console.log("DATA: ", data);
     };
   
     useEffect(() => {
       fetchRows();
     }, []);
+
+    // const fetchRows2 = async () => {
+    //   const data5 = await axios.get(`${baseUrl}/participants/status/5`);
+    //   const { participants2 } = data5.data;
+    //   setRows2(participants2);
+    // };
+  
+    // useEffect(() => {
+    //   fetchRows2();
+    // }, []);
+
+    // setRows([...rows1, ...rows2]);
 
   return (
     <TableContainer 
