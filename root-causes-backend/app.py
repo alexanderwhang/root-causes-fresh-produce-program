@@ -15,6 +15,10 @@ from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
 
+# import needed for file upload
+from werkzeug.utils import secure_filename
+
+
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
 
@@ -37,12 +41,16 @@ from twilio.rest import Client
 # To get Twilio working (open your computer terminal)
 # run ' brew tap twilio/brew && brew install twilio '
 
+UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://rootcauses_user:ztx9xdh.yga7cnv2PHX@codeplus-postgres-test-01.oit.duke.edu/rootcauses'
 # URI FORMAT: postgressql://user:password@host/database_name
 db = SQLAlchemy(app)
 CORS(app)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #SMS INFO
 account_sid = "ACa19caaefab10dead0bf946d4e3190175"
@@ -382,33 +390,49 @@ def hello():
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    date_of_birth = request.json['date_of_birth']
-    age = request.json['age']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    group = request.json['group']
-    pronouns = request.json['pronouns']
-    household_size = request.json['household_size']
-    most_recent_delivery = request.json['most_recent_delivery']
-    most_recent_call = request.json['most_recent_call']
-    sms_response = request.json['sms_response']
-    image = request.json['image']
+    # image upload code
+    if ('selectedImage' in request.files):
+        id = request.form['id']
+        image = request.files['selectedImage']
+        routeImage = Participant.query.get(id)
+        filename = secure_filename(image.filename)
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(full_filename)
+        # routeImage.image = url_for('download_file', name=filename)
+        routeImage.image = filename
+        db.session.add(routeImage)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
     
-    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
-    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
+    # otherwise, add new participant
+    else:
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
+        date_of_birth = request.json['date_of_birth']
+        age = request.json['age']
+        email = request.json['email']
+        phone = request.json['phone']
+        language = request.json['language']
+        group = request.json['group']
+        pronouns = request.json['pronouns']
+        household_size = request.json['household_size']
+        most_recent_delivery = request.json['most_recent_delivery']
+        most_recent_call = request.json['most_recent_call']
+        sms_response = request.json['sms_response']
+        image = request.json['image']
+        
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
 
-    status_type_id = 0
-    volunteer_id = null
-    status_date = datetime.utcnow
-    source = "init"
-    # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
+        status_type_id = 0
+        volunteer_id = null
+        status_date = datetime.utcnow
+        source = "init"
+        # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
 
-    db.session.add(participant)
-    db.session.commit()
-    return format_participant(participant)
+        db.session.add(participant)
+        db.session.commit()
+        return format_participant(participant)
 
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])

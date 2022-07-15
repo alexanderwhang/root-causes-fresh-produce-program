@@ -118,7 +118,7 @@ function Row(props) {
             )}
 
           <form method = "post" 
-                action="http://127.0.0.1:5000/routes"
+                action="http://127.0.0.1:5000/participants"
                 enctype = "multipart/form-data">
             <input
               type="file"
@@ -143,7 +143,9 @@ function Row(props) {
       </div>
       );
     } else {
-      return row.image;
+      return (
+        <img src={require('../../images-react/' + row.image)} />
+        );
     }
   }
 
