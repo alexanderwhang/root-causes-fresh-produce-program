@@ -1,0 +1,5 @@
+.all_vols{
+    max-height: 80vh;
+    overflow: hidden;
+    overflow-y: auto;
+}

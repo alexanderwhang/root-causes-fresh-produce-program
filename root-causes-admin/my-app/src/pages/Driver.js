@@ -291,7 +291,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time, Route, Duration, Addresses
+                          
                         </ListItemText>
                       </ListItemButton>
                     </List>
