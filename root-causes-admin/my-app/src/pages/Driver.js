@@ -260,7 +260,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:00, Route, Duration: 80 min, Participant Name: Isa	Gilfoy	
+                          Start Time: 10:00, Route: E, Duration: 80 min, Participant Name: Isa	Gilfoy	
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -273,7 +273,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:15, Route, Duration: 30 min, Participant Name: Faulkner	Strut
+                          Start Time: 10:15, Route: F, Duration: 30 min, Participant Name: Faulkner	Strut
                         </ListItemText>
                       </ListItemButton>
                     </List>

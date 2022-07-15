@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 from sqlalchemy.orm import join
-from sqlalchemy import Column, ForeignKey, Integer, Table
+from sqlalchemy import Column, ForeignKey, Integer, Table, null
 from sqlalchemy.orm import declarative_base, relationship
 import json
 import pdb
@@ -279,7 +279,7 @@ def format_delivery(delivery):
     }
 
 class CallAssignment(db.Model):
-    __tablename__ = 'call_assigment'
+    __tablename__ = 'call_assignment'
     __table_args__ = {"schema":"RC"}
 
     call_assignment_id = db.Column(db.Integer, primary_key=True)
@@ -384,6 +384,13 @@ def create_participant():
     
     participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
     # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
+
+    status_type_id = 0
+    volunteer_id = null
+    status_date = datetime.utcnow
+    source = "init"
+    # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
+
     db.session.add(participant)
     db.session.commit()
     return format_participant(participant)
