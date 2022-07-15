@@ -34,13 +34,17 @@ export function Uncaught_Participants() {
 
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
-      const data = await axios.get(`${baseUrl}/participants/group/B`); // GET PATIENTS WITH DESIRED ANSWERS
+      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH COMPLICATED ANSWERS
       const { participants } = data.data;
       setUncaughtParticipants(participants);
       console.log(uncaughtParticipants);
       console.log("DATA: ", data);
     };
 
+
+      useEffect(() => {
+        fetchParticipants();
+      }, []);
     const handleStatusChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value);
     };
@@ -49,20 +53,33 @@ export function Uncaught_Participants() {
     setOpen(!open);
     };
 
+     let statusMap = new Map([
+        [0, "grey"],
+        [1, "green"],
+        [2, "tan"],
+        [3, "salmon"],
+      ]);
+
     return (
       <div>
       {uncaughtParticipants.map((participant) => {
         return (
           <div>
         <ListItemButton onClick={handleClick}>
+          <div
+            style={{
+              color: `${statusMap.get(participant.status)}`,
+            }}
+          >
           <SvgEllipse id="text_status"/>
+          </div>
           <ListItemText primary= {participant.first_name} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding className= "sublist">
               <ListItemButton sx={{ pl: 4 }}>
-                <ListItemText primary="Message" />
+                <ListItemText primary= {participant.sms_response}/>
                   <Box sx={{ width:100, maxWidth: 300 }}>
                     <FormControl fullWidth>
                       <InputLabel id="select-status-label">Status</InputLabel>
