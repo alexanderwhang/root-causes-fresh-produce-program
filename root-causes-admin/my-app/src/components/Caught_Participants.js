@@ -31,7 +31,6 @@ export function Caught_Participants() {
     const [open, setOpen] = React.useState(true);
     const [caughtParticipants, setCaughtParticipants] = useState([]);
 
-  
 
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
