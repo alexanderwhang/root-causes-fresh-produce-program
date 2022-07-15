@@ -10,15 +10,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 
 
-const tabs = [{
-  route: "/home",
-  icon: faHome,
-  label: "Home"
-},{
-  route: "/profile",
+const tabs = [
+  {route: "/profile",
   icon: faAddressCard,
-  label: "Register"
-},{
+  label: "Register"},
+{
   route: "/",
   icon: faUserCircle,
   label: "Login"
@@ -33,7 +29,7 @@ const tabs = [{
 }, {
   route: "/signup",
   icon: faFileLines,
-  label: "SignUp"
+  label: "Volunteer"
 }
 ]
 
@@ -69,7 +65,7 @@ const Navigation = (props) => {
               </NavItem>
               <NavItem>
                 <NavLink to="/signup" className="nav-link">
-                  <button className="navButton"> Sign Up </button>
+                  <button className="navButton"> Volunteer </button>
                 </NavLink>
               </NavItem>
             </Nav>
