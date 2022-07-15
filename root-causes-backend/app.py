@@ -335,7 +335,7 @@ class DeliveryHistory(db.Model):
     __tablename__ = 'delivery_history'
     __table_args__ = {"schema":"RC"}
 
-    delivery_history_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column("delivery_history_id", db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
@@ -731,13 +731,20 @@ def get_calls():
         db.session.add(recent_call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
+
+def format_delivery_notes(delivery_note):
+    return {
+        "notes": delivery_note.notes
+    }
     
-# # GET PARTICIPANT BY ID
-# @app.route('/participants/<id>', methods = ['GET'])
-# def get_call_note(id):
-#     participant = Participant.query.filter_by(id=id).one()
-#     formatted_participant = format_participant(participant)
-#     return {'participant': formatted_participant}
+# GET ROUTE NOTES BY ID
+@app.route('/routes/notes/<id>', methods = ['GET'])
+def get_route_notes(id):
+    notes = db.session.query(DeliveryHistory.notes).filter(DeliveryHistory.participant_id == id).all()
+    all_notes = []
+    for note in notes:
+        all_notes.append(format_delivery_notes(note))
+    return jsonify(all_notes)
     
     
 # TIME OF MOST RECENT DELIVERY - ROUTES PAGE    
