@@ -41,6 +41,21 @@ export function Driver() {
   let numDrivers = volunteersList.length;
   let numParticipants = participantsList.length;
 
+  // const fileUpload = () => {
+  //   <Input accept="file/*" id="contained-button-file" multiple type="file"/>
+  // };
+
+  const [edit_form_status, setEdit] = React.useState(true)
+
+  const editInfo = () => {
+    if (edit_form_status){
+      setEdit(false);
+    }
+      
+    else if (!edit_form_status){
+      setEdit(true);
+    }
+  };
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
@@ -57,6 +72,7 @@ export function Driver() {
     setVolunteersList(volunteers);
     console.log("DATA: ", data);
   };
+
 
   useEffect(() => {
     fetchParticipants();
@@ -75,10 +91,11 @@ export function Driver() {
     [3, "salmon"],
   ]);
 
-   const handleFile = (e) => {
+    const handleFile = (e) => {
         console.log(e.target.files[0]);
+        editInfo();
     }
- 
+  
   return (
     <div className="drivers">
       <Navbar />
@@ -159,26 +176,111 @@ export function Driver() {
         {/* <Button type="submit" variant="contained"> */}
         {/* <Button variant="contained">
           <ParseExcel/> */}
-        <label htmlFor="contained-button-file">
-      <Input accept="image/*" id="contained-button-file" multiple type="file"/>
-        <Button variant="contained" component="span" id="upload">
-          Upload Routes
+        <label htmlFor="contained-button-file"> 
+      <Input accept="file/*" id="contained-button-file" multiple type="file" onChange={(e) => handleFile(e)}/>
+        <Button
+          variant="contained" 
+          component="span"
+          id="upload">
+            Upload Routes
         </Button>
         </label>
       </div>
+      <form hidden={edit_form_status}>
       <div className="after_assign">
         <List
           sx={{ width: "100%", bgcolor: "#f9f8e1" }}
           component="nav"
           aria-labelledby="nested-list-subheader"
           subheader={
+            
             <ListSubheader component="div" id="nested-list-subheader">
               Assigned Routes
             </ListSubheader>
           }
           className="indiv_routes"
         >
-          {volunteersList.map((vol) => {
+        <ListItemButton onClick={handleClick}>
+                    <ListItemText> Ulla	Bracchi </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 9:00, Route: A, Duration: 60 min, Participant Name: Elsey	Crowdy
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                  <ListItemButton onClick={handleClick}>
+                    <ListItemText> Theda	Tozer </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 9:15, Route: B, Duration: 70 min, Participant Name: Renaldo	Smythin
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                  <ListItemButton onClick={handleClick}>
+                    <ListItemText> Cristin	Caustic </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 9:30, Route: C, Duration: 55 min, Participant Name: Abby	Crosier
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                  <ListItemButton onClick={handleClick}>
+                    <ListItemText> Chrissy	Nicholas </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 9:45, Route: D, Duration: 45 min, Participant Name: Adorne	Jedrych	
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                  <ListItemButton onClick={handleClick}>
+                    <ListItemText> Nero	Pledger </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 10:00, Route: E, Duration: 80 min, Participant Name: Isa	Gilfoy	
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                  <ListItemButton onClick={handleClick}>
+                    <ListItemText> Angelia	Shapter </ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding className="sublist">
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText>
+                          Start Time: 10:15, Route: F, Duration: 30 min, Participant Name: Faulkner	Strut
+                        </ListItemText>
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+
+
+          {/* {volunteersList.map((vol) => {
               return (
                 <div key={vol.id}>
                   <ListItemButton key={vol.id} onClick={handleClick}>
@@ -189,19 +291,20 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time, Route, Duration, Addresses
+                          
                         </ListItemText>
                       </ListItemButton>
                     </List>
                   </Collapse>
                 </div>
               );
-          })}
+          })} */}
         </List>
       </div>
-      <div className="driver_buttons">
-        <Button variant="contained"> Confirm Routes </Button>
-      </div>
+        <div className="driver_buttons">
+          <Button variant="contained"> Confirm Routes </Button>
+        </div>
+      </form>
       <FooterContainer />
     </div>
   );

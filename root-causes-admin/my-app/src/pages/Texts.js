@@ -20,7 +20,8 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import SvgEllipse from "../symbolComponents/Ellipse";
-import {Caught_Participants} from "../components/Caught_Participants.js"
+import {Caught_Participants} from "../components/Caught_Participants.js";
+import {Uncaught_Participants} from "../components/Uncaught_Participants.js";
 
 const baseUrl = "http://127.0.0.1:5000";
 
@@ -73,20 +74,12 @@ export default function Texts(){
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS READY FOR DELIVERY (GREEN)
+    const data = await axios.get(`${baseUrl}/participants/group/A/sms_response/yes`); // GET PATIENTS READY FOR DELIVERY (GREEN)
     const { participants } = data.data;
-    setParticipantsList(participants);
+    setCaughtParticipants(participants);
     console.log("DATA: ", data);
   };
 
-
-  const handleClickA = () => {
-    setOpenA(!openA);
-  };
-
-  const handleClickB = () => {
-    setOpenB(!openB);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -147,9 +140,6 @@ export default function Texts(){
                 </div>
               </div>
             </div>
-            {/* <div className= "selected_pts">
-              <h3>Participants Go Here</h3>
-            </div> */}
         </div>
 
         <div className= "box2">
@@ -167,96 +157,6 @@ export default function Texts(){
               }
             >
             <Caught_Participants />
-             {/* <ListItemButton onClick={handleClickA}>
-              <SvgEllipse id="text_status"/>
-                <ListItemText primary=" Pt A" />
-                {openA ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={openA} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <ListItemButton onClick={handleClickA}>
-               <SvgEllipse id="text_status"/>
-                <ListItemText primary="Pt B" />
-                {openA ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={openA} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              <ListItemButton onClick={handleClickA}>
-               <SvgEllipse id="text_status"/>
-                <ListItemText primary="Pt C" />
-                {openA ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={openA} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse> */}
             </List>
           </div>
           <div className="uncaught">
@@ -270,102 +170,7 @@ export default function Texts(){
                 </ListSubheader>
               }
             >
-            {/* list */}
-              <ListItemButton onClick={handleClickB}>
-               <SvgEllipse id="text_status"/>
-                <ListItemText primary="Pt D" />
-                {openB ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              {/* sublist */}
-              <Collapse in={openB} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              {/* list */}
-              <ListItemButton onClick={handleClickB}>
-               <SvgEllipse id="text_status"/>
-                <ListItemText primary="Pt E" />
-                {openB ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              {/* sublist */}
-              <Collapse in={openB} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse>
-              {/* list */}
-              <ListItemButton onClick={handleClickB}>
-               <SvgEllipse id="text_status"/>
-                <ListItemText primary="Pt F" />
-                {openB ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              {/* sublist */}
-              <Collapse in={openB} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding className= "sublist">
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Message" />
-                    <Box sx={{ width:100, maxWidth: 300 }}>
-                      <FormControl fullWidth>
-                        <InputLabel id="select-status-label">Status</InputLabel>
-                        <Select
-                          labelId="simple-select-label"
-                          id="simple-select"
-                          sx={{backgroundColor: "#f9f8e1" }}
-                          value={status}
-                          label="Status"
-                          onChange={handleStatusChange}
-                        >
-                          <MenuItem value={0}>No Status Set</MenuItem>
-                          <MenuItem value={1}>Ready for Delivery</MenuItem>
-                          <MenuItem value={2}>Not This Week</MenuItem>
-                          <MenuItem value={3}>Requires Follow Up</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </ListItemButton>
-                </List>
-              </Collapse>
+              <Uncaught_Participants/>
             </List>
           </div>
           </div>

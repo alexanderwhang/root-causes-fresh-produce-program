@@ -3,12 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 from sqlalchemy.orm import join
-from sqlalchemy import Column, ForeignKey, Integer, Table
+from sqlalchemy import Column, ForeignKey, Integer, Table, null
 from sqlalchemy.orm import declarative_base, relationship
 import json
 import pdb
 from flask_marshmallow import Marshmallow
 from datetime import datetime, timezone
+import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
@@ -62,6 +63,7 @@ class Participant(db.Model):
     household_size = db.Column(db.Integer, nullable=True)
     most_recent_delivery = db.Column(db.String(100), nullable=True)
     most_recent_call = db.Column(db.String(100), nullable=True)
+    sms_response = db.Column(db.Text, nullable=True)
 
     children = relationship("Status")
     children = relationship("DeliveryHistory")
@@ -70,7 +72,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -83,6 +85,7 @@ class Participant(db.Model):
         self.household_size = household_size
         self.most_recent_delivery = most_recent_delivery
         self.most_recent_call = most_recent_call
+        self.sms_response = sms_response
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -109,7 +112,8 @@ def format_participant(participant):
         "zip": address.zip,
         "apartment": address.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
-        "most_recent_call" : participant.most_recent_call
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response
     }
 
 class Status(db.Model):
@@ -173,7 +177,7 @@ class Volunteer(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(320), nullable=False)
-    password = db.Column(db.Text, nullable=True)
+    password = db.Column(db.String(100), nullable=True)
     phone = db.Column(db.Text, nullable=False)
     affiliation = db.Column(db.Text, nullable=True)
     language = db.Column(db.Text, nullable=False)
@@ -224,7 +228,7 @@ class DriverLog(db.Model):
     __table_args__ = {"schema": "RC"}
 
     driver_log_preferences_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     date_available = db.Column(db.Date, nullable=False)
     time_available = db.Column(db.TIMESTAMP, nullable=False)
     deliver_more_preference = db.Column(db.Boolean, nullable=False)
@@ -283,7 +287,7 @@ def format_delivery(delivery):
     }
 
 class CallAssignment(db.Model):
-    __tablename__ = 'call_assigment'
+    __tablename__ = 'call_assignment'
     __table_args__ = {"schema":"RC"}
 
     call_assignment_id = db.Column(db.Integer, primary_key=True)
@@ -312,7 +316,7 @@ class VolunteerLog(db.Model):
     __table_args__ = {"schema":"RC"}
 
     volunteer_log_id = db.Column(db.Integer, primary_key=True)
-    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=True)
     volunteer_type = db.Column(db.Text, nullable=True)
     week_available = db.Column(db.Date, nullable=False)
     notes = db.Column(db.Text, nullable=True)
@@ -374,12 +378,27 @@ def hello():
 def create_participant():
     first_name = request.json['first_name']
     last_name = request.json['last_name']
+    date_of_birth = request.json['date_of_birth']
+    age = request.json['age']
     email = request.json['email']
-    phone = request.json['phone_number']
+    phone = request.json['phone']
     language = request.json['language']
     group = request.json['group']
     pronouns = request.json['pronouns']
-    participant = Participant(first_name, last_name,email,phone,language, group, pronouns)
+    household_size = request.json['household_size']
+    most_recent_delivery = request.json['most_recent_delivery']
+    most_recent_call = request.json['most_recent_call']
+    sms_response = request.json['sms_response']
+    
+    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
+    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
+
+    status_type_id = 0
+    volunteer_id = null
+    status_date = datetime.utcnow
+    source = "init"
+    # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
+
     db.session.add(participant)
     db.session.commit()
     return format_participant(participant)
@@ -387,7 +406,7 @@ def create_participant():
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])
 def get_participants():
-    participants = Participant.query.order_by(Participant.id.asc()).all()
+    participants = Participant.query.order_by(Participant.last_name.asc()).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -444,6 +463,16 @@ def get_participants_by_group_and_status(group, status):
 @app.route('/participants/group/<group>/language/<language>', methods = ['GET'])
 def get_participants_by_group_and_language(group, language):
     participants = Participant.query.filter_by(group=group).filter_by(language=language).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant(participant))
+    
+    return {'participants': participant_list}
+
+# GET PARTICIPANTS BY GROUP AND SMS RESPONSE
+@app.route('/participants/group/<group>/sms_response/<sms_response>', methods = ['GET'])
+def get_participants_by_group_and_sms_response(group, sms_response):
+    participants = Participant.query.filter_by(group=group).filter_by(sms_response=sms_response).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -732,30 +761,30 @@ def register_volunteer():
 
 
 #LOGIN PAGE
-@app.route('/', methods = ['GET', 'POST'])
-def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    existing_volunteer = Volunteer.query.filter_by(email=email).first()
+# @app.route('/', methods = ['GET', 'POST'])
+# def login():
+#     email = request.form.get('email')
+#     password = request.form.get('password')
+#     existing_volunteer = Volunteer.query.filter_by(email=email).first()
 
-    if not existing_volunteer:
-        return make_response(
-                f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
-        )
-        return redirect('http://127.0.0.1:3000/profile')
+#     if not existing_volunteer:
+#         return make_response(
+#                 f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
+#         )
+#         return redirect('http://127.0.0.1:3000/profile')
 
-    if existing_volunteer and not (existing_volunteer.password==password):
-        return make_response(
-                f'{email} password is incorrect.'
-        )
-        return redirect('http://127.0.0.1:3000/profile')
+#     if existing_volunteer and not (existing_volunteer.password==password):
+#         return make_response(
+#                 f'{email} password is incorrect.'
+#         )
+#         return redirect('http://127.0.0.1:3000/profile')
     
-    if existing_volunteer and (existing_volunteer.password==password):
-        return make_response(
-                f'{email} successfully logged in!'
-            )
+#     if existing_volunteer and (existing_volunteer.password==password):
+#         return make_response(
+#                 f'{email} successfully logged in!'
+#             )
 
-#STATUS ON CALLS PAGE
+#STATUS AND MOST RECENT CALL - CALLS PAGE
 @app.route('/status_from_calls', methods = ['POST'])
 def get_calls():
         id = request.form['id']
@@ -770,6 +799,15 @@ def get_calls():
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
     
+# # GET PARTICIPANT BY ID
+# @app.route('/participants/<id>', methods = ['GET'])
+# def get_call_note(id):
+#     participant = Participant.query.filter_by(id=id).one()
+#     formatted_participant = format_participant(participant)
+#     return {'participant': formatted_participant}
+    
+    
+# TIME OF MOST RECENT DELIVERY - ROUTES PAGE    
 @app.route('/recent_delivery', methods = ['POST'])
 def recent_delivery():
     # if request.method == 'GET':
@@ -784,6 +822,82 @@ def recent_delivery():
         db.session.add(participant)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/routes')
+    
+# SIGN-UP PAGE
+@app.route('/signup', methods = ['POST'])
+def add_signup():
+    if request.method == 'POST' and ('callerDay1' in request.form):
+        volunteer_type = "Caller"
+        callerDay1 = request.form.get('callerDay1')
+        callerDay2 = request.form.get('callerDay2')
+        callerDay3 = request.form.get('callerDay3')
+        callerDay4 = request.form.get('callerDay4')
+        callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
+        for day in callerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                db.session.add(person)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
+    elif request.method == 'POST' and ('packerDay1' in request.form):
+        volunteer_type = "Packer"
+        packerDay1 = request.form.get('packerDay1')
+        packerDay2 = request.form.get('packerDay2')
+        packerDay3 = request.form.get('packerDay3')
+        packerDay4 = request.form.get('packerDay4')
+        packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
+        for day in packerDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                db.session.add(person)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
+    elif request.method == 'POST' and ('driver_preference' in request.form):
+        volunteer_type = "Driver"
+        # more deliveries?
+        driverMoreDelivery = request.form.get('driverMoreDelivery')
+        if (driverMoreDelivery == "moreDelivery"):
+            driverMoreDelivery = True
+        else:
+            driverMoreDelivery = False
+            
+        # outside Durham?
+        driverOutsideDurham = request.form.get('driverOutsideDurham')
+        if (driverOutsideDurham == "outsideDurham"):
+            driverOutsideDurham = True
+        else:
+            driverOutsideDurham = False
+        
+        driver_preference = request.form['driver_preference']
+        
+        driverTime = request.form.get('driver_time')
+        driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
+                
+        driverDay1 = request.form.get('driverDay1')
+        driverDay2 = request.form.get('driverDay2')
+        driverDay3 = request.form.get('driverDay3')
+        driverDay4 = request.form.get('driverDay4')
+        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
+        for day in driverDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
+                # person for VolunteerLog
+                person_vl = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                # person for DriverLog
+                person_dlp = DriverLog(volunteer_id=None, date_available=day, time_available=driverTime, 
+                                      deliver_more_preference=driverMoreDelivery,
+                                      live_outside_durham=driverOutsideDurham, 
+                                      route_preference=driver_preference, comments=None)
+                
+                db.session.add(person_vl)
+                db.session.add(person_dlp)
+
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/signup')
         
 
 if __name__ == '__main__':
