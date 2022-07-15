@@ -12,6 +12,8 @@ from datetime import datetime, timezone
 import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
+import os
+from twilio.rest import Client
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -22,6 +24,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 # - To activate: pipenv shell
 # pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors flask-marshmallow
         # If pyscopg2 is not installing -> pip install postgres first or xcode-select --install
+# pipenv install twilio
 # Flask run
 # python (to activate python)
 # from app import db
@@ -37,6 +40,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://rootcauses_user:ztx9xdh.yg
 # URI FORMAT: postgressql://user:password@host/database_name
 db = SQLAlchemy(app)
 CORS(app)
+
+#SMS INFO
+account_sid = "ACa19caaefab10dead0bf946d4e3190175"
+auth_token = "99238e6ddab706ec700abe98ed63cac3"
+client = Client(account_sid, auth_token)
 
 class Participant(db.Model):
     __tablename__ = 'participant'
@@ -521,6 +529,48 @@ def update_participant(id):
 
     db.session.commit()
     return {'participant': format_participant(participant.one())}
+
+# OUTGOING SMS TEXT
+@app.route('/smstexts/<message>', methods=['POST'])
+def outgoing_sms(message):
+    # message = request.json['message']
+    
+
+    message1 = client.messages \
+                .create(
+                     body=message,
+                     from_='+19897046694',
+                     to='+17137398907'
+                 )
+    message2 = client.messages \
+                .create(
+                    body=message,
+                    from_='+19897046694',
+                    to='+15714713578'
+                )
+    return {"Message": message}
+
+# INCOMING SMS TEXT
+@app.route('/smstexts', methods=['GET', 'POST'])
+def incoming_sms():
+    # """Send a dynamic reply to an incoming text message"""
+    # # Get the message the user sent our Twilio number
+    # body = request.values.get('Body', None)
+
+    # # Start our TwiML response
+    # resp = MessagingResponse()
+
+    # # Determine the right reply for this message
+    # if body == '1':
+    #     resp.message("You have selected YES!")
+    # elif body == '2':
+    #     resp.message("You have selected NO!")
+
+    # return str(resp)
+    return {"status": True}
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 ######### VOLUNTEERS ##########
 

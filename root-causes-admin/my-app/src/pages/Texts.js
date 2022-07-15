@@ -65,7 +65,11 @@ export function BasicSelect() {
 
 export default function Texts(){
     const [value, setValue] = React.useState('');
-    const [caughtParticipants, setCaughtParticipants] = useState([]);
+    const [participantsList, setParticipantsList] = useState([]);
+    const [openA, setOpenA] = React.useState(true);
+    const [openB, setOpenB] = React.useState(true);
+    const [message, setMessage] = React.useState('');
+
 
 
   // GET PARTICIPANTS
@@ -79,8 +83,25 @@ export default function Texts(){
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    setMessage(event.target.value);
   };
 
+
+  const handleOutgoingSMS = async (e) => {
+    var data = JSON.stringify({ message });
+
+    const response = await axios.post(`${baseUrl}/smstexts/${message}`)
+  }
+
+  const [status, setStatus] = React.useState('');
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value);
+  };
+  //const [status, setStatus] = React.useState(props.participant.status);
+  // const handleStatusChange = (event: SelectChangeEvent) => {
+  //   setStatus(event.target.value);
+  // };
 
     return(
         <div>
@@ -113,7 +134,9 @@ export default function Texts(){
                   </div>
                 </Box>
                 <div className="confirmMessage">
-                  <Button variant="contained"> Send Message </Button>
+                  <header className="sendSMS"> 
+                    <Button variant="contained" onClick={handleOutgoingSMS}> Send Message </Button>
+                  </header>
                 </div>
               </div>
             </div>
