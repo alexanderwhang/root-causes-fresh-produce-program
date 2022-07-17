@@ -335,7 +335,7 @@ class DeliveryHistory(db.Model):
     __tablename__ = 'delivery_history'
     __table_args__ = {"schema":"RC"}
 
-    delivery_history_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column("delivery_history_id", db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
@@ -681,6 +681,48 @@ def get_call_assignments():
 
 
 ########VOLUNTEER APP##########
+def format_participant_routes(participant):
+    status = Status.query.filter_by(participant_id=participant.id).one()
+    address = Address.query.filter_by(participant_id=participant.id).one()
+    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
+        notes = "No notes."
+    else:
+        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+    formatted_address = format_address(address)
+    return {
+        "id": participant.id,
+        "first_name": participant.first_name,
+        "last_name": participant.last_name,
+        "date_of_birth": participant.date_of_birth,
+        "age": participant.age,
+        "status": status.status_type_id,
+        # "updated_at": participant.updated_at,
+        "address": formatted_address,
+        "email": participant.email,
+        "phone": participant.phone,
+        "language": participant.language,
+        "pronouns": participant.pronouns,
+        "group": participant.group,
+        "street": address.street,
+        "city": address.city,
+        "state": address.state,
+        "zip": address.zip,
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response,
+        "notes" : notes
+    }
+
+# GET PARTICIPANTS BY STATUS - ROUTES PAGE
+@app.route('/routesparticipants/status/<status>', methods = ['GET'])
+def get_participants_by_status_routes(status):
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant_routes(participant))
+    
+    return {'participants': participant_list}
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
@@ -748,13 +790,20 @@ def get_calls():
         db.session.add(recent_call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
+
+# def format_delivery_notes(delivery_note):
+#     return {
+#         "notes": delivery_note.notes
+#     }
     
-# # GET PARTICIPANT BY ID
-# @app.route('/participants/<id>', methods = ['GET'])
-# def get_call_note(id):
-#     participant = Participant.query.filter_by(id=id).one()
-#     formatted_participant = format_participant(participant)
-#     return {'participant': formatted_participant}
+# # GET ROUTE NOTES BY ID
+# @app.route('/routes/notes/<id>', methods = ['GET'])
+# def get_route_notes(id):
+#     notes = db.session.query(DeliveryHistory.notes).filter(DeliveryHistory.participant_id == id).all()
+#     all_notes = []
+#     for note in notes:
+#         all_notes.append(format_delivery_notes(note))
+#     return jsonify(all_notes)
     
     
 # TIME OF MOST RECENT DELIVERY - ROUTES PAGE    
