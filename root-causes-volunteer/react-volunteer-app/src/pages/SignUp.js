@@ -264,7 +264,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
               <FormLabel id="day-questions" 
-                > Please mark your availability: 
+                > Please mark your availability for the following month: 
                 <FormGroup>
                   <FormControlLabel control={<Checkbox />} 
                       name="driverDay1"
@@ -414,7 +414,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormLabel id="day-questions" 
-                  > Please mark your availability for this month: 
+                  > Please mark your availability for the following month: 
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
@@ -468,7 +468,7 @@ export default function SignUp() {
               
               <Grid item xs={12}>
               <FormLabel id='caller_day'
-                > Please mark your availability for this month: 
+                > Please mark your availability for the following month: 
                 <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 

@@ -1,25 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 //import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-// import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 //import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import Radio from '@mui/material/Radio';
-// import RadioGroup from '@mui/material/RadioGroup';
-// import FormControl from '@mui/material/FormControl';
-// import FormLabel from '@mui/material/FormLabel';
-// import InputLabel from '@mui/material/InputLabel';
-// import MenuItem from '@mui/material/MenuItem';
-// import Select from '@mui/material/Select';
-// import PhoneInput from 'react-phone-number-input/input';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { faBuildingColumns, faUser, faEnvelope, faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Copyright(props) {
     return (
@@ -54,50 +45,75 @@ export default function TrueProfile() {
             <AccountCircleIcon />
           </Avatar>
 
-          <Typography component="h1" variant="h5">
-            Profile
+          <Typography component="h1" variant="h5" style={{paddingBottom: "20px"}}>
+            <b>Profile</b>
           </Typography>
-
-          <Typography 
-                  component="h2" 
-                  variant="h3" 
-                  style={{textAlign: "left", paddingTop: "20px",
-                  color: "black", fontSize: "20px", fontWeight: "bold",}}>
-                  User:
-          </Typography>
-
-          <Typography 
-                  component="h2" 
-                  variant="h3" 
-                  style={{textAlign: "left", paddingTop: "20px",
-                  color: "black", fontSize: "20px", fontWeight: "bold",}}>
-                  Email:
-          </Typography>
-
-          <Typography 
-                  component="h2" 
-                  variant="h3" 
-                  style={{textAlign: "left", paddingTop: "20px",
-                  color: "black", fontSize: "20px", fontWeight: "bold",}}>
-                  Created:
-          </Typography>
-
-          <Typography 
-                  component="h2" 
-                  variant="h3" 
-                  style={{textAlign: "left", paddingTop: "20px",
-                  color: "black", fontSize: "20px", fontWeight: "bold",}}>
-                  Bio:
-          </Typography>
-
-          <Typography 
-                  component="h2" 
-                  variant="h3" 
-                  style={{textAlign: "left", paddingTop: "20px",
-                  color: "black", fontSize: "20px", fontWeight: "bold",}}>
-                  Admin:
-          </Typography>
+          <Box
+          sx={{
+            alignItems: 'right',
+            border: 'solid',
+            borderWidth: '3px',
+            borderColor: '#009a4b',
+            width: '360px',
+            paddingLeft: "10px",
+            backgroundColor: `rgba(249, 248, 225, 0.50)`,
+          }}
+          >
           
+          <Typography 
+
+                  component="h2" 
+                  variant="h3" 
+                  style={{textAlign: "left", paddingTop: "20px",
+                  color: "black", fontSize: "17px"}}>
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faUser}
+                    style={{paddingRight: "7px"}} />
+                  Name: Blue Devil
+                  
+          </Typography>
+
+          <Typography 
+                  component="h2" 
+                  variant="h3" 
+                  style={{textAlign: "left", paddingTop: "20px",
+                  color: "black", fontSize: "17px"}}>
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faEnvelope}
+                    style={{paddingRight: "7px"}} />
+                  Email: blue.devil@duke.edu
+          </Typography>
+
+          <Typography 
+                  component="h2" 
+                  variant="h3" 
+                  style={{textAlign: "left", paddingTop: "20px",
+                  color: "black", fontSize: "17px"}}>
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faPhone}
+                    style={{paddingRight: "7px"}} />
+                  Phone: 123-456-7890
+          </Typography>
+
+          <Typography 
+                  
+                  component="h2" 
+                  variant="h3" 
+                  style={{textAlign: "left", paddingTop: "20px",
+                  color: "black", fontSize: "17px"}}>
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faBuildingColumns} 
+                    style={{paddingRight: "7px"}} />
+                  Duke Affiliation: Duke Mascot
+          </Typography>
+
+          <Typography 
+                  component="h2" 
+                  variant="h3" 
+                  style={{textAlign: "left", paddingTop: "20px", paddingBottom: "20px",
+                  color: "black", fontSize: "17px"}}>
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faGlobe}
+                    style={{paddingRight: "7px"}} />
+                  Non-English Languages: Spanish 
+          </Typography>
+        
+        </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
