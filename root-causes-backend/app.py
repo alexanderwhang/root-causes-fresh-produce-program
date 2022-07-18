@@ -983,7 +983,111 @@ def add_signup():
 
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
-        
+
+
+
+# CALLER MANAGEMENT ALGORITHM
+class VolObj():  
+    def __init__(self,id,participant_list): 
+        self.particpant_list=participant_list
+        self.id =id 
+
+@app.route('/callermanagement', methods = ['GET'])
+def get_call_assignments():
+    type = "Caller"  
+    
+    def volObjects(array):  
+        ret = []
+        for i in range(len(array)): 
+             volunteer = array[i]   
+             volunteer_object=VolObj(volunteer.id,[]) 
+             ret.append(volunteer_object) 
+        return ret
+
+    #make each volunteer into an volunteer object 
+    #array of volunteers that speak english
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
+    
+    #array of volunteers that speak spanish
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
+    list_of_volObjects_english= volObjects(volunteers_english) 
+    list_of_volObjects_spanish= volObjects(volunteers_spanish)
+    
+    # array of participants that speak english
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    
+    #array of participants that speak spanish
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    
+    #step 0: get the participants into chunks  
+    def generate_assignments(volunteers,participants):
+        def chunkSize(participants,volunteers):   
+            #prevent infinite chunking
+            if len(volunteers)==0: 
+                return 0
+            return math.ceil(len(participants)/len(volunteers))
+        share=chunkSize(participants,volunteers)
+        participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
+        while len(volunteers)>len(participantChunks):  
+            participantChunks.append([])
+
+        for i in range(len(volunteers)): 
+            volunteer=volunteers[i] 
+            volunteer.participant_list=participantChunks[i]   
+        return volunteers
+    volunteersE = generate_assignments(volunteers_english,participants_english)  
+    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
+    allVolunteers =[] 
+    allVolunteers.extend(volunteersE)
+    allVolunteers.extend(volunteersS)  
+    volunteer_list = []
+    for volunteer in allVolunteers:
+        volunteer_list.append(format_sortedVolunteers(volunteer))
+    return {"sortedVolunteers": volunteer_list}
+    #how to deal with participants in the backend, the first thing to do is to try to create a participants list
+
+    # every volunteer should now have their participant chunks now e just need to do that for the spanish speakrs
+    
+
+
+#  def format_sortedVolunteers
+def format_sortedVolunteers(volunteers):
+    ids = "{"
+    # for participant in volunteers.participant_list:
+    for i in range(len(volunteers.participant_list)):
+        ids+='"'
+        ids+=str(i)
+        ids+='"'
+        ids+=": "
+        ids+=str(volunteers.participant_list[i].id)
+        if(i < len(volunteers.participant_list) -1 ):
+            ids+=", "
+    ids+="}"
+
+    idArr = []
+    for i in range(len(volunteers.participant_list)):
+        idArr.append(volunteers.participant_list[i].id)
+    return {
+        "id": volunteers.id,
+        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
+    }
+
+
+# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
+@app.route('/callermanagement/unsorted', methods = ['GET'])
+def get_unsoreted_call_assignments():
+    type="Caller"
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
+
+    ret = [{}]
+    for volunteer in volunteers:
+        ret.append({"vol": volunteer, "pts": []})
+    ret.append({"vol": {}, "pts": participants})
+
+    return { json.dumps(ret)}
+
+
 
 if __name__ == '__main__':
     app.run()
