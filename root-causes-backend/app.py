@@ -755,9 +755,12 @@ def login():
         return redirect('http://127.0.0.1:3000/profile')
     
     if existing_volunteer and (existing_volunteer.password==password):
-        return make_response(
-                f'{email} successfully logged in!'
-            )
+        # return make_response(
+        #         # f'{email} successfully logged in!'
+        #         
+        #     )
+        return redirect('http://127.0.0.1:3000/home')
+
 
 #STATUS AND MOST RECENT CALL - CALLS PAGE
 @app.route('/status_from_calls', methods = ['POST'])
