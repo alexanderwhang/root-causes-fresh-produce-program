@@ -409,21 +409,6 @@ def hello():
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
-    # image upload code
-    # if ('selectedImage' in request.files):
-    #     id = request.form['id']
-    #     image = request.files['selectedImage']
-    #     routeImage = Participant.query.get(id)
-    #     filename = secure_filename(image.filename)
-    #     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    #     image.save(full_filename)
-    #     # routeImage.image = url_for('download_file', name=filename)
-    #     routeImage.image = filename
-    #     db.session.add(routeImage)
-    #     db.session.commit()
-    #     return redirect('http://127.0.0.1:3000/routes')
-    
-    # # otherwise, add new participant
     # else:
         first_name = request.json['first_name']
         last_name = request.json['last_name']
@@ -1111,7 +1096,29 @@ def get_unsoreted_call_assignments():
 
     return { json.dumps(ret)}
 
+# @app.route('/image', methods = ['POST'])
+# def get_routes_image():
+#      # image upload code
+#     id = request.form['id']
+#     image = request.files['selectedImage']
+#     routeImage = Participant.query.get(id)
+#     filename = secure_filename(image.filename)
+#     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#     image.save(full_filename)
+#     # routeImage.image = url_for('download_file', name=filename)
+#     routeImage.image = filename
+#     db.session.add(routeImage)
+#     db.session.commit()
+#     return redirect('http://127.0.0.1:3000/routes')
 
-
+    
+#     @app.route('/participants', methods = ['GET'])
+# def get_participants():
+#     participants = Participant.query.order_by(Participant.last_name.asc()).all()
+#     participant_list = []
+#     for participant in participants:
+#         participant_list.append(format_participant(participant))
+#     return {'participants': participant_list}
+       
 if __name__ == '__main__':
     app.run()
