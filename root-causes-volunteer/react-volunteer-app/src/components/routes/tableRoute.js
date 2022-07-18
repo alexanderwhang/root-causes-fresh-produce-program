@@ -99,6 +99,7 @@ function Row(props) {
   // }
   
 
+  
   function CheckImage(){
     const [selectedImage, setSelectedImage] = useState(null);
     // const [selectedImage2, setSelectedImage2] = useState(null);
@@ -119,7 +120,7 @@ function Row(props) {
             )}
 
           <form method = "post" 
-                action="http://127.0.0.1:5000/routes"
+                action="http://127.0.0.1:5000/participants"
                 enctype = "multipart/form-data">
             <input
               type="file"
@@ -144,18 +145,20 @@ function Row(props) {
       </div>
       );
     } else {
-      return row.image;
+      return (
+        <img src={require('../../images-react/' + row.image)} />
+        );
     }
   }
 
-  const[notesRoutes, setRoutesNotes] = useState([])
-  // GET NOTES
-  const fetchNotes = async () => {
-    const data = await axios.get(`${baseUrl}/routes/notes/${row.id}`);
-    const { notes } = data.data;
-    setRoutesNotes(notes);
-    console.log("DATA: ", data);
-  };
+  // const[notesRoutes, setRoutesNotes] = useState([])
+  // // GET NOTES
+  // const fetchNotes = async () => {
+  //   const data = await axios.get(`${baseUrl}/routes/notes/${row.id}`);
+  //   const { notes } = data.data;
+  //   setRoutesNotes(notes);
+  //   console.log("DATA: ", data);
+  // };
 
   // useEffect(() => {
   //   fetchNotes();
