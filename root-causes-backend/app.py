@@ -12,10 +12,6 @@ from flask_marshmallow import Marshmallow
 from datetime import datetime, timezone
 import datetime as dt
 import psycopg2
-<<<<<<< HEAD
-from sqlalchemy.dialects.postgresql import ARRAY 
-import math 
-=======
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
@@ -23,7 +19,6 @@ from twilio.rest import Client
 # import needed for file upload
 from werkzeug.utils import secure_filename
 
->>>>>>> f130ad14efa76ab92e0424c8691d4339ea6a90c9
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
