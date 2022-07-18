@@ -28,7 +28,6 @@ from werkzeug.utils import secure_filename
 # - To activate: pipenv shell
 # pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors flask-marshmallow
         # If pyscopg2 is not installing -> pip install postgres first or xcode-select --install
-# pipenv install twilio
 # Flask run
 # python (to activate python)
 # from app import db
@@ -39,6 +38,7 @@ from werkzeug.utils import secure_filename
 # Flask run
 
 # To get Twilio working (open your computer terminal)
+# pipenv install twilio (OR pip install twilio)
 # run ' brew tap twilio/brew && brew install twilio '
 
 UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
