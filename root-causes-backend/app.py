@@ -14,6 +14,7 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 
 # import needed for file upload
 from werkzeug.utils import secure_filename
@@ -61,7 +62,7 @@ auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
 
 class Participant(db.Model):
-    __tablename__ = 'participant'
+    __tablename__ = 'participant3'
     __table_args__ = {"schema": "RC"}
 
     id = db.Column(db.Integer, primary_key=True)
@@ -78,6 +79,13 @@ class Participant(db.Model):
     most_recent_delivery = db.Column(db.String(100), nullable=True)
     most_recent_call = db.Column(db.String(100), nullable=True)
     sms_response = db.Column(db.Text, nullable=True)
+    street = db.Column(db.Text, nullable=True)
+    city = db.Column(db.Text, nullable=True)
+    state = db.Column(db.Text, nullable=True)
+    zip = db.Column(db.String(10), nullable=True)
+    apartment = db.Column(db.Text, nullable=True)
+    most_recent_status = db.Column(db.Integer, nullable=False, default=0)
+    most_recent_status_update = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     image = db.Column(db.String(200), nullable=True)
 
     children = relationship("Status")
@@ -87,7 +95,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, street, city, state, zip, apartment, most_recent_status, image):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -101,19 +109,27 @@ class Participant(db.Model):
         self.most_recent_delivery = most_recent_delivery
         self.most_recent_call = most_recent_call
         self.sms_response = sms_response
+        self.street = street
+        self.city = city
+        self.state = state
+        self.zip = zip
+        self.apartment = apartment
+        self.most_recent_status = most_recent_status
         self.image = image
 
 def format_participant(participant):
-    status = Status.query.filter_by(participant_id=participant.id).one()
-    address = Address.query.filter_by(participant_id=participant.id).one()
-    formatted_address = format_address(address)
+    # status = Status.query.filter_by(participant_id=participant.id).one()
+    # address = Address.query.filter_by(participant_id=participant.id).one()
+    formatted_address = format_address(participant)
     return {
         "id": participant.id,
         "first_name": participant.first_name,
         "last_name": participant.last_name,
         "date_of_birth": participant.date_of_birth,
         "age": participant.age,
-        "status": status.status_type_id,
+        "status": participant.most_recent_status,
+        "most_recent_status_update": participant.most_recent_status_update,
+        # "status": status.status_type_id,
         # "updated_at": participant.updated_at,
         "address": formatted_address,
         "email": participant.email,
@@ -122,11 +138,11 @@ def format_participant(participant):
         "pronouns": participant.pronouns,
         "group": participant.group,
         "household_size": participant.household_size,
-        "street": address.street,
-        "city": address.city,
-        "state": address.state,
-        "zip": address.zip,
-        "apartment": address.apartment,
+        "street": participant.street,
+        "city": participant.city,
+        "state": participant.state,
+        "zip": participant.zip,
+        "apartment": participant.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
         "most_recent_call": participant.most_recent_call,
         "sms_response": participant.sms_response, 
@@ -138,7 +154,7 @@ class Status(db.Model):
     __table_args__ = {"schema": "RC"}
 
     participant_status_id = db.Column(db.Integer, primary_key=True)
-    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant3.id'), nullable=False)
     status_type_id = db.Column(db.Integer, nullable=False)
     volunteer_id = db.Column(db.Integer, nullable=True)
     status_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
@@ -290,7 +306,7 @@ class DeliveryAssignment(db.Model):
     def __repr__(self):
         return f"Driver ID #{self.volunteer_id} delivering to Participant ID#{self.participant_id} on Date {self.assignment_date}"
 
-    def __init__(self, delivery_list_id, participant_id, volunteer_id, assignment_date):
+    def __init__(self, participant_id, volunteer_id, assignment_date):
         self.participant_id = participant_id
         self.volunteer_id = volunteer_id
         self.assignment_date = assignment_date
@@ -361,7 +377,7 @@ class DeliveryHistory(db.Model):
     __table_args__ = {"schema":"RC"}
 
     id = db.Column("delivery_history_id", db.Integer, primary_key=True)
-    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant3.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
@@ -394,21 +410,21 @@ def hello():
 @app.route('/participants', methods = ['POST'])
 def create_participant():
     # image upload code
-    if ('selectedImage' in request.files):
-        id = request.form['id']
-        image = request.files['selectedImage']
-        routeImage = Participant.query.get(id)
-        filename = secure_filename(image.filename)
-        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        image.save(full_filename)
-        # routeImage.image = url_for('download_file', name=filename)
-        routeImage.image = filename
-        db.session.add(routeImage)
-        db.session.commit()
-        return redirect('http://127.0.0.1:3000/routes')
+    # if ('selectedImage' in request.files):
+    #     id = request.form['id']
+    #     image = request.files['selectedImage']
+    #     routeImage = Participant.query.get(id)
+    #     filename = secure_filename(image.filename)
+    #     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    #     image.save(full_filename)
+    #     # routeImage.image = url_for('download_file', name=filename)
+    #     routeImage.image = filename
+    #     db.session.add(routeImage)
+    #     db.session.commit()
+    #     return redirect('http://127.0.0.1:3000/routes')
     
-    # otherwise, add new participant
-    else:
+    # # otherwise, add new participant
+    # else:
         first_name = request.json['first_name']
         last_name = request.json['last_name']
         date_of_birth = request.json['date_of_birth']
@@ -423,8 +439,16 @@ def create_participant():
         most_recent_call = request.json['most_recent_call']
         sms_response = request.json['sms_response']
         image = request.json['image']
+        street = request.json['street']
+        city = request.json['city']
+        state = request.json['state']
+        zip = request.json['zip']
+        apartment = request.json['apartment']
+        most_recent_status = 0
+
+
         
-        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, street, city, state, zip, apartment, most_recent_status, image)
         # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
 
         status_type_id = 0
@@ -456,7 +480,8 @@ def get_participant(id):
 # GET PARTICIPANTS BY STATUS
 @app.route('/participants/status/<status>', methods = ['GET'])
 def get_participants_by_status(status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    # participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -486,7 +511,7 @@ def get_participants_by_group(group):
 # GET PARTICIPANTS BY GROUP AND STATUS
 @app.route('/participants/group/<group>/status/<status>', methods = ['GET'])
 def get_participants_by_group_and_status(group, status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).filter(Participant.group==group).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).filter_by(group=group).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -525,8 +550,8 @@ def delete_participant(id):
 @app.route('/participants/<id>', methods = ['PUT'])
 def update_participant(id):
     participant = Participant.query.filter_by(id=id)
-    statusObj = Status.query.filter_by(participant_id=id)
-    addressObj = Address.query.filter_by(participant_id=id)
+    # statusObj = Status.query.filter_by(participant_id=id)
+    # addressObj = Address.query.filter_by(participant_id=id)
 
     first_name = request.json['participant']['first_name']
     last_name = request.json['participant']['last_name']
@@ -552,14 +577,24 @@ def update_participant(id):
     # participant.update(dict(status=status))
     participant.update(dict(group=group))
 
-    statusObj.update(dict(status_type_id=status))
-    statusObj.update(dict(status_date=datetime.now(timezone.utc)))
+    participant.update(dict(most_recent_status=status))
+    participant.update(dict(most_recent_status_update=datetime.now(timezone.utc)))
+    participant.update(dict(street=street))
+    participant.update(dict(city=city))
+    participant.update(dict(state=state))
+    participant.update(dict(zip=zip))
+    participant.update(dict(apartment=apartment))
 
-    addressObj.update(dict(street=street))
-    addressObj.update(dict(city=city))
-    addressObj.update(dict(state=state))
-    addressObj.update(dict(zip=zip))
-    addressObj.update(dict(apartment=apartment))
+
+
+    # statusObj.update(dict(status_type_id=status))
+    # statusObj.update(dict(status_date=datetime.now(timezone.utc)))
+
+    # addressObj.update(dict(street=street))
+    # addressObj.update(dict(city=city))
+    # addressObj.update(dict(state=state))
+    # addressObj.update(dict(zip=zip))
+    # addressObj.update(dict(apartment=apartment))
 
     db.session.commit()
     return {'participant': format_participant(participant.one())}
@@ -589,19 +624,18 @@ def outgoing_sms(message):
 def incoming_sms():
     # """Send a dynamic reply to an incoming text message"""
     # # Get the message the user sent our Twilio number
-    # body = request.values.get('Body', None)
+    body = request.values.get('Body', None)
 
-    # # Start our TwiML response
-    # resp = MessagingResponse()
+    # Start our TwiML response
+    resp = MessagingResponse()
 
-    # # Determine the right reply for this message
-    # if body == '1':
-    #     resp.message("You have selected YES!")
-    # elif body == '2':
-    #     resp.message("You have selected NO!")
+    # Determine the right reply for this message
+    if body == '1':
+        resp.message("You have selected YES!")
+    elif body == '2':
+        resp.message("You have selected NO!")
 
-    # return str(resp)
-    return {"status": True}
+    return str(resp)
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -751,17 +785,6 @@ def get_deliveries():
     for delivery in deliveries:
         delivery_list.append(format_delivery(delivery))
     return {'deliveries': delivery_list}
-
-
-# CALLER MANAGEMENT ALGORITHM
-#@app.route('/callermanagement', methods = ['GET'])
-#def get_call_assignments():
-   # type = "Caller"
-    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="English").all()
-    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter_by(language="Spanish").all()
-
-    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="English").all()
-    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter_by(language="Spanish").all()
 
 
 ########VOLUNTEER APP##########
@@ -1083,7 +1106,111 @@ def add_signup():
 
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
-        
+
+
+
+# CALLER MANAGEMENT ALGORITHM
+class VolObj():  
+    def __init__(self,id,participant_list): 
+        self.particpant_list=participant_list
+        self.id =id 
+
+@app.route('/callermanagement', methods = ['GET'])
+def get_call_assignments():
+    type = "Caller"  
+    
+    def volObjects(array):  
+        ret = []
+        for i in range(len(array)): 
+             volunteer = array[i]   
+             volunteer_object=VolObj(volunteer.id,[]) 
+             ret.append(volunteer_object) 
+        return ret
+
+    #make each volunteer into an volunteer object 
+    #array of volunteers that speak english
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
+    
+    #array of volunteers that speak spanish
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
+    list_of_volObjects_english= volObjects(volunteers_english) 
+    list_of_volObjects_spanish= volObjects(volunteers_spanish)
+    
+    # array of participants that speak english
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    
+    #array of participants that speak spanish
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    
+    #step 0: get the participants into chunks  
+    def generate_assignments(volunteers,participants):
+        def chunkSize(participants,volunteers):   
+            #prevent infinite chunking
+            if len(volunteers)==0: 
+                return 0
+            return math.ceil(len(participants)/len(volunteers))
+        share=chunkSize(participants,volunteers)
+        participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
+        while len(volunteers)>len(participantChunks):  
+            participantChunks.append([])
+
+        for i in range(len(volunteers)): 
+            volunteer=volunteers[i] 
+            volunteer.participant_list=participantChunks[i]   
+        return volunteers
+    volunteersE = generate_assignments(volunteers_english,participants_english)  
+    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
+    allVolunteers =[] 
+    allVolunteers.extend(volunteersE)
+    allVolunteers.extend(volunteersS)  
+    volunteer_list = []
+    for volunteer in allVolunteers:
+        volunteer_list.append(format_sortedVolunteers(volunteer))
+    return {"sortedVolunteers": volunteer_list}
+    #how to deal with participants in the backend, the first thing to do is to try to create a participants list
+
+    # every volunteer should now have their participant chunks now e just need to do that for the spanish speakrs
+    
+
+
+#  def format_sortedVolunteers
+def format_sortedVolunteers(volunteers):
+    ids = "{"
+    # for participant in volunteers.participant_list:
+    for i in range(len(volunteers.participant_list)):
+        ids+='"'
+        ids+=str(i)
+        ids+='"'
+        ids+=": "
+        ids+=str(volunteers.participant_list[i].id)
+        if(i < len(volunteers.participant_list) -1 ):
+            ids+=", "
+    ids+="}"
+
+    idArr = []
+    for i in range(len(volunteers.participant_list)):
+        idArr.append(volunteers.participant_list[i].id)
+    return {
+        "id": volunteers.id,
+        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
+    }
+
+
+# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
+@app.route('/callermanagement/unsorted', methods = ['GET'])
+def get_unsoreted_call_assignments():
+    type="Caller"
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
+
+    ret = [{}]
+    for volunteer in volunteers:
+        ret.append({"vol": volunteer, "pts": []})
+    ret.append({"vol": {}, "pts": participants})
+
+    return { json.dumps(ret)}
+
+
 
 if __name__ == '__main__':
     app.run()

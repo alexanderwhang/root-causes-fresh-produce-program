@@ -59,6 +59,14 @@ const getStyles=(params)=>{
     return 'dnd-item' 
 } 
 
+const displayLang = (first, second) => {
+    if(first !== "English"){
+        return first;
+    } else if(second !== "English"){
+        return second;
+    }
+}
+
 
 return (   
     <div className="caller">  
@@ -72,7 +80,7 @@ return (
         <div key={grp.index}  
         className={` ${grp.title==="Participants"? "participants": "dnd-group"} `}
         onDragEnter={dragging && !grp.items.length?(e)=>handleDragEnter(e,{grpI, itemI:0}):null}>   
-        <div className="group-title">{grp.title}   
+        <div className="group-title">{grp.title} 
     </div>
     
 

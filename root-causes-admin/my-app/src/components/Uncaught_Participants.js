@@ -35,17 +35,12 @@ export function Uncaught_Participants() {
 
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
-      const retParticipants = [];
-      const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH DESIRED ANSWERS
-      for(let i=0; i < data.length; i++){
-        axios.get(`${baseUrl}/participants`).then(response => {
-          console.log("hello");
-          const participants = data.data.participants;
-          if(participants.sms_response !== "Yes"){
-            retParticipants.push(response);
-          }
-        })
+      const data = await axios.get(`${baseUrl}/participants/group/B`); 
+      const participants = data.data.participants;
+      setUncaughtParticipants(participants);
+      console.log("DATA: ", data);
       }
+
       // let participants = data.data.participants;
       // const retParticipants = [];
       // for(let i = 0; i < 16; i++){
@@ -58,18 +53,17 @@ export function Uncaught_Participants() {
       //   };
       // }
     
-      setUncaughtParticipants(retParticipants);
-      console.log("DATA: ", data);
-      console.log(retParticipants.length);
-      for(let pt in retParticipants){
-        console.log("response: ", pt.sms_response);
-      }
-    };
+    //   setUncaughtParticipants(retParticipants);
+    //   for(let pt in retParticipants){
+    //     console.log("response: ", pt.sms_response);
+    //   }
+    // };
 
 
       useEffect(() => {
         fetchParticipants();
       }, []);
+
     const handleStatusChange = (event: SelectChangeEvent) => {
         setStatus(event.target.value);
     };

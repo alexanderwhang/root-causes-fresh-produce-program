@@ -25,8 +25,9 @@ import { DragPractice } from "./practice.js";
 
 import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem"; 
-import { PracticeUsers } from "./practiceUsers";
+import MenuItem from "@mui/material/MenuItem";
+import ReactPaginate from 'react-paginate';
+import { Users } from './users.js';
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
@@ -37,6 +38,7 @@ const baseUrl = "http://127.0.0.1:5000";
 //npm install --save styled-components
 //npm i react-csv
 //npm install xlsx
+//npm install react-paginate --save
 
 export function Participants() {
   const [participantsList, setParticipantsList] = useState([]);
@@ -327,12 +329,18 @@ export function Individual({ match }) {
     fetchParticipants();
   }, []);
 
-  return (
-    <div>
+  const [person, setPerson] = useState(participantsList);
+  // console.log("pts: ", participantsList);
+  // console.log("users: ", Users);
+  const [pageNumber,setPageNumber]= useState(0);
+  const usersPerPage = 1;
+  const pagesVisited = pageNumber*usersPerPage;
+
+  const displayUsers = participantsList.slice(pagesVisited,pagesVisited + usersPerPage).map((val,key)=>  {
+    return (
+      <div>
       <Navbar />
-      {participantsList.map((participant) => {
-        return (
-          <div key={participant.id}>
+          <div key={key}>
             <div className="indiv">
               {/* <Navbar/> */}
               <div className="indivButtonCont">
@@ -348,7 +356,7 @@ export function Individual({ match }) {
               <div className="indiv">
                 {/* <h1> Individuals </h1> */}
                 <h2>
-                  {participant.first_name} {participant.last_name}
+                  {val.first_name} {val.last_name}
                 </h2>
 
                 {/* tabs code */}
@@ -373,7 +381,7 @@ export function Individual({ match }) {
                   </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                  <Participant participant={participant} />
+                  <Participant participant={val} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <table className="med_info">
@@ -454,12 +462,31 @@ export function Individual({ match }) {
                 </TabPanel>
               </div>
             </div>
-            <div className="tempBorder"></div>
           </div>
-        );
-      })}
-    </div>
-  );
+        </div>
+  )});
+
+  const pageCount = Math.ceil(participantsList.length/usersPerPage);
+  const changePage = ({selected})=>{
+    setPageNumber(selected);
+  }
+
+   return(
+    <div>
+      {displayUsers}
+      <ReactPaginate
+       previousLabel ={"Previous"}
+       nextLabel={"Next"}
+       pageCount ={pageCount}
+       onPageChange = {changePage}
+       containerClassName={"paginationBttns"}
+       previousLinkClassName={"previousBttn"}
+       nextLinkClassName ={"nextBttn"}
+       disabledClassName ={"paginationDisabled"}
+       activeClassName= {"paginationActive"}
+      />
+      </div>
+    );
 }
 
 export function SMSTexts() {

@@ -1,46 +1,57 @@
 #outlined-number{
     align-items: start;
     margin-right: 5px;
+    justify-content: center;
+    float: left;
 }
 
 .email{
     align-items: start;
+    justify-content: center;
 }
 
 .age{
     position: absolute;
     margin-top: 3.5rem;
     margin-left: 450px;
+    justify-content: center;
 }
 
 .textInputs{
     margin-left: 250px;
     margin-top: -3.5rem;
+    justify-content: center;
 }
 
 .language{
     margin-top: -21rem;
     margin-left: 225px;
+    justify-content: center;
 }
 
 .status-dropdown{
     margin-left: 450px;
+    justify-content: center;
 }
 
 .group-dropdown{
     margin-left: 450px;
+    justify-content: center;
 }
 
 .household-dropdown{
     margin-left: 450px;
+    justify-content: center;
 }
 
 .pronouns-dropdown{
     margin-left: 450px;
+    justify-content: center;
 }
 
 .race-dropdown{
     margin-left: 450px;
+    justify-content: center;
 }
 
 .submit-button button{
@@ -54,10 +65,12 @@
     align-items: center;
     margin-left: 60px;
     width: 60%;
+    justify-content: center;
 }
 
 .submit-button button:hover{
     background-color: #68ab3e;
+    justify-content: center;
 }
 
 .submit-button{
@@ -68,6 +81,7 @@
     display: flex;
     margin-left: 120px;
     margin-top: 1.5rem;
+    justify-content: center;
 }
 
 .edit_button button{
@@ -79,6 +93,7 @@
     margin-top: 0.2rem;
     margin-bottom: 1.5rem;
     align-items: center;
+    justify-content: center;
 }
 
 .edit_button button:hover{
@@ -91,4 +106,5 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    justify-content: center;
 }
