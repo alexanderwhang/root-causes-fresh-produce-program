@@ -241,11 +241,25 @@ function Row(props) {
                       </form>
                     </form>
                     </div>
-                      <h5 style={{fontSize: "20px", fontWeight: "bold"}}>Note History</h5>
-                      <p style={{fontSize: "17px", color: "black"}}> {row.call_notes} </p>
+                      {/* <h5 style={{fontSize: "20px", fontWeight: "bold"}}>Note History</h5>
+                      <p style={{fontSize: "17px", color: "black"}}> {row.call_notes} </p> */}
                     </TableCell>
                   </TableRow>
                 </TableHead>
+
+                <TableHead>
+                    <TableRow>
+                      <TableCell> <b> Note History </b> </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key="extra2">
+                      <TableCell component="th" scope="row">
+                        {row.delivery_notes}
+                      </TableCell>
+                  </TableRow>
+                </TableBody>
+
                 <TableBody>
                     <TableRow key={row.id}>
                       <TableCell></TableCell>

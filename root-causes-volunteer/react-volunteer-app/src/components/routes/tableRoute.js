@@ -185,10 +185,10 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery: {row.most_recent_delivery}
-          <br /> Most Recent Note: {" "}
+          {/* <br /> Most Recent Note: {" "}
             <span style={{fontWeight: "bold"}}>
               {row.delivery_notes}
-            </span>
+            </span> */}
         </TableCell>
         <TableCell>
 
@@ -223,7 +223,7 @@ function Row(props) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
-                Delivery Notes / Image Upload
+                <b> Delivery Notes / Image Upload </b>
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
@@ -265,9 +265,24 @@ function Row(props) {
                   <TableRow key="extra1">
                   </TableRow>
                 </TableBody>
+
                 <TableHead>
                     <TableRow>
-                      <TableCell>Image Upload</TableCell>
+                      <TableCell> <b> Note History </b> </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key="extra2">
+                      <TableCell component="th" scope="row">
+                        {row.delivery_notes}
+                      </TableCell>
+                  </TableRow>
+                </TableBody>
+
+
+                <TableHead>
+                    <TableRow>
+                      <TableCell> <b> Image Upload </b> </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -277,6 +292,7 @@ function Row(props) {
                       </TableCell>
                   </TableRow>
                 </TableBody>
+                
               </Table>
             </Box>
           </Collapse>

@@ -55,7 +55,6 @@ const Home = () => {
         <div>
           <Grid 
             paddingTop= "10px"
-            paddingBottom = "85px"
             container justify="center"
             alignItems="center"
             justifyContent="center">
@@ -69,7 +68,27 @@ const Home = () => {
                 Click here to sign up for volunteering!
               </Button>
             </Link>
-          </Grid>
+            </Grid>
+
+            <Grid 
+            paddingTop= "10px"
+            paddingBottom = "85px"
+            container justify="center"
+            alignItems="center"
+            justifyContent="center">
+            <Link href="/trueprofile" style={{textDecoration: 'none'}}>
+              <Button id="volunteerRedirect" 
+                fullWidth
+                type="submit" 
+                variant="contained"
+                justify="center"
+                backgroundColor="black">
+                Click here to view your profile!
+              </Button>
+            </Link>
+            </Grid>
+            
+          
         </div>
     </div>
   )
