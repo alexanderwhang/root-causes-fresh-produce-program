@@ -61,6 +61,7 @@ class Participant(db.Model):
     most_recent_delivery = db.Column(db.String(100), nullable=True)
     most_recent_call = db.Column(db.String(100), nullable=True)
     sms_response = db.Column(db.Text, nullable=True)
+    image = db.Column(db.String(200), nullable=True)
 
     children = relationship("Status")
     children = relationship("DeliveryHistory")
@@ -69,7 +70,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -83,6 +84,7 @@ class Participant(db.Model):
         self.most_recent_delivery = most_recent_delivery
         self.most_recent_call = most_recent_call
         self.sms_response = sms_response
+        self.image = image
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -110,8 +112,10 @@ def format_participant(participant):
         "apartment": address.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
         "most_recent_call": participant.most_recent_call,
-        "sms_response": participant.sms_response
+        "sms_response": participant.sms_response, 
+        "image": participant.image 
     }
+
 
 class Status(db.Model):
     __tablename__ = 'participant_status'
