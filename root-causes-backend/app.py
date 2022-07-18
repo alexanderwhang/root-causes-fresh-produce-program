@@ -369,14 +369,42 @@ def format_delivery_history(delivery_history):
         "delivery_date": delivery_history.delivery_date,
         "notes": delivery_history.notes
     }
+
+
+class CallHistory(db.Model):
+    __tablename__ = 'call_history'
+    __table_args__ = {"schema":"RC"}
+
+    call_history_id = db.Column("call_history_id", db.Integer, primary_key=True)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    call_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"Volunteer #{self.volunteer_id} called Participant #{self.participant_id} on Date {self.call_date}"
+
+    def __init__(self, participant_id, volunteer_id, call_date, notes):
+        self.participant_id = participant_id
+        self.volunteer_id = volunteer_id
+        self.call_date = call_date
+        self.notes = notes
+
+def format_call_history(call_history):
+    return {
+        "call_history_id": call_history.call_history_id,
+        "participant_id": call_history.participant_id,
+        "volunteer_id": call_history.volunteer_id,
+        "call_date": call_history.call_date,
+        "notes": call_history.notes
+    }
+    
     
 @app.route('/')
 def hello():
     return 'Backend connected to host'
 
 ############# PARTCIPANTS ##############
-# CREATE PARTICIPANT
-@app.route('/participants', methods = ['POST'])
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
@@ -703,10 +731,17 @@ def get_call_assignments():
 def format_participant_routes(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
     address = Address.query.filter_by(participant_id=participant.id).one()
+    
     if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
-        notes = "No notes."
+        delivery_notes = "No notes."
     else:
-        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+        delivery_notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+        
+    if (CallHistory.query.filter_by(participant_id=participant.id).first() == None):
+        call_notes = "No notes."
+    else:
+        call_notes = CallHistory.query.filter_by(participant_id=participant.id).first().notes
+        
     formatted_address = format_address(address)
     return {
         "id": participant.id,
@@ -731,7 +766,9 @@ def format_participant_routes(participant):
         "most_recent_call": participant.most_recent_call,
         "sms_response": participant.sms_response,
         "image": participant.image,
-        "notes" : notes
+        "delivery_notes" : delivery_notes,
+        "call_notes" : call_notes
+        
     }
 
 # GET PARTICIPANTS BY STATUS - ROUTES PAGE

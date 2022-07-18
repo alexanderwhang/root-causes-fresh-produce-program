@@ -187,7 +187,7 @@ function Row(props) {
           <br /> Most Recent Delivery: {row.most_recent_delivery}
           <br /> Most Recent Note: {" "}
             <span style={{fontWeight: "bold"}}>
-              {row.notes}
+              {row.delivery_notes}
             </span>
         </TableCell>
         <TableCell>

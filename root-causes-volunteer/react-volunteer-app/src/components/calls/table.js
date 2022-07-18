@@ -152,7 +152,7 @@ function Row(props) {
             >Coming Soon
             {/* {row.status} */}
           </span>
-          <br /> Most Recent Note: 
+          <br /> Most Recent Note: {row.call_notes}
             {/* {mostRecent(row.call_notes)}  */}
           <br /> Most Recent Call: {row.most_recent_call}
 
@@ -294,7 +294,7 @@ export default function CollapsibleTable() {
     // 1 = GREEN, ready for delivery
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
-      const data3 = await axios.get(`${baseUrl}/participants/status/3`);
+      const data3 = await axios.get(`${baseUrl}/routesparticipants/status/3`);
       const data5 = await axios.get(`${baseUrl}/participants/status/5`);
       const data = {...data5, ...data3}
       const { participants } = data.data;
