@@ -65,7 +65,7 @@ const Home = () => {
                 type="submit" 
                 variant="contained"
                 justify="center">
-                Click here to sign up for volunteering!
+                Click here to sign up to volunteer!
               </Button>
             </Link>
             </Grid>

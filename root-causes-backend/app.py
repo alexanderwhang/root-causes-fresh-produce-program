@@ -896,11 +896,12 @@ def add_signup():
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
                 day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day)
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
                 db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('packerDay1' in request.form):
+        volunteer_type = "Packer"
         packerDay1 = request.form.get('packerDay1')
         packerDay2 = request.form.get('packerDay2')
         packerDay3 = request.form.get('packerDay3')
@@ -908,21 +909,14 @@ def add_signup():
         packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
         for day in packerDay:
             if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
-        signup = signups(packerDay=packerDay)
-        db.session.add(signup)
+                day = dt.datetime.strptime(day, "%Y-%m-%d")
+                day = day.date()
+                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                db.session.add(person)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
     elif request.method == 'POST' and ('driver_preference' in request.form):
-        driverDay1 = request.form.get('driverDay1')
-        driverDay2 = request.form.get('driverDay2')
-        driverDay3 = request.form.get('driverDay3')
-        driverDay4 = request.form.get('driverDay4')
-        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
-        for day in driverDay:
-            if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
-        
+        volunteer_type = "Driver"
         # more deliveries?
         driverMoreDelivery = request.form.get('driverMoreDelivery')
         if (driverMoreDelivery == "moreDelivery"):
@@ -936,31 +930,31 @@ def add_signup():
             driverOutsideDurham = True
         else:
             driverOutsideDurham = False
-            
-        other_preference = [driverMoreDelivery, driverOutsideDurham]
         
         driver_preference = request.form['driver_preference']
         
-        driverTime9 = request.form.get('driverTime9')
-        
-        driverTime915 = request.form.get('driverTime915')
-        driverTime930 = request.form.get('driverTime930')
-        driverTime945 = request.form.get('driverTime945')
-        driverTime10 = request.form.get('driverTime10')
-        driverTime1015 = request.form.get('driverTime1015')
-        driverTime1030 = request.form.get('driverTime1030')
-        driverTime1045 = request.form.get('driverTime1045')
-        driverTimes = [driverTime9, driverTime915, driverTime930, driverTime945,
-                      driverTime10, driverTime1015, driverTime1030, driverTime1045]
-        
-        for driverTime in driverTimes:
-            if (driverTime != None):
-                driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
-        
-        signup = signups(driverDay=driverDay, other_preference=other_preference,
-                         driver_preference=driver_preference, driverTime=driverTimes)
-        
-        db.session.add(signup)
+        driverTime = request.form.get('driver_time')
+        driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
+                
+        driverDay1 = request.form.get('driverDay1')
+        driverDay2 = request.form.get('driverDay2')
+        driverDay3 = request.form.get('driverDay3')
+        driverDay4 = request.form.get('driverDay4')
+        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
+        for day in driverDay:
+            if (day != None):
+                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
+                # person for VolunteerLog
+                person_vl = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+                # person for DriverLog
+                person_dlp = DriverLog(volunteer_id=None, date_available=day, time_available=driverTime, 
+                                      deliver_more_preference=driverMoreDelivery,
+                                      live_outside_durham=driverOutsideDurham, 
+                                      route_preference=driver_preference, comments=None)
+                
+                db.session.add(person_vl)
+                db.session.add(person_dlp)
+
         db.session.commit()
         return redirect('http://127.0.0.1:3000/signup')
         
