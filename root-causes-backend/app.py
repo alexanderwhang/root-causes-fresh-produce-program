@@ -511,7 +511,7 @@ def get_participants_by_group(group):
 # GET PARTICIPANTS BY GROUP AND STATUS
 @app.route('/participants/group/<group>/status/<status>', methods = ['GET'])
 def get_participants_by_group_and_status(group, status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).filter(Participant.group==group).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).filter_by(group=group).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
