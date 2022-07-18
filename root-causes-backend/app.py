@@ -39,7 +39,9 @@ from werkzeug.utils import secure_filename
 
 # To get Twilio working (open your computer terminal)
 # pipenv install twilio (OR pip install twilio)
-# run ' brew tap twilio/brew && brew install twilio '
+# FOR MAC: run ' brew tap twilio/brew && brew install twilio '
+# FOR WINDOWS: run ' scoop bucket add twilio-scoop https://github.com/twilio/scoop-twilio-cli '
+# FOR WINDOWS (part 2): run ' scoop install twilio '
 
 UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
