@@ -84,6 +84,7 @@
 
 .sending button{
     background-color: #00743e;
+    margin: 0 auto;
 }
 
 .sending button:hover{
