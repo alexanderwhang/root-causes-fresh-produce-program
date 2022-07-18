@@ -163,9 +163,6 @@ function Row(props) {
           </span> <br /> 
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
-            > {numToString(row.status)}
-          </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
           <br /> Most Recent Call: {row.most_recent_call}

@@ -622,9 +622,6 @@ def incoming_sms():
 
     return str(resp)
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
 ######### VOLUNTEERS ##########
 
 # CREATE VOLUNTEER
@@ -1096,20 +1093,20 @@ def get_unsoreted_call_assignments():
 
     return { json.dumps(ret)}
 
-# @app.route('/image', methods = ['POST'])
-# def get_routes_image():
-#      # image upload code
-#     id = request.form['id']
-#     image = request.files['selectedImage']
-#     routeImage = Participant.query.get(id)
-#     filename = secure_filename(image.filename)
-#     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#     image.save(full_filename)
-#     # routeImage.image = url_for('download_file', name=filename)
-#     routeImage.image = filename
-#     db.session.add(routeImage)
-#     db.session.commit()
-#     return redirect('http://127.0.0.1:3000/routes')
+@app.route('/image', methods = ['POST'])
+def get_routes_image():
+    # image upload code
+    id = request.form['id']
+    image = request.files['selectedImage']
+    routeImage = Participant.query.get(id)
+    filename = secure_filename(image.filename)
+    full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    image.save(full_filename)
+    # routeImage.image = url_for('download_file', name=filename)
+    routeImage.image = filename
+    db.session.add(routeImage)
+    db.session.commit()
+    return redirect('http://127.0.0.1:3000/routes')
 
     
 #     @app.route('/participants', methods = ['GET'])
@@ -1121,4 +1118,4 @@ def get_unsoreted_call_assignments():
 #     return {'participants': participant_list}
        
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

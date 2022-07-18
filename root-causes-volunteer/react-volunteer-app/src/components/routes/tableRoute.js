@@ -106,7 +106,7 @@ function Row(props) {
      setSelectedImage(e.target.files[0])
     }
 
-    // if (row.image == null) {
+    if (row.image == null) {
       return (
         <div>
           <h5 style={{fontSize: "15px"}}>Upload Image Here!</h5>
@@ -143,11 +143,11 @@ function Row(props) {
           </form> 
       </div>
       );
-    // } else {
-    //   return (
-    //     <img src={require('../../images-react/' + row.image)} />
-    //     );
-    // }
+    } else {
+      return (
+        <img src={require('../../images-react/' + row.image)} />
+        );
+    }
   }
 
   const[notesRoutes, setRoutesNotes] = useState([])
