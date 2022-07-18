@@ -393,7 +393,7 @@ def hello():
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
-    # image upload code
+    image upload code
     if ('selectedImage' in request.files):
         id = request.form['id']
         image = request.files['selectedImage']
