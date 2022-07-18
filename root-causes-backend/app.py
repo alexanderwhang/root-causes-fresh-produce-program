@@ -13,6 +13,7 @@ import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 from werkzeug.utils import secure_filename
+import os
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -729,6 +730,7 @@ def format_participant_routes(participant):
         "most_recent_delivery": participant.most_recent_delivery,
         "most_recent_call": participant.most_recent_call,
         "sms_response": participant.sms_response,
+        "image": participant.image,
         "notes" : notes
     }
 

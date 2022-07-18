@@ -103,7 +103,7 @@ function Row(props) {
   function CheckImage(){
     const [selectedImage, setSelectedImage] = useState(null);
     // const [selectedImage2, setSelectedImage2] = useState(null);
-    const handleSubmit = e => {
+    const handleSubmitImage = e => {
      setSelectedImage(e.target.files[0])
     }
 
@@ -137,7 +137,7 @@ function Row(props) {
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitImage}
             >
             Submit
           </Button>
