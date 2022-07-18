@@ -22,10 +22,11 @@ import Typography from "@mui/material/Typography";
 import { FooterContainer } from "./containers/footer";
 import SvgEllipse from "./symbolComponents/Ellipse";
 import { DragPractice } from "./practice.js";
-import { PracticeUsers } from "./practiceUsers";
+
 import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import MenuItem from "@mui/material/MenuItem"; 
+import { PracticeUsers } from "./practiceUsers";
 
 const baseUrl = "http://127.0.0.1:5000";
 // const baseUrl = "localhost:5000"
@@ -139,6 +140,9 @@ export function Callers() {
       for (let i = 0; i < data.length; i += chunkSize) {
         const chunk = data.slice(i, i + chunkSize);
         ret.push(chunk);
+      }  
+      while(ret.length<PracticeUsers.length-1){ 
+        ret.push([]);
       }
       return ret;
     }
@@ -246,7 +250,7 @@ export function Callers() {
 
     DistributedUsers = matchVolstoParts(participants, volunteers);
     setPeople(DistributedUsers);
-    PracticeUsers = DistributedUsers;
+   // PracticeUsers = matchVolstoParts(participants, volunteers);
   };
   return (
     <div>
