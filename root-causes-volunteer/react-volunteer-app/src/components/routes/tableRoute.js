@@ -318,7 +318,7 @@ export default function RouteTable() {
 
   // GET PARTICIPANTS
   const fetchRows = async () => {
-    const data = await axios.get(`${baseUrl}/routesparticipants/status/1`);
+    const data = await axios.get(`${baseUrl}/participants/status/1`);
     const { participants } = data.data;
     setRowsRoutes(participants);
     console.log("DATA: ", data);
