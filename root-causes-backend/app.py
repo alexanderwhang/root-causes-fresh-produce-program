@@ -439,9 +439,15 @@ def create_participant():
         sms_response = request.json['sms_response']
         image = request.json['image']
         street = request.json['street']
-        street = request.json['street']
+        city = request.json['city']
+        state = request.json['state']
+        zip = request.json['zip']
+        apartment = request.json['apartment']
+        most_recent_status = 0
+
+
         
-        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, street, city, state, zip, apartment, most_recent_status, image)
         # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
 
         status_type_id = 0
@@ -473,7 +479,8 @@ def get_participant(id):
 # GET PARTICIPANTS BY STATUS
 @app.route('/participants/status/<status>', methods = ['GET'])
 def get_participants_by_status(status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    # participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
