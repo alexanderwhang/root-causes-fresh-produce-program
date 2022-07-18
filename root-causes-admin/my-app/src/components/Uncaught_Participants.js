@@ -32,28 +32,38 @@ export function Uncaught_Participants() {
     const [open, setOpen] = React.useState(true);
     const [uncaughtParticipants, setUncaughtParticipants] = useState([]);
 
-    function arrayRemove(arr, value) { 
-    
-        return arr.filter(function(ele){ 
-            return ele != value; 
-        });
-    }
 
     // GET PARTICIPANTS
     const fetchParticipants = async () => {
+      const retParticipants = [];
       const data = await axios.get(`${baseUrl}/participants/group/A`); // GET PATIENTS WITH DESIRED ANSWERS
-      const data2 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Yes`);
-      const data3 = await axios.get(`${baseUrl}/participants/group/A/sms_response/yes`);
-      const data4 = await axios.get(`${baseUrl}/participants/group/A/sms_response/No`);
-      const data5 = await axios.get(`${baseUrl}/participants/group/A/sms_response/no`);
-      const data6 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Si`);
-      const data7 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
-      const data8 = await axios.get(`${baseUrl}/participants/group/A/sms_response/si`);
-      const data9 = await axios.get(`${baseUrl}/participants/group/A/sms_response/Sí`);
-      let participants = data.data.participants;
-      var result = arrayRemove(participants, data2.data.participants);
-      setUncaughtParticipants(participants);
+      for(let i=0; i < data.length; i++){
+        axios.get(`${baseUrl}/participants`).then(response => {
+          console.log("hello");
+          const participants = data.data.participants;
+          if(participants.sms_response !== "Yes"){
+            retParticipants.push(response);
+          }
+        })
+      }
+      // let participants = data.data.participants;
+      // const retParticipants = [];
+      // for(let i = 0; i < 16; i++){
+      //   console.log(data.sms_response);
+      // }
+      // for(let pt in participants){
+      //   console.log("response: ", pt.sms_response);
+      //   if(pt.sms_response !== "Yes") {
+      //     retParticipants.push(pt);
+      //   };
+      // }
+    
+      setUncaughtParticipants(retParticipants);
       console.log("DATA: ", data);
+      console.log(retParticipants.length);
+      for(let pt in retParticipants){
+        console.log("response: ", pt.sms_response);
+      }
     };
 
 
