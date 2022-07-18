@@ -115,13 +115,6 @@ export default function SignIn() {
                 </Link>
               </Grid>
               
-              <Grid item >
-                <Link href="/volunteeroradmin" variant="body2" 
-                  style={{color: "#00743e"}}>
-                  {"Volunteer & Admin Page"}
-                </Link>
-              </Grid>
-
             </Grid>
           </Box>
         </Box>
