@@ -255,7 +255,7 @@ function Row(props) {
                 <TableBody>
                   <TableRow key="extra2">
                       <TableCell component="th" scope="row">
-                        {row.delivery_notes}
+                        {row.call_notes}
                       </TableCell>
                   </TableRow>
                 </TableBody>
@@ -304,7 +304,7 @@ export default function CollapsibleTable() {
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
       const data3 = await axios.get(`${baseUrl}/routesparticipants/status/3`);
-      const data5 = await axios.get(`${baseUrl}/participants/status/5`);
+      const data5 = await axios.get(`${baseUrl}/routesparticipants/status/5`);
       const data = {...data5, ...data3}
       const { participants } = data.data;
       setRows(participants);
