@@ -5,11 +5,11 @@ import Volunteer from "./components/volunteer";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
-import { Table } from "./Table";
+import { Table } from "./components/Table";
 import Navbar from "./components/Navbar/Navbar";
 import { Driver } from "./pages/Driver.js";
 import { VolInfoPage } from "./pages/VolInfo.js";
-import { Texts } from "./pages/Texts.js";
+import Texts from "./pages/Texts.js";
 import { Home } from "./home";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -60,61 +60,15 @@ export function Participants() {
 
   const [search, setSearch] = useState("");
 
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
-  }
-
-  const keys = [
-    "status",
-    "first_name",
-    "last_name",
-    "address",
-    "phone_number",
-    "email",
-    "language",
-    "group",
-  ];
-
-  const searching = (data) => {
-    return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(search.toLowerCase()))
-    );
-  };
-
   return (
     <div>
       <Navbar />
 
       <section id="contact_list">
         <h2> Participants </h2>
-        {/* <NewTable data={participantsList}/> */}
-        {/* <div id="search">
-          <TextField
-            id="searchField"
-            label="Search"
-            // helperText="Some important text"
-            onChange={handleSearch}
-            type="search"
-            // style="background-color: white;"
-          />
-        </div> */}
-
-        {/* <input type="text" placeholder ="Search..." className ="search" onChange ={(e)=>setQuery(e.target.value)}/> */}
         
         <div className="contact-list-container">
-          {/* participant table */}
-          {/* <div className="send-texts">
-            <Button
-              onClick={() => {
-                navigate("/smstexts");
-              }}
-              variant="contained"
-              sx={{backgroundColor:"#d6a977"}}
-            >
-              Send Texts
-            </Button>
-          </div> */}
-        
+
             <Table/>
         </div>
         <div className="colorKey">
@@ -154,13 +108,6 @@ interface TabPanelProps {
 }
 
 export function Individual({ match }) {
-  // const Root = styled("div")(({ theme }) => ({
-  //   width: "100%",
-  //   ...theme.typography.body2,
-  //   "& > :not(style) + :not(style)": {
-  //     marginTop: theme.spacing(2),
-  //   },
-  // }));
 
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
@@ -270,7 +217,7 @@ export function Individual({ match }) {
                     </tr>
                     <tr>
                       <td>#12345</td>
-                      <td>Pulmonary Hypertension Diagnosis</td>
+                      <td>Type 2 Diabetes</td>
                       <td>Dr. Jones</td>
                       <td>Duke Hospital</td>
                       <td>8/23/21</td>

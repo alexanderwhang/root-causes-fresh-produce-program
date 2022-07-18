@@ -81,7 +81,7 @@ function Row(props) {
   const [status_time, setDate] = useState(""); 
   const handleTime = () => {
     let current = new Date();
-    let date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    let date = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
     let time = current.toLocaleTimeString();
     setDate(time + " on " + date);
   }
@@ -127,6 +127,21 @@ function Row(props) {
     }
   }
 
+  {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
+  function numToString(int) {
+    if (int == 1) {
+      return "Ready for delivery"
+    } else if (int == 2) {
+      return "Not this week"
+    } else if (int == 3) {
+      return "Requires follow-up call"
+    } else if (int == 4) {
+      return "No status set"
+    } else {
+      return "No response"
+    }
+  }
+
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -149,13 +164,11 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Status: <span style={{fontWeight: "bold"}} 
-            >Coming Soon
-            {/* {row.status} */}
+            > {numToString(row.status)}
           </span>
           <br /> Most Recent Note: 
             {/* {mostRecent(row.call_notes)}  */}
-          <br /> Status Last Changed: 
-            {/* {row.status_time} */}
+          <br /> Most Recent Call: {row.most_recent_call}
 
           
         </TableCell>        
@@ -171,7 +184,7 @@ function Row(props) {
               defaultValue = "No Response"
               >
               <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No Response" />
               <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
             {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
@@ -295,17 +308,28 @@ export default function CollapsibleTable() {
     // 1 = GREEN, ready for delivery
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
-      const data3 = await axios.get(`${baseUrl}/participants/status/3`);
-      const data5 = await axios.get(`${baseUrl}/participants/status/5`);
-      const data = {...data3, ...data5}
+      // const data3 = await axios.get(`${baseUrl}/participants/status/3`);
+      const data = await axios.get(`${baseUrl}/participants/status/3`);
       const { participants } = data.data;
+      // const participants3 = data3.data;
       setRows(participants);
-      console.log("DATA: ", data);
     };
   
     useEffect(() => {
       fetchRows();
     }, []);
+
+    // const fetchRows2 = async () => {
+    //   const data5 = await axios.get(`${baseUrl}/participants/status/5`);
+    //   const { participants2 } = data5.data;
+    //   setRows2(participants2);
+    // };
+  
+    // useEffect(() => {
+    //   fetchRows2();
+    // }, []);
+
+    // setRows([...rows1, ...rows2]);
 
   return (
     <TableContainer 

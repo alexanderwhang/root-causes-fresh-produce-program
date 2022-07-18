@@ -139,7 +139,7 @@ function Participant(props) {
     // setCityDisplay(new_participant.city);
     // setStateDisplay(new_participant.state);
     // setZipDisplay(new_participant.zip);
-    setApartmentDisplay(new_participant.apartment);
+    // setApartmentDisplay(new_participant.apartment);
     let address_string = "";
     if(!new_participant.apartment) {
       address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`

@@ -1,5 +1,6 @@
 import "./Texts.css";
 import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from '../containers/footer';
@@ -11,8 +12,20 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
+import ListSubheader from "@mui/material/ListSubheader";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import SvgEllipse from "../symbolComponents/Ellipse";
+import {Caught_Participants} from "../components/Caught_Participants.js";
+import {Uncaught_Participants} from "../components/Uncaught_Participants.js";
 
-export default function BasicSelect() {
+const baseUrl = "http://127.0.0.1:5000";
+
+export function BasicSelect() {
   const [status, setStatus] = React.useState('');
 
   const handleStatusChange = (event: SelectChangeEvent) => {
@@ -21,7 +34,7 @@ export default function BasicSelect() {
 
   return (
     <div className="basic-select">
-      <Box sx={{ maxWidth: 200,  }}>
+      <Box sx={{ maxWidth: 200,}}>
       <div className = "filter">
         <FormControl fullWidth>
           <InputLabel id="simple-select-label">Filter</InputLabel>
@@ -50,19 +63,40 @@ export default function BasicSelect() {
   );
 }
 
-export function Texts(){
+export default function Texts(){
     const [value, setValue] = React.useState('');
+    const [message, setMessage] = React.useState('');
+
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    setMessage(event.target.value);
   };
+
+
+  const handleOutgoingSMS = async (e) => {
+    var data = JSON.stringify({ message });
+
+    const response = await axios.post(`${baseUrl}/smstexts/${message}`)
+  }
+
+  const [status, setStatus] = React.useState('');
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value);
+  };
+  //const [status, setStatus] = React.useState(props.participant.status);
+  // const handleStatusChange = (event: SelectChangeEvent) => {
+  //   setStatus(event.target.value);
+  // };
+
     return(
         <div>
         <Navbar/>
-        <h2>Dial My Calls</h2>
+        <h2>SMS Texting</h2>
         <div className="sms">
           <div className="box">
-          <h4> Sending Messages </h4>
+          <h3> Sending Messages </h3>
             <div className= "sending">
               <BasicSelect />
               <div className="messaging">
@@ -87,21 +121,49 @@ export function Texts(){
                   </div>
                 </Box>
                 <div className="confirmMessage">
-                  <Button variant="contained"> Confirm Message </Button>
+                  <header className="sendSMS"> 
+                    <Button variant="contained" onClick={handleOutgoingSMS}> Send Message </Button>
+                  </header>
                 </div>
               </div>
             </div>
         </div>
-        <div className= "box">
-          <h4> Receiving Messages </h4>
+
+        <div className= "box2">
+          <h3> Receiving Messages </h3>
           <div className="receiving">
             <div className="caught">
-            </div>
-            <div className="uncaught">
-            </div>
+             <List
+              sx={{ width: '100%', bgcolor:"#f9f8e1" }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Automatically Updated
+                </ListSubheader>
+              }
+            >
+            <Caught_Participants />
+            </List>
+          </div>
+          <div className="uncaught">
+            <List
+              sx={{ width: '100%', bgcolor:"#f9f8e1" }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Needs Review
+                </ListSubheader>
+              }
+            >
+              <Uncaught_Participants/>
+            </List>
+          </div>
           </div>
         </div>
-        </div>
-        </div>
+          </div>
+            <FooterContainer />
+          </div>
     );
 }
