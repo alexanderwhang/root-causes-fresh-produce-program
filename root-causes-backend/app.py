@@ -15,6 +15,10 @@ from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
 
+# import needed for file upload
+from werkzeug.utils import secure_filename
+
+
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
 
@@ -34,12 +38,19 @@ from twilio.rest import Client
 # pipenv shell
 # Flask run
 
+# To get Twilio working (open your computer terminal)
+# run ' brew tap twilio/brew && brew install twilio '
+
+UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://rootcauses_user:ztx9xdh.yga7cnv2PHX@codeplus-postgres-test-01.oit.duke.edu/rootcauses'
 # URI FORMAT: postgressql://user:password@host/database_name
 db = SQLAlchemy(app)
 CORS(app)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #SMS INFO
 account_sid = "ACa19caaefab10dead0bf946d4e3190175"
@@ -64,6 +75,7 @@ class Participant(db.Model):
     most_recent_delivery = db.Column(db.String(100), nullable=True)
     most_recent_call = db.Column(db.String(100), nullable=True)
     sms_response = db.Column(db.Text, nullable=True)
+    image = db.Column(db.String(200), nullable=True)
 
     children = relationship("Status")
     children = relationship("DeliveryHistory")
@@ -72,7 +84,7 @@ class Participant(db.Model):
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
 
-    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response):
+    def __init__(self, first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image):
         self.first_name = first_name
         self.last_name = last_name
         self.date_of_birth = date_of_birth
@@ -86,6 +98,7 @@ class Participant(db.Model):
         self.most_recent_delivery = most_recent_delivery
         self.most_recent_call = most_recent_call
         self.sms_response = sms_response
+        self.image = image
 
 def format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
@@ -113,7 +126,8 @@ def format_participant(participant):
         "apartment": address.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
         "most_recent_call": participant.most_recent_call,
-        "sms_response": participant.sms_response
+        "sms_response": participant.sms_response, 
+        "image": participant.image 
     }
 
 class Status(db.Model):
@@ -343,7 +357,7 @@ class DeliveryHistory(db.Model):
     __tablename__ = 'delivery_history'
     __table_args__ = {"schema":"RC"}
 
-    delivery_history_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column("delivery_history_id", db.Integer, primary_key=True)
     participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     delivery_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
@@ -376,32 +390,49 @@ def hello():
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    date_of_birth = request.json['date_of_birth']
-    age = request.json['age']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    group = request.json['group']
-    pronouns = request.json['pronouns']
-    household_size = request.json['household_size']
-    most_recent_delivery = request.json['most_recent_delivery']
-    most_recent_call = request.json['most_recent_call']
-    sms_response = request.json['sms_response']
+    # image upload code
+    if ('selectedImage' in request.files):
+        id = request.form['id']
+        image = request.files['selectedImage']
+        routeImage = Participant.query.get(id)
+        filename = secure_filename(image.filename)
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(full_filename)
+        # routeImage.image = url_for('download_file', name=filename)
+        routeImage.image = filename
+        db.session.add(routeImage)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
     
-    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
-    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
+    # otherwise, add new participant
+    else:
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
+        date_of_birth = request.json['date_of_birth']
+        age = request.json['age']
+        email = request.json['email']
+        phone = request.json['phone']
+        language = request.json['language']
+        group = request.json['group']
+        pronouns = request.json['pronouns']
+        household_size = request.json['household_size']
+        most_recent_delivery = request.json['most_recent_delivery']
+        most_recent_call = request.json['most_recent_call']
+        sms_response = request.json['sms_response']
+        image = request.json['image']
+        
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
 
-    status_type_id = 0
-    volunteer_id = null
-    status_date = datetime.utcnow
-    source = "init"
-    # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
+        status_type_id = 0
+        volunteer_id = null
+        status_date = datetime.utcnow
+        source = "init"
+        # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
 
-    db.session.add(participant)
-    db.session.commit()
-    return format_participant(participant)
+        db.session.add(participant)
+        db.session.commit()
+        return format_participant(participant)
 
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])
@@ -731,6 +762,48 @@ def get_call_assignments():
 
 
 ########VOLUNTEER APP##########
+def format_participant_routes(participant):
+    status = Status.query.filter_by(participant_id=participant.id).one()
+    address = Address.query.filter_by(participant_id=participant.id).one()
+    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
+        notes = "No notes."
+    else:
+        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+    formatted_address = format_address(address)
+    return {
+        "id": participant.id,
+        "first_name": participant.first_name,
+        "last_name": participant.last_name,
+        "date_of_birth": participant.date_of_birth,
+        "age": participant.age,
+        "status": status.status_type_id,
+        # "updated_at": participant.updated_at,
+        "address": formatted_address,
+        "email": participant.email,
+        "phone": participant.phone,
+        "language": participant.language,
+        "pronouns": participant.pronouns,
+        "group": participant.group,
+        "street": address.street,
+        "city": address.city,
+        "state": address.state,
+        "zip": address.zip,
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response,
+        "notes" : notes
+    }
+
+# GET PARTICIPANTS BY STATUS - ROUTES PAGE
+@app.route('/routesparticipants/status/<status>', methods = ['GET'])
+def get_participants_by_status_routes(status):
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant_routes(participant))
+    
+    return {'participants': participant_list}
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
@@ -798,13 +871,20 @@ def get_calls():
         db.session.add(recent_call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
+
+# def format_delivery_notes(delivery_note):
+#     return {
+#         "notes": delivery_note.notes
+#     }
     
-# # GET PARTICIPANT BY ID
-# @app.route('/participants/<id>', methods = ['GET'])
-# def get_call_note(id):
-#     participant = Participant.query.filter_by(id=id).one()
-#     formatted_participant = format_participant(participant)
-#     return {'participant': formatted_participant}
+# # GET ROUTE NOTES BY ID
+# @app.route('/routes/notes/<id>', methods = ['GET'])
+# def get_route_notes(id):
+#     notes = db.session.query(DeliveryHistory.notes).filter(DeliveryHistory.participant_id == id).all()
+#     all_notes = []
+#     for note in notes:
+#         all_notes.append(format_delivery_notes(note))
+#     return jsonify(all_notes)
     
     
 # TIME OF MOST RECENT DELIVERY - ROUTES PAGE    

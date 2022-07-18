@@ -54,6 +54,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 function Row(props) {
   const { row } = props;
+  const {rowNote} = props;
   const [open, setOpen] = React.useState(false);
   const [delivery_status, setDeliveryStatus] = useState("");
   const [notes, setNotes] = useState("");
@@ -118,7 +119,7 @@ function Row(props) {
             )}
 
           <form method = "post" 
-                action="http://127.0.0.1:5000/routes"
+                action="http://127.0.0.1:5000/participants"
                 enctype = "multipart/form-data">
             <input
               type="file"
@@ -143,9 +144,24 @@ function Row(props) {
       </div>
       );
     } else {
-      return row.image;
+      return (
+        <img src={require('../../images-react/' + row.image)} />
+        );
     }
   }
+
+  const[notesRoutes, setRoutesNotes] = useState([])
+  // GET NOTES
+  const fetchNotes = async () => {
+    const data = await axios.get(`${baseUrl}/routes/notes/${row.id}`);
+    const { notes } = data.data;
+    setRoutesNotes(notes);
+    console.log("DATA: ", data);
+  };
+
+  // useEffect(() => {
+  //   fetchNotes();
+  // }, []);
 
   return (
     <React.Fragment>
@@ -168,7 +184,10 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery: {row.most_recent_delivery}
-          <br /> Notes: {row.routes_notes} 
+          <br /> Most Recent Note: {" "}
+            <span style={{fontWeight: "bold"}}>
+              {row.notes}
+            </span>
         </TableCell>
         <TableCell>
 
@@ -276,6 +295,12 @@ Row.propTypes = {
   }).isRequired,
 };
 
+// Note.propTypes = {
+//   rowNote: PropTypes.shape({
+//     note: PropTypes.note,
+//   }).isRequired,
+// };
+
 export default function RouteTable() {
 
   // axios!
@@ -289,11 +314,11 @@ export default function RouteTable() {
   //   })
   //   }, [])
 
-    const [rowsRoutes, setRowsRoutes] = useState([]);
+  const [rowsRoutes, setRowsRoutes] = useState([]);
 
   // GET PARTICIPANTS
   const fetchRows = async () => {
-    const data = await axios.get(`${baseUrl}/participants/status/1`);
+    const data = await axios.get(`${baseUrl}/routesparticipants/status/1`);
     const { participants } = data.data;
     setRowsRoutes(participants);
     console.log("DATA: ", data);
@@ -302,6 +327,18 @@ export default function RouteTable() {
   useEffect(() => {
     fetchRows();
   }, []);
+
+
+
+// const[notesRoutes, setRoutesNotes] = useState([])
+
+// useEffect(() => {
+//   axios.get('http://127.0.0.1:5000/routes/notes')
+//   .then((res) => {console.log(res)
+//     setRoutesNotes(res.data)})
+//     .catch((err) => {console.log(err)
+//     })}, [])
+  
   
   return (
     <TableContainer 
@@ -319,6 +356,9 @@ export default function RouteTable() {
           {rowsRoutes.map((row) => (
             <Row key={row.id} row={row} />
           ))}
+          {/* {notesRoutes.map((rowNote) => (
+            <Row key={rowNote.id} row={rowNote} />
+          ))} */}
         </TableBody>
       </Table>
     </TableContainer>

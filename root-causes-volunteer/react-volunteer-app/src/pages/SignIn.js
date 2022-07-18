@@ -105,8 +105,8 @@ export default function SignIn() {
 
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2" style={{color: "#00743e"}}>
-                  Forgot password?
+                <Link href="/trueprofile" variant="body2" style={{color: "#00743e"}}>
+                  View your profile!
                 </Link>
               </Grid>
               <Grid item>
@@ -114,15 +114,11 @@ export default function SignIn() {
                   {"Don't have an account? Register"}
                 </Link>
               </Grid>
-
-              <Grid item>
-                <Link href="/trueprofile" variant="body2" style={{color: "#00743e"}}>
-                  {"Click here to see your profile!"}
-                </Link>
-                <br />
+              
+              <Grid item >
                 <Link href="/volunteeroradmin" variant="body2" 
                   style={{color: "#00743e"}}>
-                  {"Volunteer/Admin Page"}
+                  {"Volunteer & Admin Page"}
                 </Link>
               </Grid>
 
