@@ -226,19 +226,6 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                      <form noValidate method = "post" action="http://127.0.0.1:5000/calls/deletenotes">
-                        <input type="hidden" name="id" value={row.id} />
-                        <Button id="note_delete"
-                            name = "delete"
-                            style={{marginTop: "10px"}}
-                            type="submit"
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            onSubmit={handleSubmit2}
-                            >
-                            DELETE NOTE HISTORY
-                        </Button>                        
-                      </form>
                     </form>
                     </div>
                       {/* <h5 style={{fontSize: "20px", fontWeight: "bold"}}>Note History</h5>
