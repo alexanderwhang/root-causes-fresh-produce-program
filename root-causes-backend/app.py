@@ -40,6 +40,7 @@ from werkzeug.utils import secure_filename
 # To get Twilio working (open your computer terminal)
 # pipenv install twilio (OR pip install twilio)
 # FOR MAC: run ' brew tap twilio/brew && brew install twilio '
+# * FOR WINDOWS: INSTALL SCOOP --> https://scoop.sh 
 # FOR WINDOWS: run ' scoop bucket add twilio-scoop https://github.com/twilio/scoop-twilio-cli '
 # FOR WINDOWS (part 2): run ' scoop install twilio '
 
