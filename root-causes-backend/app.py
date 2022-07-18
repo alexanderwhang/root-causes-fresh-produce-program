@@ -14,6 +14,7 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 
 # import needed for file upload
 from werkzeug.utils import secure_filename
@@ -623,19 +624,18 @@ def outgoing_sms(message):
 def incoming_sms():
     # """Send a dynamic reply to an incoming text message"""
     # # Get the message the user sent our Twilio number
-    # body = request.values.get('Body', None)
+    body = request.values.get('Body', None)
 
-    # # Start our TwiML response
-    # resp = MessagingResponse()
+    # Start our TwiML response
+    resp = MessagingResponse()
 
-    # # Determine the right reply for this message
-    # if body == '1':
-    #     resp.message("You have selected YES!")
-    # elif body == '2':
-    #     resp.message("You have selected NO!")
+    # Determine the right reply for this message
+    if body == '1':
+        resp.message("You have selected YES!")
+    elif body == '2':
+        resp.message("You have selected NO!")
 
-    # return str(resp)
-    return {"status": True}
+    return str(resp)
 
 if __name__ == "__main__":
     app.run(debug=True)
