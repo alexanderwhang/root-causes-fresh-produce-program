@@ -440,9 +440,15 @@ def create_participant():
         sms_response = request.json['sms_response']
         image = request.json['image']
         street = request.json['street']
-        street = request.json['street']
+        city = request.json['city']
+        state = request.json['state']
+        zip = request.json['zip']
+        apartment = request.json['apartment']
+        most_recent_status = 0
+
+
         
-        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, street, city, state, zip, apartment, most_recent_status, image)
         # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
 
         status_type_id = 0
@@ -474,7 +480,8 @@ def get_participant(id):
 # GET PARTICIPANTS BY STATUS
 @app.route('/participants/status/<status>', methods = ['GET'])
 def get_participants_by_status(status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    # participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -504,7 +511,7 @@ def get_participants_by_group(group):
 # GET PARTICIPANTS BY GROUP AND STATUS
 @app.route('/participants/group/<group>/status/<status>', methods = ['GET'])
 def get_participants_by_group_and_status(group, status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).filter(Participant.group==group).all()
+    participants = db.session.query(Participant).filter_by(most_recent_status=status).filter_by(group=group).all()
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant(participant))
@@ -826,7 +833,107 @@ def get_deliveries():
 #     return {'participants': participant_list}
 
 
-# REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
+# REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table  
+class VolObj():  
+    def __init__(self,id,participant_list): 
+        self.particpant_list=participant_list
+        self.id =id 
+
+# CALLER MANAGEMENT ALGORITHM
+@app.route('/callermanagement', methods = ['GET'])
+def get_call_assignments():
+    type = "Caller"  
+    
+    def volObjects(array):  
+        ret = []
+        for i in range(len(array)): 
+             volunteer = array[i]   
+             volunteer_object=VolObj(volunteer.id,[]) 
+             ret.append(volunteer_object) 
+        return ret
+
+    #make each volunteer into an volunteer object 
+    #array of volunteers that speak english
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
+    
+    #array of volunteers that speak spanish
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
+    list_of_volObjects_english= volObjects(volunteers_english) 
+    list_of_volObjects_spanish= volObjects(volunteers_spanish)
+    
+    # array of participants that speak english
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    
+    #array of participants that speak spanish
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    
+    #step 0: get the participants into chunks  
+    def generate_assignments(volunteers,participants):
+        def chunkSize(participants,volunteers):   
+            #prevent infinite chunking
+            if len(volunteers)==0: 
+                return 0
+            return math.ceil(len(participants)/len(volunteers))
+        share=chunkSize(participants,volunteers)
+        participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
+        while len(volunteers)>len(participantChunks):  
+            participantChunks.append([])
+
+        for i in range(len(volunteers)): 
+            volunteer=volunteers[i] 
+            volunteer.participant_list=participantChunks[i]   
+        return volunteers
+    volunteersE = generate_assignments(volunteers_english,participants_english)  
+    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
+    allVolunteers =[] 
+    allVolunteers.extend(volunteersE)
+    allVolunteers.extend(volunteersS)  
+    volunteer_list = []
+    for volunteer in allVolunteers:
+        volunteer_list.append(format_sortedVolunteers(volunteer))
+    return {"sortedVolunteers": volunteer_list}
+    #how to deal with participants in the backend, the first thing to do is to try to create a participants list
+
+    # every volunteer should now have their participant chunks now e just need to do that for the spanish speakrs
+    
+
+#  def format_sortedVolunteers
+def format_sortedVolunteers(volunteers):
+    ids = "{"
+    # for participant in volunteers.participant_list:
+    for i in range(len(volunteers.participant_list)):
+        ids+='"'
+        ids+=str(i)
+        ids+='"'
+        ids+=": "
+        ids+=str(volunteers.participant_list[i].id)
+        if(i < len(volunteers.participant_list) -1 ):
+            ids+=", "
+    ids+="}"
+
+    idArr = []
+    for i in range(len(volunteers.participant_list)):
+        idArr.append(volunteers.participant_list[i].id)
+    return {
+        "id": volunteers.id,
+        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
+    }
+
+# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
+@app.route('/callermanagement/unsorted', methods = ['GET'])
+def get_unsoreted_call_assignments():
+    type="Caller"
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
+
+    ret = [{}]
+    for volunteer in volunteers:
+        ret.append({"vol": volunteer, "pts": []})
+    ret.append({"vol": {}, "pts": participants})
+
+    return { json.dumps(ret)}
+
+
 @app.route('/profile', methods = ['GET', 'POST'])
 def register_volunteer():
     email = request.form['email']
