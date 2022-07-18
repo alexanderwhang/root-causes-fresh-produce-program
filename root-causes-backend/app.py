@@ -786,6 +786,7 @@ def format_participant_routes(participant):
         "language": participant.language,
         "pronouns": participant.pronouns,
         "group": participant.group,
+        "household_size": participant.household_size,
         "street": address.street,
         "city": address.city,
         "state": address.state,
@@ -793,7 +794,8 @@ def format_participant_routes(participant):
         "apartment": address.apartment,
         "most_recent_delivery": participant.most_recent_delivery,
         "most_recent_call": participant.most_recent_call,
-        "sms_response": participant.sms_response,
+        "sms_response": participant.sms_response, 
+        "image": participant.image,
         "notes" : notes
     }
 
@@ -804,8 +806,8 @@ def get_participants_by_status_routes(status):
     participant_list = []
     for participant in participants:
         participant_list.append(format_participant_routes(participant))
-    
     return {'participants': participant_list}
+
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table 
 @app.route('/profile', methods = ['GET', 'POST'])
