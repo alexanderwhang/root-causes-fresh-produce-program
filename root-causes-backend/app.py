@@ -376,26 +376,52 @@ def hello():
 ############# PARTCIPANTS ##############
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
+# CREATE PARTICIPANT
+@app.route('/participants', methods = ['POST'])
 def create_participant():
-    first_name = request.json['first_name']
-    last_name = request.json['last_name']
-    date_of_birth = request.json['date_of_birth']
-    age = request.json['age']
-    email = request.json['email']
-    phone = request.json['phone']
-    language = request.json['language']
-    group = request.json['group']
-    pronouns = request.json['pronouns']
-    household_size = request.json['household_size']
-    most_recent_delivery = request.json['most_recent_delivery']
-    most_recent_call = request.json['most_recent_call']
-    sms_response = request.json['sms_response']
+    # image upload code
+    if ('selectedImage' in request.files):
+        id = request.form['id']
+        image = request.files['selectedImage']
+        routeImage = Participant.query.get(id)
+        filename = secure_filename(image.filename)
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(full_filename)
+        # routeImage.image = url_for('download_file', name=filename)
+        routeImage.image = filename
+        db.session.add(routeImage)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
     
-    participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response)
-    # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
-    db.session.add(participant)
-    db.session.commit()
-    return format_participant(participant)
+    # otherwise, add new participant
+    else:
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
+        date_of_birth = request.json['date_of_birth']
+        age = request.json['age']
+        email = request.json['email']
+        phone = request.json['phone']
+        language = request.json['language']
+        group = request.json['group']
+        pronouns = request.json['pronouns']
+        household_size = request.json['household_size']
+        most_recent_delivery = request.json['most_recent_delivery']
+        most_recent_call = request.json['most_recent_call']
+        sms_response = request.json['sms_response']
+        image = request.json['image']
+        
+        participant = Participant(first_name, last_name, date_of_birth, age, phone, language, email, pronouns, group, household_size, most_recent_delivery, most_recent_call, sms_response, image)
+        # 'group', 'household_size', 'most_recent_delivery', 'most_recent_call', and 'sms_response'
+
+        status_type_id = 0
+        volunteer_id = null
+        status_date = datetime.utcnow
+        source = "init"
+        # def __init__(self, participant_id, status_type_id, volunteer_id, status_date, source):
+
+        db.session.add(participant)
+        db.session.commit()
+        return format_participant(participant)
 
 # GET ALL PARTICIPANTS
 @app.route('/participants', methods = ['GET'])
