@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 import datetime as dt
 import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
+from werkzeug.utils import secure_filename
 
 # start VPN!
 # to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
@@ -31,12 +32,16 @@ from sqlalchemy.dialects.postgresql import ARRAY
 # pipenv shell
 # Flask run
 
+UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://rootcauses_user:ztx9xdh.yga7cnv2PHX@codeplus-postgres-test-01.oit.duke.edu/rootcauses'
 # URI FORMAT: postgressql://user:password@host/database_name
 db = SQLAlchemy(app)
 CORS(app)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 class Participant(db.Model):
     __tablename__ = 'participant'
