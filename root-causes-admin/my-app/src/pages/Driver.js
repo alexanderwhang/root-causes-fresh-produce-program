@@ -208,46 +208,46 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:00, Route: A, Duration: 60 min, Participant Name: Elsey	Crowdy, Taylor Spears
+                          Start Time: 9:00, Route: A, Duration: 60 min, Participant Name: Elsey Crowdy, Taylor Spears
                         </ListItemText>
                       </ListItemButton>
                     </List>
                   </Collapse>
                   <ListItemButton onClick={handleClick}>
-                    <ListItemText> Theda	Tozer </ListItemText>
+                    <ListItemText> Theda Tozer </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:15, Route: B, Duration: 60 min, Participant Name: Renaldo	Smythin, Guglielmo	Brockington	
+                          Start Time: 9:15, Route: B, Duration: 60 min, Participant Name: Colene Burberry, Erhard	Kleinhaut	
                         </ListItemText>
                       </ListItemButton>
                     </List>
                   </Collapse>
                   <ListItemButton onClick={handleClick}>
-                    <ListItemText> Cristin	Caustic </ListItemText>
+                    <ListItemText> Cristin Caustic </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:30, Route: C, Duration: 55 min, Participant Name: Abby	Crosier
+                          Start Time: 9:30, Route: C, Duration: 55 min, Participant Name: Carmelle Todeo
                         </ListItemText>
                       </ListItemButton>
                     </List>
                   </Collapse>
                   <ListItemButton onClick={handleClick}>
-                    <ListItemText> Chrissy	Nicholas </ListItemText>
+                    <ListItemText> Chrissy Nicholas </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:45, Route: D, Duration: 45 min, Participant Name: Adorne	Jedrych	
+                          Start Time: 9:45, Route: D, Duration: 45 min, Participant Name: Adorne Jedrych	
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -260,20 +260,20 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:00, Route: E, Duration: 80 min, Participant Name: Isa	Gilfoy, Jacklin	Gregr, Em	Heatley
+                          Start Time: 10:00, Route: E, Duration: 80 min, Participant Name: Isa Gilfoy, Jorgan	Alvarado
                         </ListItemText>
                       </ListItemButton>
                     </List>
                   </Collapse>
                   <ListItemButton onClick={handleClick}>
-                    <ListItemText> Angelia	Shapter </ListItemText>
+                    <ListItemText> Angelia Shapter </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
                   </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:15, Route: F, Duration: 30 min, Participant Name: Faulkner	Strut
+                          Start Time: 10:15, Route: F, Duration: 30 min, Participant Name: Aurthur Bodechon
                         </ListItemText>
                       </ListItemButton>
                     </List>

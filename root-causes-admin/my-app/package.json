@@ -25,7 +25,8 @@
     "scripts": "^0.1.0",
     "style": "^0.0.3",
     "styled-components": "^5.3.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "build": "react-scripts build",
