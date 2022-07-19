@@ -184,10 +184,6 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery: {row.most_recent_delivery}
-          <br /> Most Recent Note: {" "}
-            <span style={{fontWeight: "bold"}}>
-              {row.notes}
-            </span>
         </TableCell>
         <TableCell>
 
@@ -265,6 +261,16 @@ function Row(props) {
                   <TableRow key="extra1">
                   </TableRow>
                 </TableBody>
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    Most Recent Note: {" "}
+                    <span style={{fontWeight: "bold"}}>
+                      {row.notes}
+                    </span>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
                 <TableHead>
                     <TableRow>
                       <TableCell>Image Upload</TableCell>
