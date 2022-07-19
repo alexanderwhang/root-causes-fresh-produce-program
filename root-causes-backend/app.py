@@ -119,24 +119,18 @@ class Participant(db.Model):
         self.most_recent_status = most_recent_status
         self.image = image
 
-def age(participant):
-    dob = participant.date_of_birth
-    today = date.today()
-    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    return age
-
 
 def format_participant(participant):
     # status = Status.query.filter_by(participant_id=participant.id).one()
     # address = Address.query.filter_by(participant_id=participant.id).one()
     formatted_address = format_address(participant)
-    age = age(participant)
+    agedob = age(participant)
     return {
         "id": participant.id,
         "first_name": participant.first_name,
         "last_name": participant.last_name,
         "date_of_birth": participant.date_of_birth,
-        "age": age,
+        "age": agedob,
         "status": participant.most_recent_status,
         "most_recent_status_update": participant.most_recent_status_update,
         # "status": status.status_type_id,
@@ -211,6 +205,12 @@ def format_address(address):
         return f"{address.street}, Apartment {address.apartment}, {address.city}, {address.state} {address.zip}"
     
     return f"{address.street}, {address.city}, {address.state} {address.zip}"
+
+def age(participant):
+    dob = participant.date_of_birth
+    today = date.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    return age
 
 class Volunteer(db.Model):
     __tablename__ = 'volunteer'
