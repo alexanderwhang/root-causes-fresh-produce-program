@@ -242,7 +242,8 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
+                       {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
+                      {/* <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
                         <Button id = "note_delete"
                             name = "delete"
@@ -254,7 +255,7 @@ function Row(props) {
                             >
                             DELETE NOTE HISTORY
                         </Button>                        
-                      </form>
+                      </form> */}
                     </form>
                     </div>
                       </TableCell>
