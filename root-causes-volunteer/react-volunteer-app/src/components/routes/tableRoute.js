@@ -186,7 +186,7 @@ function Row(props) {
           <br /> Most Recent Delivery: {row.most_recent_delivery}
           <br /> Most Recent Note: {" "}
             <span style={{fontWeight: "bold"}}>
-              {/* {row.notes} */}
+              {row.notes}
             </span>
         </TableCell>
         <TableCell>
@@ -318,7 +318,7 @@ export default function RouteTable() {
 
   // GET PARTICIPANTS
   const fetchRows = async () => {
-    const data = await axios.get(`${baseUrl}/participants/status/1`);
+    const data = await axios.get(`${baseUrl}/routesparticipants/status/1`);
     const { participants } = data.data;
     setRowsRoutes(participants);
     console.log("DATA: ", data);

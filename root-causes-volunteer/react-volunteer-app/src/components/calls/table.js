@@ -181,7 +181,7 @@ function Row(props) {
               defaultValue = "No Response"
               >
               <FormControlLabel name = 'status' control={<Radio />} value={1} label="Available" />
-              <FormControlLabel name = 'status' control={<Radio />} value={5} label="No Response" />
+              <FormControlLabel name = 'status' control={<Radio />} value={3} label="No Response" />
               <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
             {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
@@ -306,7 +306,7 @@ export default function CollapsibleTable() {
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
       // const data3 = await axios.get(`${baseUrl}/participants/status/3`);
-      const data = await axios.get(`${baseUrl}/participants/status/3`);
+      const data = await axios.get(`${baseUrl}/routesparticipants/status/3`);
       const { participants } = data.data;
       // const participants3 = data3.data;
       setRows(participants);
