@@ -890,21 +890,6 @@ def get_unsoreted_call_assignments():
 
     return { json.dumps(ret)}
 
-@app.route('/image', methods = ['POST'])
-def get_routes_image():
-    # image upload code
-    id = request.form['id']
-    image = request.files['selectedImage']
-    routeImage = Participant.query.get(id)
-    filename = secure_filename(image.filename)
-    full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    image.save(full_filename)
-    # routeImage.image = url_for('download_file', name=filename)
-    routeImage.image = filename
-    db.session.add(routeImage)
-    db.session.commit()
-    return redirect('http://127.0.0.1:3000/routes')
-
 
 ########VOLUNTEER APP##########
 def format_participant_routes(participant):
