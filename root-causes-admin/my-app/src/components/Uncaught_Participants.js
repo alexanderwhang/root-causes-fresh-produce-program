@@ -28,7 +28,7 @@ import MenuItem from "@mui/material/MenuItem";
 const baseUrl = "http://localhost:5000";
 
 export function Uncaught_Participants(props) {
-  const [status, setStatus] = React.useState("");
+  const [status, setStatus] = React.useState();
   const [open, setOpen] = React.useState(true);
   const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
 
@@ -39,7 +39,7 @@ export function Uncaught_Participants(props) {
 
     let new_participant = props.participant;
 
-    new_participant.status = status;
+    new_participant.status = event.target.value;
 
     var data = JSON.stringify({ participant: new_participant });
     let id = props.participant.id;
