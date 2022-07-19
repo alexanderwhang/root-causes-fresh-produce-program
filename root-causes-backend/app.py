@@ -965,7 +965,37 @@ def recent_delivery():
         db.session.add(participant)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/routes')
+
+
+#CHANGES NOTES - CALLS PAGE
+@app.route('/calls/notes', methods = ['POST'])
+def get_call_notes():    
+        id = request.form['id']
+        notes = request.form['notes']
+        call = CallHistory.query.get(id)
+        if call.notes == None:
+            default = ""
+            call.notes = default
+        call.notes = notes
+        db.session.add(call)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/calls')
     
+    
+#CHANGES NOTES - ROUTES PAGE
+@app.route('/routes/notes', methods = ['POST'])
+def get_routes_notes():    
+        id = request.form['id']
+        notes = request.form['routes_notes']
+        route = DeliveryHistory.query.get(id)
+        if route.notes == None:
+            default = ""
+            route.notes = default
+        route.notes = notes
+        db.session.add(route)
+        db.session.commit()
+        return redirect('http://127.0.0.1:3000/routes')
+
     
 # UPLOADS IMAGE - ROUTES PAGE    
 @app.route('/image', methods = ['POST'])
