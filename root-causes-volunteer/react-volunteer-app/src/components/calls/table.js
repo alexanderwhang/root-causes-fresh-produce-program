@@ -163,8 +163,7 @@ function Row(props) {
           </span> <br /> 
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          <br /> Most Recent Note: 
-            {/* {mostRecent(row.call_notes)}  */}
+          {/* <br /> Most Recent Note: {row.call_notes} */}
           <br /> Most Recent Call: {row.most_recent_call}
 
           
@@ -174,7 +173,7 @@ function Row(props) {
             <input type="hidden" name="id" value={row.id} />
             <input type="hidden" name="status_time" value={status_time} />
             <FormControl>
-            <FormLabel id="radio-buttons-availability">Please mark participant availability: </FormLabel>
+            <FormLabel id="radio-buttons-availability">Please mark participant availability for food delivery this weekend: </FormLabel>
             <RadioGroup
               aria-labelledby="radio-buttons-availability"
               name="radio-buttons-group"
@@ -241,7 +240,8 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                      <form noValidate method = "post" action="http://127.0.0.1:5000/calls/deletenotes">
+                      {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
+                      {/* <form noValidate method = "post" action="http://127.0.0.1:5000/calls/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
                         <Button id="note_delete"
                             name = "delete"
@@ -253,18 +253,27 @@ function Row(props) {
                             >
                             DELETE NOTE HISTORY
                         </Button>                        
-                      </form>
+                      </form> */}
                     </form>
                     </div>
-                    <h5 style={{fontSize: "17px"}}>Note History</h5>
-                    {/* {printArray(row.call_notes)} */}
                       
                     </TableCell>
                   </TableRow>
                 </TableHead>
+                <TableHead>
+                      <TableRow>
+                        <TableCell> <b> Note History </b> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                        <TableBody>
+                          <TableRow key="extra2">
+                            <TableCell component="th" scope="row">
+                              {row.call_notes}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
                 <TableBody>
                     <TableRow key={row.id}>
-                      <TableCell></TableCell>
                     </TableRow>
                 </TableBody>
               </Table>

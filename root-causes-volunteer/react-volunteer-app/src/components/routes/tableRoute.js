@@ -184,10 +184,6 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery: {row.most_recent_delivery}
-          <br /> Most Recent Note: {" "}
-            <span style={{fontWeight: "bold"}}>
-              {row.notes}
-            </span>
         </TableCell>
         <TableCell>
 
@@ -242,7 +238,8 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                      <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
+                       {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
+                      {/* <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
                         <Button id = "note_delete"
                             name = "delete"
@@ -254,7 +251,7 @@ function Row(props) {
                             >
                             DELETE NOTE HISTORY
                         </Button>                        
-                      </form>
+                      </form> */}
                     </form>
                     </div>
                       </TableCell>
@@ -266,7 +263,21 @@ function Row(props) {
                 </TableBody>
                 <TableHead>
                     <TableRow>
-                      <TableCell>Image Upload</TableCell>
+                      <TableCell> <b> Note History </b> </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key="extra2">
+                      <TableCell component="th" scope="row">
+                        {row.delivery_notes}
+                      </TableCell>
+                  </TableRow>
+                </TableBody>
+
+
+                <TableHead>
+                    <TableRow>
+                      <TableCell> <b> Image Upload </b> </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
