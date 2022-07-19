@@ -1,38 +1,26 @@
 // This page is the "Sign Up" page from our HTML/CSS site, 
-// for the weekly/monthly (TBD?) sign up for volunteers to pick their roles
+// for the monthly sign up for volunteers to pick their roles
 import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-//Below are the imports used to make the radio buttons work (FormControlLabel is above that was already in use)
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-//Below is for the dropdown
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import FormGroup from '@mui/material/FormGroup';
-import { styled } from '@mui/material/styles';
-import Radio, { RadioProps } from '@mui/material/Radio';
+import Radio from '@mui/material/Radio';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import RadioButtonsRoles from '../components/signup/rolesRadio.js';
-import FindSundays from '../components/signup/newSignUp/getSaturdays.js';
-import Divider from "@mui/material/Divider";
-import FindTuesdays from '../components/signup/newSignUp/getTuesdays.js';
 
-//import daysInMonth from '../components/signup/currentTime.js';
-
-
+// This is the page for volunteers to sign up monthly for the roles they
+// would like to serve in!
 
 function Copyright(props) {
   return (
@@ -54,15 +42,16 @@ function daysInMonth(month,year) {
 }
 
 export default function SignUp() {
-
-  // what to do at the start of the next year?
-
+  // create a new day
   var d = new Date();
 
   // first day in the next month
-  var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
-  var month = d.toLocaleString("en-US", { month: "long" });
-  var next_month = d_next_month.toLocaleString("en-US", { month: "long" });
+  if (d.getMonth() === 11) {
+    d_next_month = new Date(d.getFullYear() + 1, d.getMonth()+1, 1);
+  } else {
+    var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
+  }
+
   var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
   var getTotNext = daysInMonth(d_next_month.getMonth(), d.getFullYear());
   var sat_label = new Array();   //Declaring array for inserting Saturdays
@@ -70,7 +59,7 @@ export default function SignUp() {
   var tues_label = new Array();   //Declaring array for inserting Tuesdays
   var tues_value = new Array();
 
-  for(var i=1;i<=getTot;i++){    //looping through days in following month
+  for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
         sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i)
@@ -79,7 +68,7 @@ export default function SignUp() {
     }
   }
 
-  for(var i=1;i<=getTotNext;i++){
+  for(var i=1;i<=getTotNext;i++){ //looping through days in following month
     var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
     if(newDate.getDay()==6){   //if Saturday
         sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
@@ -102,7 +91,7 @@ export default function SignUp() {
     if(newDate.getDay()==2){   //if Tuesday
       tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
       + " - " + (i+2));
-        tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
+      tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
     }
   }
 
@@ -131,7 +120,6 @@ export default function SignUp() {
   const [packerDay8, setPackerDay8] = useState("");
 
   // // caller selections
-  // let [callerDay, setCallerDay] = useState([]);
   const [callerDay1, setCallerDay1] = useState("");
   const [callerDay2, setCallerDay2] = useState("");
   const [callerDay3, setCallerDay3] = useState("");
@@ -184,8 +172,6 @@ export default function SignUp() {
     setCallerDay8('')
   }
 
-  // checkbox form created for the days to be marked for roles
-  // index passed, str passed to describe driver, packer, or caller
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -207,7 +193,9 @@ export default function SignUp() {
           <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={1}>
 
-            <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Driver Form Questions */}
+
+            <form noValidate method = "post" action="http://127.0.0.1:5000/signup/driver">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -351,7 +339,9 @@ export default function SignUp() {
             </Grid>
             </form>
 
-            <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Packer Form Questions */}
+
+            <form noValidate method = "post" action="http://127.0.0.1:5000/signup/packer">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -421,10 +411,11 @@ export default function SignUp() {
                   Submit
                 </Button>
               </Grid>
-             
               </form>
               
-              <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Caller Form Questions */}
+
+              <form noValidate method = "post" action="http://127.0.0.1:5000/signup/caller">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -504,6 +495,7 @@ export default function SignUp() {
                 </Button>
               </Grid>
             </form>
+
             </Grid>
           </Box>
         </Box>
