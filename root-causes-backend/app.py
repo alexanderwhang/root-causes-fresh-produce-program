@@ -1038,7 +1038,11 @@ def add_signup():
         packerDay2 = request.form.get('packerDay2')
         packerDay3 = request.form.get('packerDay3')
         packerDay4 = request.form.get('packerDay4')
-        packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
+        packerDay5 = request.form.get('packerDay5')
+        packerDay6 = request.form.get('packerDay6')
+        packerDay7 = request.form.get('packerDay7')
+        packerDay8 = request.form.get('packerDay8')
+        packerDay = [packerDay1, packerDay2, packerDay3, packerDay4, packerDay5, packerDay6, packerDay7, packerDay8]
         for day in packerDay:
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
