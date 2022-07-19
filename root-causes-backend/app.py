@@ -1124,7 +1124,11 @@ def add_signup():
         callerDay2 = request.form.get('callerDay2')
         callerDay3 = request.form.get('callerDay3')
         callerDay4 = request.form.get('callerDay4')
-        callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
+        callerDay5 = request.form.get('callerDay5')
+        callerDay6 = request.form.get('callerDay6')
+        callerDay7 = request.form.get('callerDay7')
+        callerDay8 = request.form.get('callerDay8')
+        callerDay = [callerDay1, callerDay2, callerDay3, callerDay4, callerDay5, callerDay6, callerDay7, callerDay8]
         for day in callerDay:
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d")
@@ -1177,7 +1181,11 @@ def add_signup():
         driverDay2 = request.form.get('driverDay2')
         driverDay3 = request.form.get('driverDay3')
         driverDay4 = request.form.get('driverDay4')
-        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
+        driverDay5 = request.form.get('driverDay5')
+        driverDay6 = request.form.get('driverDay6')
+        driverDay7 = request.form.get('driverDay7')
+        driverDay8 = request.form.get('driverDay8')
+        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4, driverDay5, driverDay6, driverDay7, driverDay8]
         for day in driverDay:
             if (day != None):
                 day = dt.datetime.strptime(day, "%Y-%m-%d").date()
