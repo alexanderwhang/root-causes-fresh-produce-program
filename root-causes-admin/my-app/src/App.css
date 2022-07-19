@@ -139,6 +139,7 @@ img {
   display: flex;
 }
 
+
 .send-texts{
   /* position: relative; */
   margin-bottom: 1rem;
@@ -151,6 +152,7 @@ img {
 
 .send-texts button{
   float: right;
+  margin: 5px;
 }
 .send-texts button:hover{
   background-color: #e8c297;

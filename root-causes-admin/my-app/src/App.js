@@ -1,6 +1,6 @@
 import "./App.css";
 import Participant from "./components/participant";
-import NewParticipant from "./components/addPt";
+import NewParticipant from "./components/addPt.js";
 import Volunteer from "./components/volunteer";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -94,6 +94,10 @@ export function Participants() {
       </div>
     </div>
   );
+}
+
+export function AddParticipant() {
+   return <NewParticipant/>;
 }
 
 export function Callers() {
