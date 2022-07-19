@@ -61,6 +61,8 @@ export const Table = () => {
             type="search"
           />
     </div>
+      <div className= "addNew">
+      </div>
       <div className="send-texts">
             <Button
               onClick={() => {
