@@ -836,9 +836,6 @@ def get_participants_by_status_routes(status):
     return {'participants': participant_list}
 
 
-# REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table  
-
-
 # FORMATS PARTICIPANTS TO DISPLAY - ROUTES AND CALLS PAGES
 def volunteer_format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
