@@ -256,30 +256,22 @@ function Row(props) {
                       </form> */}
                     </form>
                     </div>
-                    <TableHead>
-                        <TableCell style={{ paddingBottom: 1, paddingTop: 5 }} colSpan={6}>
-                          <tr>
-                          <h2 style={{fontSize: "16px"}}>
-                          Most Recent Note:
-                          <span style={{fontWeight: "bold"}}>
-                          {row.call_notes}
-                          </span>
-                          </h2>
-                          </tr>
-                        </TableCell>
-                    </TableHead>
-                    <TableHead>
-                        <TableCell style={{ paddingBottom: 1, paddingTop: 5 }} colSpan={6}>
-                          <tr>
-                          <h2 style={{fontSize: "15px"}}>Note History:</h2>
-                          </tr>
-                        </TableCell>
-                    </TableHead>
-                    {/* {printArray(row.call_notes)} */}
                       
                     </TableCell>
                   </TableRow>
                 </TableHead>
+                <TableHead>
+                      <TableRow>
+                        <TableCell> <b> Note History </b> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                        <TableBody>
+                          <TableRow key="extra2">
+                            <TableCell component="th" scope="row">
+                              {row.call_notes}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
                 <TableBody>
                     <TableRow key={row.id}>
                     </TableRow>
