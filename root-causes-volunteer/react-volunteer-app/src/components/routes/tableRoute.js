@@ -262,18 +262,22 @@ function Row(props) {
                   </TableRow>
                 </TableBody>
                 <TableHead>
-                  <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    Most Recent Note: {" "}
-                    <span style={{fontWeight: "bold"}}>
-                      {row.notes}
-                    </span>
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell> <b> Note History </b> </TableCell>
+                    </TableRow>
                 </TableHead>
+                <TableBody>
+                  <TableRow key="extra2">
+                      <TableCell component="th" scope="row">
+                        {row.delivery_notes}
+                      </TableCell>
+                  </TableRow>
+                </TableBody>
+
+
                 <TableHead>
                     <TableRow>
-                      <TableCell>Image Upload</TableCell>
+                      <TableCell> <b> Image Upload </b> </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
