@@ -25,18 +25,48 @@ import MenuItem from "@mui/material/MenuItem";
 const baseUrl = "http://localhost:5000";
 
 export function Caught_Participants(props) {
-  const [status, setStatus] = React.useState("");
+  const [status, setStatus] = React.useState();
   const [open, setOpen] = React.useState(true);
   const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
+  // let ptStatus;
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     event.preventDefault();
     setStatus(event.target.value);
     setStatusDisplay(event.target.value);
 
+    // let new_participant = props.participant;
+
+    // new_participant.status = event.target.value;
+
+    // var data = JSON.stringify({ participant: new_participant });
+    // let id = props.participant.id;
+    // // setStatusDisplay(new_participant.status);
+
+    // var config = {
+    //   method: "put",
+    //   url: `http://localhost:5000/participants/${id}`,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   data: data,
+    // };
+
+    // axios(config)
+    //   .then(function(response) {
+    //     console.log(JSON.stringify(response.data));
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
+    updatePt(event.target.value);
+  };
+
+  function updatePt (ptStatus) {
+    console.log("update: ", ptStatus);
     let new_participant = props.participant;
 
-    new_participant.status = status;
+    new_participant.status = ptStatus;
 
     var data = JSON.stringify({ participant: new_participant });
     let id = props.participant.id;
@@ -58,7 +88,7 @@ export function Caught_Participants(props) {
       .catch(function(error) {
         console.log(error);
       });
-  };
+  }
 
   const handleClick = () => {
     setOpen(!open);
@@ -78,14 +108,33 @@ export function Caught_Participants(props) {
   //   [3, "salmon"],
   // ])
 
+  const affirmatives = ["yes", "si", "sí", "sure"];
+  const negatives = ["no"]
+  const FULLNAME = props.participant.first_name + " " + props.participant.last_name
+
+
   {
     if (
-      props.participant.sms_response == "Yes" ||
-      props.participant.sms_response == "Si" ||
-      props.participant.sms_response == "Si" ||
-      props.participant.sms_response == "sí" ||
-      props.participant.sms_response == "No"
+      props.participant.sms_response.toLowerCase() == "yes" ||
+      props.participant.sms_response.toLowerCase() == "si" ||
+      // props.participant.sms_response.toLowerCase() == "Si" ||
+      props.participant.sms_response.toLowerCase() == "sí" ||
+      props.participant.sms_response.toLowerCase() == "no"
     ) {
+      { if (affirmatives.includes(props.participant.sms_response.toLowerCase()) && props.participant.status != 1) {
+        // ptStatus = 1;
+        console.log("affirmative")
+        setStatus(1);
+        setStatusDisplay(1);
+        updatePt(1);
+      }}
+      { if (negatives.includes(props.participant.sms_response.toLowerCase()) && props.participant.status != 2) {
+        console.log("negative")
+        // ptStatus = 2;
+        setStatus(2);
+        setStatusDisplay(2);
+        updatePt(2);
+      }}
       return (
         <div>
           <ListItemButton onClick={handleClick}>
@@ -96,14 +145,14 @@ export function Caught_Participants(props) {
             >
               <SvgEllipse id="text_status" />
             </div>
-            <ListItemText primary={props.participant.first_name} />
+            <ListItemText primary={FULLNAME} />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding className="sublist">
               <ListItemButton sx={{ pl: 4 }}>
                 <ListItemText primary={props.participant.sms_response} />
-                <Box sx={{ width: 100, maxWidth: 300 }}>
+                {/* <Box sx={{ width: 100, maxWidth: 300 }}>
                   <FormControl fullWidth>
                     <InputLabel id="select-status-label">Status</InputLabel>
                     <Select
@@ -120,7 +169,7 @@ export function Caught_Participants(props) {
                       <MenuItem value={3}>Requires Follow Up</MenuItem>
                     </Select>
                   </FormControl>
-                </Box>
+                </Box> */}
               </ListItemButton>
             </List>
           </Collapse>
