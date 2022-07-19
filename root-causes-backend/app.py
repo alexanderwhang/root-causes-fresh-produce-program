@@ -14,7 +14,7 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
+# from twilio.twiml.messaging/_response import MessagingResponse
 
 # import needed for file upload
 from werkzeug.utils import secure_filename
@@ -391,6 +391,27 @@ class DeliveryHistory(db.Model):
         self.volunteer_id = volunteer_id
         self.delivery_date = delivery_date
         self.notes = notes
+    
+        
+class CallHistory(db.Model):
+    __tablename__ = 'call_history'
+    __table_args__ = {"schema":"RC"}
+
+    call_history_id = db.Column("call_history_id", db.Integer, primary_key=True)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
+    call_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
+    notes = db.Column(db.Text, nullable=True)
+
+    def __repr__(self):
+        return f"Volunteer #{self.volunteer_id} called Participant #{self.participant_id} on Date {self.call_date}"
+
+    def __init__(self, participant_id, volunteer_id, call_date, notes):
+        self.participant_id = participant_id
+        self.volunteer_id = volunteer_id
+        self.call_date = call_date
+        self.notes = notes
+
 
 def format_delivery_history(delivery_history):
     return {
@@ -409,21 +430,6 @@ def hello():
 # CREATE PARTICIPANT
 @app.route('/participants', methods = ['POST'])
 def create_participant():
-    # image upload code
-    # if ('selectedImage' in request.files):
-    #     id = request.form['id']
-    #     image = request.files['selectedImage']
-    #     routeImage = Participant.query.get(id)
-    #     filename = secure_filename(image.filename)
-    #     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    #     image.save(full_filename)
-    #     # routeImage.image = url_for('download_file', name=filename)
-    #     routeImage.image = filename
-    #     db.session.add(routeImage)
-    #     db.session.commit()
-    #     return redirect('http://127.0.0.1:3000/routes')
-    
-    # # otherwise, add new participant
     # else:
         first_name = request.json['first_name']
         last_name = request.json['last_name']
@@ -637,9 +643,6 @@ def incoming_sms():
 
     return str(resp)
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
 ######### VOLUNTEERS ##########
 
 # CREATE VOLUNTEER
@@ -788,53 +791,109 @@ def get_deliveries():
 
 
 ########VOLUNTEER APP##########
-# def format_participant_routes(participant):
-#     status = Status.query.filter_by(participant_id=participant.id).one()
-#     address = Address.query.filter_by(participant_id=participant.id).one()
-#     if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
-#         notes = "No notes."
-#     else:
-#         notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
-#     formatted_address = format_address(address)
-#     return {
-#         "id": participant.id,
-#         "first_name": participant.first_name,
-#         "last_name": participant.last_name,
-#         "date_of_birth": participant.date_of_birth,
-#         "age": participant.age,
-#         "status": status.status_type_id,
-#         # "updated_at": participant.updated_at,
-#         "address": formatted_address,
-#         "email": participant.email,
-#         "phone": participant.phone,
-#         "language": participant.language,
-#         "pronouns": participant.pronouns,
-#         "group": participant.group,
-#         "household_size": participant.household_size,
-#         "street": address.street,
-#         "city": address.city,
-#         "state": address.state,
-#         "zip": address.zip,
-#         "apartment": address.apartment,
-#         "most_recent_delivery": participant.most_recent_delivery,
-#         "most_recent_call": participant.most_recent_call,
-#         "sms_response": participant.sms_response, 
-#         "image": participant.image,
-#         "notes" : notes
-#     }
+def format_participant_routes(participant):
+    status = Status.query.filter_by(participant_id=participant.id).one()
+    address = Address.query.filter_by(participant_id=participant.id).one()
+    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
+        notes = "No notes."
+    else:
+        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+    formatted_address = format_address(address)
+    return {
+        "id": participant.id,
+        "first_name": participant.first_name,
+        "last_name": participant.last_name,
+        "date_of_birth": participant.date_of_birth,
+        "age": participant.age,
+        "status": status.status_type_id,
+        # "updated_at": participant.updated_at,
+        "address": formatted_address,
+        "email": participant.email,
+        "phone": participant.phone,
+        "language": participant.language,
+        "pronouns": participant.pronouns,
+        "group": participant.group,
+        "household_size": participant.household_size,
+        "street": address.street,
+        "city": address.city,
+        "state": address.state,
+        "zip": address.zip,
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response, 
+        "image": participant.image,
+        "notes" : notes
+    }
 
-# # GET PARTICIPANTS BY STATUS - ROUTES PAGE
-# @app.route('/routesparticipants/status/<status>', methods = ['GET'])
-# def get_participants_by_status_routes(status):
-#     participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
-#     participant_list = []
-#     for participant in participants:
-#         participant_list.append(format_participant_routes(participant))
-#     return {'participants': participant_list}
+# GET PARTICIPANTS BY STATUS - ROUTES PAGE
+@app.route('/routesparticipants/status/<status>', methods = ['GET'])
+def get_participants_by_status_routes(status):
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(format_participant_routes(participant))
+    return {'participants': participant_list}
 
 
 # REGISTER PAGE –– CREATE NEW VOLUNTEER, adds new row to volunteer table  
 
+
+# FORMATS PARTICIPANTS TO DISPLAY - ROUTES AND CALLS PAGES
+def volunteer_format_participant(participant):
+    status = Status.query.filter_by(participant_id=participant.id).one()
+    address = Address.query.filter_by(participant_id=participant.id).one()
+    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
+        delivery_notes = "No notes."
+    else:
+        delivery_notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
+    
+    if (CallHistory.query.filter_by(participant_id=participant.id).first() == None):
+        call_notes = "No notes."
+    else:
+        call_notes = CallHistory.query.filter_by(participant_id=participant.id).first().notes
+
+    formatted_address = format_address(address)
+    return {
+        "id": participant.id,
+        "first_name": participant.first_name,
+        "last_name": participant.last_name,
+        "date_of_birth": participant.date_of_birth,
+        "age": participant.age,
+        "status": status.status_type_id,
+        # "updated_at": participant.updated_at,
+        "address": formatted_address,
+        "email": participant.email,
+        "phone": participant.phone,
+        "language": participant.language,
+        "pronouns": participant.pronouns,
+        "group": participant.group,
+        "household_size": participant.household_size,
+        "street": address.street,
+        "city": address.city,
+        "state": address.state,
+        "zip": address.zip,
+        "apartment": address.apartment,
+        "most_recent_delivery": participant.most_recent_delivery,
+        "most_recent_call": participant.most_recent_call,
+        "sms_response": participant.sms_response, 
+        "image": participant.image,
+        "delivery_notes" : delivery_notes,
+        "call_notes" : call_notes
+    }
+
+
+# GET PARTICIPANTS BY STATUS - ROUTES AND CALLS PAGES
+@app.route('/routesparticipants/status/<status>', methods = ['GET'])
+def get_participants_by_status_volunteer(status):
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
+    participant_list = []
+    for participant in participants:
+        participant_list.append(volunteer_format_participant(participant))
+    return {'participants': participant_list}
+
+
+# CREATE NEW VOLUNTEER; ADDS NEW ROW TO VOLUNTEER TABLE - REGISTER PAGE
 @app.route('/profile', methods = ['GET', 'POST'])
 def register_volunteer():
     email = request.form['email']
@@ -863,28 +922,25 @@ def register_volunteer():
 
 
 #LOGIN PAGE
-# @app.route('/', methods = ['GET', 'POST'])
-# def login():
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-#     existing_volunteer = Volunteer.query.filter_by(email=email).first()
+@app.route('/', methods = ['GET', 'POST'])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    existing_volunteer = Volunteer.query.filter_by(email=email).first()
 
-#     if not existing_volunteer:
-#         return make_response(
-#                 f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
-#         )
-#         return redirect('http://127.0.0.1:3000/profile')
+    if not existing_volunteer:
+        return make_response(
+                f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
+        )
 
-#     if existing_volunteer and not (existing_volunteer.password==password):
-#         return make_response(
-#                 f'{email} password is incorrect.'
-#         )
-#         return redirect('http://127.0.0.1:3000/profile')
+    if existing_volunteer and not (existing_volunteer.password==password):
+        return make_response(
+                f'{email} password is incorrect.'
+        )
     
-#     if existing_volunteer and (existing_volunteer.password==password):
-#         return make_response(
-#                 f'{email} successfully logged in!'
-#             )
+    if existing_volunteer and (existing_volunteer.password==password):
+        return redirect('http://127.0.0.1:3000/home')
+
 
 #STATUS AND MOST RECENT CALL - CALLS PAGE
 @app.route('/status_from_calls', methods = ['POST'])
@@ -900,30 +956,11 @@ def get_calls():
         db.session.add(recent_call)
         db.session.commit()
         return redirect('http://127.0.0.1:3000/calls')
-
-# def format_delivery_notes(delivery_note):
-#     return {
-#         "notes": delivery_note.notes
-#     }
-    
-# # GET ROUTE NOTES BY ID
-# @app.route('/routes/notes/<id>', methods = ['GET'])
-# def get_route_notes(id):
-#     notes = db.session.query(DeliveryHistory.notes).filter(DeliveryHistory.participant_id == id).all()
-#     all_notes = []
-#     for note in notes:
-#         all_notes.append(format_delivery_notes(note))
-#     return jsonify(all_notes)
     
     
 # TIME OF MOST RECENT DELIVERY - ROUTES PAGE    
 @app.route('/recent_delivery', methods = ['POST'])
 def recent_delivery():
-    # if request.method == 'GET':
-    #     all_routes = Participant.query,all()
-    #     results_routes = routes_schema.dump(all_routes)
-    #     return jsonify(results_routes)    
-    # else:
         id = request.form['id']
         time = request.form['status_time']
         participant = Participant.query.get(id)
@@ -932,7 +969,25 @@ def recent_delivery():
         db.session.commit()
         return redirect('http://127.0.0.1:3000/routes')
     
-# SIGN-UP PAGE
+    
+# UPLOADS IMAGE - ROUTES PAGE    
+@app.route('/image', methods = ['POST'])
+def get_routes_image():
+    # image upload code
+    id = request.form['id']
+    image = request.files['selectedImage']
+    routeImage = Participant.query.get(id)
+    filename = secure_filename(image.filename)
+    full_filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    image.save(full_filename)
+    # routeImage.image = url_for('download_file', name=filename)
+    routeImage.image = filename
+    db.session.add(routeImage)
+    db.session.commit()
+    return redirect('http://127.0.0.1:3000/routes')
+    
+    
+# VOLUNTEER SIGN-UP FOR ROLES - SIGN-UP PAGE
 @app.route('/signup', methods = ['POST'])
 def add_signup():
     if request.method == 'POST' and ('callerDay1' in request.form):
@@ -1110,8 +1165,6 @@ def get_unsoreted_call_assignments():
     ret.append({"vol": {}, "pts": participants})
 
     return { json.dumps(ret)}
-
-
-
+       
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
