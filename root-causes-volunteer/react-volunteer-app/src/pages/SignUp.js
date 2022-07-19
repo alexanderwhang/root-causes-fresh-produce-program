@@ -47,66 +47,6 @@ function Copyright(props) {
   );
 }
 
-const BpIcon = styled('span')(({ theme }) => ({
-  borderRadius: '50%',
-  width: 16,
-  height: 16,
-  boxShadow:
-    theme.palette.mode === 'dark'
-      ? '0 0 0 1px rgb(16 22 26 / 40%)'
-      : 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
-  backgroundColor: theme.palette.mode === 'dark' ? '#394b59' : '#f5f8fa',
-  backgroundImage:
-    theme.palette.mode === 'dark'
-      ? 'linear-gradient(180deg,hsla(0,0%,100%,.05),hsla(0,0%,100%,0))'
-      : 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
-  '.Mui-focusVisible &': {
-    outline: '2px auto rgba(19,124,189,.6)',
-    outlineOffset: 2,
-  },
-  'input:hover ~ &': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#30404d' : '#ebf1f5',
-  },
-  'input:disabled ~ &': {
-    boxShadow: 'none',
-    background:
-      theme.palette.mode === 'dark' ? 'rgba(57,75,89,.5)' : 'rgba(206,217,224,.5)',
-  },
-}));
-
-const BpCheckedIcon = styled(BpIcon)({
-  backgroundColor: '#137cbd',
-  backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
-  '&:before': {
-    display: 'block',
-    width: 16,
-    height: 16,
-    backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
-    content: '""',
-  },
-  'input:hover ~ &': {
-    backgroundColor: '#106ba3',
-  },
-});
-
-// Inspired by blueprintjs
-function BpRadio(props) {
-  return (
-    <Radio
-      sx={{
-        '&:hover': {
-          bgcolor: 'transparent',
-        },
-      }}
-      disableRipple
-      color="default"
-      checkedIcon={<BpCheckedIcon />}
-      icon={<BpIcon />}
-      {...props}
-    />
-  );
-}
-
 const theme = createTheme();
 
 function daysInMonth(month,year) {
@@ -114,42 +54,55 @@ function daysInMonth(month,year) {
 }
 
 export default function SignUp() {
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
+
+  // what to do at the start of the next year?
 
   var d = new Date();
-  var month = d.toLocaleString("en-US", { month: "long" })
+
+  // first day in the next month
+  var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
+  var month = d.toLocaleString("en-US", { month: "long" });
+  var next_month = d_next_month.toLocaleString("en-US", { month: "long" });
   var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
+  var getTotNext = daysInMonth(d_next_month.getMonth(), d.getFullYear());
   var sat_label = new Array();   //Declaring array for inserting Saturdays
   var sat_value = new Array();
   var tues_label = new Array();   //Declaring array for inserting Tuesdays
   var tues_value = new Array();
 
-  for(var i=1;i<=getTot;i++){    //looping through days in month
+  for(var i=1;i<=getTot;i++){    //looping through days in following month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
-        sat_label.push(i);
+        sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i)
         sat_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
   }
 
-  // let date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-  // let time = current.toLocaleTimeString();
-  // setDate(date + " " + time);
+  for(var i=1;i<=getTotNext;i++){
+    var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    if(newDate.getDay()==6){   //if Saturday
+        sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
+        sat_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year format
+    }
+  }
 
-  for(var i=1;i<=getTot;i++){    //looping through days in month
+  for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==2){   //if Tuesday
-        tues_label.push(i);
+        tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
+        + " - " + (i+2));
         tues_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
+    }
+  }
+
+  for(var i=1;i<=getTotNext;i++){    //looping through days in following month
+    var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    if(newDate.getDay()==2){   //if Tuesday
+      tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
+      + " - " + (i+2));
+        tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
     }
   }
 
@@ -158,23 +111,24 @@ export default function SignUp() {
   const [driverDay2, setDriverDay2] = useState("");
   const [driverDay3, setDriverDay3] = useState("");
   const [driverDay4, setDriverDay4] = useState("");
+  const [driverDay5, setDriverDay5] = useState("");
+  const [driverDay6, setDriverDay6] = useState("");
+  const [driverDay7, setDriverDay7] = useState("");
+  const [driverDay8, setDriverDay8] = useState("");
   const [driverMoreDelivery, setDriverMoreDelivery] = useState("");
   const [driverOutsideDurham, setDriverOutsideDurham] = useState("");
   const [driver_preference, setDriverPreference] = useState("");
   const [driverTime, setDriverTime] = useState("");
-  // const [driverTime915, setDriverTime915] = useState("");
-  // const [driverTime930, setDriverTime930] = useState("");
-  // const [driverTime945, setDriverTime945] = useState("");
-  // const [driverTime10, setDriverTime10] = useState("");
-  // const [driverTime1015, setDriverTime1015] = useState("");
-  // const [driverTime1030, setDriverTime1030] = useState("");
-  // const [driverTime1045, setDriverTime1045] = useState("");
 
   // // packer selections
   const [packerDay1, setPackerDay1] = useState("");
   const [packerDay2, setPackerDay2] = useState("");
   const [packerDay3, setPackerDay3] = useState("");
   const [packerDay4, setPackerDay4] = useState("");
+  const [packerDay5, setPackerDay5] = useState("");
+  const [packerDay6, setPackerDay6] = useState("");
+  const [packerDay7, setPackerDay7] = useState("");
+  const [packerDay8, setPackerDay8] = useState("");
 
   // // caller selections
   // let [callerDay, setCallerDay] = useState([]);
@@ -182,6 +136,10 @@ export default function SignUp() {
   const [callerDay2, setCallerDay2] = useState("");
   const [callerDay3, setCallerDay3] = useState("");
   const [callerDay4, setCallerDay4] = useState("");
+  const [callerDay5, setCallerDay5] = useState("");
+  const [callerDay6, setCallerDay6] = useState("");
+  const [callerDay7, setCallerDay7] = useState("");
+  const [callerDay8, setCallerDay8] = useState("");
 
   // handle submit for driver
   const handleSubmitDriver=(event)=>{ 
@@ -190,17 +148,14 @@ export default function SignUp() {
     setDriverDay2('')
     setDriverDay3('')
     setDriverDay4('')
+    setDriverDay5('')
+    setDriverDay6('')
+    setDriverDay7('')
+    setDriverDay8('')
     setDriverMoreDelivery('')
     setDriverOutsideDurham('')
     setDriverPreference('')
     setDriverTime('')
-    // setDriverTime915('')
-    // setDriverTime930('')
-    // setDriverTime945('')
-    // setDriverTime10('')
-    // setDriverTime1015('')
-    // setDriverTime1030('')
-    // setDriverTime1045('')
   }
 
   // handle submit for packer
@@ -210,18 +165,27 @@ export default function SignUp() {
       setPackerDay2('')
       setPackerDay3('')
       setPackerDay4('')
+      setPackerDay5('')
+      setPackerDay6('')
+      setPackerDay7('')
+      setPackerDay8('')
   }
 
   // // handle submit for caller
   const handleSubmitCaller=(event)=>{ 
     event.preventDefault()
-    // setCallerDay('')
     setCallerDay1('')
     setCallerDay2('')
     setCallerDay3('')
     setCallerDay4('')
+    setCallerDay5('')
+    setCallerDay6('')
+    setCallerDay7('')
+    setCallerDay8('')
   }
 
+  // checkbox form created for the days to be marked for roles
+  // index passed, str passed to describe driver, packer, or caller
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -266,26 +230,47 @@ export default function SignUp() {
               <FormLabel id="day-questions" 
                 > Please mark your availability for the following month: 
                 <FormGroup>
+                  
                   <FormControlLabel control={<Checkbox />} 
                       name="driverDay1"
-                      label={month + " " + sat_label[0]}
+                      label={sat_label[0]}
                       value={sat_value[0]}
                       onChange={(e)=>setDriverDay1(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay2"
-                      label={month + " " + sat_label[1]}
+                      label={sat_label[1]}
                       value={sat_value[1]}
                       onChange={(e)=>setDriverDay2(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay3"
-                      label={month + " " + sat_label[2]}
+                      label={sat_label[2]}
                       value={sat_value[2]}
                       onChange={(e)=>setDriverDay3(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay4"
-                      label={month + " " + sat_label[3]}
+                      label={sat_label[3]}
                       value={sat_value[3]}
                       onChange={(e)=>setDriverDay4(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay5"
+                      label={sat_label[4]}
+                      value={sat_value[4]}
+                      onChange={(e)=>setDriverDay5(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay6"
+                      label={sat_label[5]}
+                      value={sat_value[5]}
+                      onChange={(e)=>setDriverDay5(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay7"
+                      label={sat_label[6]}
+                      value={sat_value[6]}
+                      onChange={(e)=>setDriverDay6(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay8"
+                      label={sat_label[7]}
+                      value={sat_value[7]}
+                      onChange={(e)=>setDriverDay8(e.target.value)}/>
                 </FormGroup>  
               </FormLabel>
           
@@ -351,42 +336,6 @@ export default function SignUp() {
                     </RadioGroup>
                 </FormControl>
 
-
-                {/* <FormLabel id="time-questions">Please select all times that you can begin driving: </FormLabel>
-                  <FormGroup>
-                    <FormControlLabel control={<Checkbox />} label="9:00 AM"
-                        name="driverTime9"
-                        value="09:00"
-                        onChange={(e)=>setDriverTime9(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="9:15 AM"
-                        name="driverTime915"
-                        value="09:15"
-                        onChange={(e)=>setDriverTime915(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="9:30 AM"
-                        name="driverTime930"
-                        value="09:30"
-                        onChange={(e)=>setDriverTime930(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="9:45 AM"
-                        name="driverTime945"
-                        value="09:45"
-                        onChange={(e)=>setDriverTime945(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="10:00 AM"
-                        name="driverTime10"
-                        value="10:00"
-                        onChange={(e)=>setDriverTime10(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="10:15 AM"
-                        name="driverTime1015"
-                        value="10:15"
-                        onChange={(e)=>setDriverTime1015(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="10:30 AM"
-                        name="driverTime1030"
-                        value="10:30"
-                        onChange={(e)=>setDriverTime1030(e.target.value)}/>
-                    <FormControlLabel control={<Checkbox />} label="10:45 AM"
-                        name="driverTime1045"
-                        value="10:45"
-                        onChange={(e)=>setDriverTime1045(e.target.value)}/>
-                  </FormGroup> */}
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -418,24 +367,44 @@ export default function SignUp() {
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
-                        label={month + " " + sat_label[0]}
+                        label={sat_label[0]}
                         value={sat_value[0]}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
-                        label={month + " " + sat_label[1]}
+                        label={sat_label[1]}
                         value={sat_value[1]}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
-                        label={month + " " + sat_label[2]}
+                        label={sat_label[2]}
                         value={sat_value[2]}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
-                        label={month + " " + sat_label[3]}
+                        label={sat_label[3]}
                         value={sat_value[3]}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />} 
+                        name="packerDay5"
+                        label={sat_label[4]}
+                        value={sat_value[4]}
+                        onChange={(e)=>setPackerDay5(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay6"
+                        label={sat_label[5]}
+                        value={sat_value[5]}
+                        onChange={(e)=>setPackerDay6(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay7"
+                        label={sat_label[6]}
+                        value={sat_value[6]}
+                        onChange={(e)=>setPackerDay7(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay8"
+                        label={sat_label[7]}
+                        value={sat_value[7]}
+                        onChange={(e)=>setPackerDay8(e.target.value)}/>
                   </FormGroup>  
                 </FormLabel>
                 
@@ -472,28 +441,52 @@ export default function SignUp() {
                 <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 
-                        label={month + " " + tues_label[0] + " - " + (tues_label[0] + 2)}
+                        label={tues_label[0]}
                         value={tues_value[0]}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
-                        label= {month + " " + tues_label[1] + " - " + (tues_label[1] + 2)}
+                        label= {tues_label[1]}
                         value= {tues_value[1]}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
-                        label= {month + " " + tues_label[2] + " - " + (tues_label[2] + 2)}
+                        label= {tues_label[2]}
                         value= {tues_value[2]}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
-                        label= {month + " " + tues_label[3] + " - " + (tues_label[3] + 2)}
+                        label= {tues_label[3]}
                         value= {tues_value[3]}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay5" 
+                        label= {tues_label[4]}
+                        value= {tues_value[4]}
+                        onChange={(e)=>setCallerDay5(e.target.value)}
+                      />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay6" 
+                        label= {tues_label[5]}
+                        value= {tues_value[5]}
+                        onChange={(e)=>setCallerDay6(e.target.value)}
+                        />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay7" 
+                        label= {tues_label[6]}
+                        value= {tues_value[6]}
+                        onChange={(e)=>setCallerDay7(e.target.value)}
+                        />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay8" 
+                        label= {tues_label[7]}
+                        value= {tues_value[7]}
+                        onChange={(e)=>setCallerDay8(e.target.value)}
+                      />
                 </FormGroup>
                 </FormLabel>  
               </Grid>

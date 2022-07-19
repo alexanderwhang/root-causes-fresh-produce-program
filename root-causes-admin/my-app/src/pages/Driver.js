@@ -208,7 +208,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:00, Route: A, Duration: 60 min, Participant Name: Elsey Crowdy, Taylor Spears
+                          Start Time: 9:00, Route: A, Duration: 60 min, Stops: 2, Total Bags: 12
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -221,7 +221,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:15, Route: B, Duration: 60 min, Participant Name: Colene Burberry, Erhard	Kleinhaut	
+                          Start Time: 9:15, Route: B, Duration: 60 min, Stops: 2, Total Bags: 10
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -234,7 +234,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:30, Route: C, Duration: 55 min, Participant Name: Carmelle Todeo
+                          Start Time: 9:30, Route: C, Duration: 55 min, Stops: 2, Total Bags: 6
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -247,7 +247,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 9:45, Route: D, Duration: 45 min, Participant Name: Adorne Jedrych	
+                          Start Time: 9:45, Route: D, Duration: 45 min, Stops: 1, Total Bags: 3
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -260,7 +260,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:00, Route: E, Duration: 80 min, Participant Name: Isa Gilfoy, Jorgan	Alvarado
+                          Start Time: 10:00, Route: E, Duration: 80 min, Stops: 3, Total Bags: 10
                         </ListItemText>
                       </ListItemButton>
                     </List>
@@ -273,7 +273,7 @@ export function Driver() {
                     <List component="div" disablePadding className="sublist">
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText>
-                          Start Time: 10:15, Route: F, Duration: 30 min, Participant Name: Aurthur Bodechon
+                          Start Time: 10:15, Route: F, Duration: 30 min, Stops: 1, Total Bags: 4
                         </ListItemText>
                       </ListItemButton>
                     </List>
