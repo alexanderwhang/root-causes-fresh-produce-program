@@ -45,6 +45,7 @@ export function Driver() {
   //   <Input accept="file/*" id="contained-button-file" multiple type="file"/>
   // };
 
+  // editInfo allows a hidden field to appear onClick
   const [edit_form_status, setEdit] = React.useState(true)
 
   const editInfo = () => {
@@ -91,11 +92,13 @@ export function Driver() {
     [3, "salmon"],
   ]);
 
+    // allows "upload routes" button to first select a pdf and then make the collapsable table display
     const handleFile = (e) => {
         console.log(e.target.files[0]);
         editInfo();
     }
   
+  // shows volunteer driver and participant information
   return (
     <div className="drivers">
       <Navbar />
@@ -200,6 +203,7 @@ export function Driver() {
           }
           className="indiv_routes"
         >
+
         <ListItemButton onClick={handleClick}>
                     <ListItemText> Ulla	Bracchi </ListItemText>
                     {open ? <ExpandLess /> : <ExpandMore />}
