@@ -18,7 +18,7 @@ import math
 # from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
 # from twilio.twiml.messaging/_response import MessagingResponse
-
+import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
 
@@ -842,6 +842,7 @@ def get_call_assignments():
     # participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
     participants_spanish = db.session.query(Participant).filter_by(most_recent_status=3).filter(Participant.language=="Spanish").all()
     
+
     #step 0: get the participants into chunks  
     def generate_assignments(volunteers,participants):
         def chunkSize(participants,volunteers):   
