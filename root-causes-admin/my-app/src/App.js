@@ -27,7 +27,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
 import { Users } from './users.js';
-import {CallAssignments} from './callerManagement.js'
+import { CallAssignments } from "./callerManagement";
+
 
 //COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:
     //npm install axios --save
@@ -116,7 +117,9 @@ export function AddParticipant() {
 
 // CALLER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)
 export function Callers() {
-  return <CallAssignments/>;
+  return (
+    <CallAssignments />
+  );
 }
 
 // INDIVIDUAL INFO PAGE. ACCESSIBLE BY CLICKING ON A PARTICIPANT'S NAME IN THE PARTICIPANTS PAGE
