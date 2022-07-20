@@ -1,38 +1,26 @@
 // This page is the "Sign Up" page from our HTML/CSS site, 
-// for the weekly/monthly (TBD?) sign up for volunteers to pick their roles
+// for the monthly sign up for volunteers to pick their roles
 import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-//Below are the imports used to make the radio buttons work (FormControlLabel is above that was already in use)
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-//Below is for the dropdown
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import FormGroup from '@mui/material/FormGroup';
-import { styled } from '@mui/material/styles';
-import Radio, { RadioProps } from '@mui/material/Radio';
+import Radio from '@mui/material/Radio';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import RadioButtonsRoles from '../components/signup/rolesRadio.js';
-import FindSundays from '../components/signup/newSignUp/getSaturdays.js';
-import Divider from "@mui/material/Divider";
-import FindTuesdays from '../components/signup/newSignUp/getTuesdays.js';
 
-//import daysInMonth from '../components/signup/currentTime.js';
-
-
+// This is the page for volunteers to sign up monthly for the roles they
+// would like to serve in!
 
 function Copyright(props) {
   return (
@@ -54,14 +42,16 @@ function daysInMonth(month,year) {
 }
 
 export default function SignUp() {
-
-  // what to do at the start of the next year?
-
+  // create a new day
   var d = new Date();
 
   // first day in the next month
-  var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
-  var month = d.toLocaleString("en-US", { month: "long" });
+  if (d.getMonth() === 11) {
+    d_next_month = new Date(d.getFullYear() + 1, d.getMonth()+1, 1);
+  } else {
+    var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
+  }
+
   var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
   var getTotNext = daysInMonth(d_next_month.getMonth(), d.getFullYear());
   var sat_label = new Array();   //Declaring array for inserting Saturdays
@@ -69,19 +59,19 @@ export default function SignUp() {
   var tues_label = new Array();   //Declaring array for inserting Tuesdays
   var tues_value = new Array();
 
-  for(var i=1;i<=getTot;i++){    //looping through days in following month
+  for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==6){   //if Saturday
-        sat_label.push(i);
+        sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i)
         sat_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
   }
 
-  for(var i=1;i<=getTotNext;i++){
+  for(var i=1;i<=getTotNext;i++){ //looping through days in following month
     var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
     if(newDate.getDay()==6){   //if Saturday
-        sat_label.push(i);
+        sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
         sat_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year format
     }
   }
@@ -89,7 +79,8 @@ export default function SignUp() {
   for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
     if(newDate.getDay()==2){   //if Tuesday
-        tues_label.push(i);
+        tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
+        + " - " + (i+2));
         tues_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
@@ -98,27 +89,37 @@ export default function SignUp() {
   for(var i=1;i<=getTotNext;i++){    //looping through days in following month
     var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
     if(newDate.getDay()==2){   //if Tuesday
-        tues_label.push(i);
-        tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
+      tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
+      + " - " + (i+2));
+      tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
     }
   }
+
+  // set color of checkbox to grey if the day has already passed!
+  function crossOut(str) {
+    const arr = str.split(" ")
+    const num = parseInt(arr[arr.length - 1]);
+    if (num < d.getDate()) {
+      return "line-through";
+    } else {
+      return ""
+    }
+  }
+
 
   // driver selections
   const [driverDay1, setDriverDay1] = useState("");
   const [driverDay2, setDriverDay2] = useState("");
   const [driverDay3, setDriverDay3] = useState("");
   const [driverDay4, setDriverDay4] = useState("");
+  const [driverDay5, setDriverDay5] = useState("");
+  const [driverDay6, setDriverDay6] = useState("");
+  const [driverDay7, setDriverDay7] = useState("");
+  const [driverDay8, setDriverDay8] = useState("");
   const [driverMoreDelivery, setDriverMoreDelivery] = useState("");
   const [driverOutsideDurham, setDriverOutsideDurham] = useState("");
   const [driver_preference, setDriverPreference] = useState("");
   const [driverTime, setDriverTime] = useState("");
-  // const [driverTime915, setDriverTime915] = useState("");
-  // const [driverTime930, setDriverTime930] = useState("");
-  // const [driverTime945, setDriverTime945] = useState("");
-  // const [driverTime10, setDriverTime10] = useState("");
-  // const [driverTime1015, setDriverTime1015] = useState("");
-  // const [driverTime1030, setDriverTime1030] = useState("");
-  // const [driverTime1045, setDriverTime1045] = useState("");
 
   // // packer selections
   const [packerDay1, setPackerDay1] = useState("");
@@ -126,13 +127,19 @@ export default function SignUp() {
   const [packerDay3, setPackerDay3] = useState("");
   const [packerDay4, setPackerDay4] = useState("");
   const [packerDay5, setPackerDay5] = useState("");
+  const [packerDay6, setPackerDay6] = useState("");
+  const [packerDay7, setPackerDay7] = useState("");
+  const [packerDay8, setPackerDay8] = useState("");
 
   // // caller selections
-  // let [callerDay, setCallerDay] = useState([]);
   const [callerDay1, setCallerDay1] = useState("");
   const [callerDay2, setCallerDay2] = useState("");
   const [callerDay3, setCallerDay3] = useState("");
   const [callerDay4, setCallerDay4] = useState("");
+  const [callerDay5, setCallerDay5] = useState("");
+  const [callerDay6, setCallerDay6] = useState("");
+  const [callerDay7, setCallerDay7] = useState("");
+  const [callerDay8, setCallerDay8] = useState("");
 
   // handle submit for driver
   const handleSubmitDriver=(event)=>{ 
@@ -141,17 +148,14 @@ export default function SignUp() {
     setDriverDay2('')
     setDriverDay3('')
     setDriverDay4('')
+    setDriverDay5('')
+    setDriverDay6('')
+    setDriverDay7('')
+    setDriverDay8('')
     setDriverMoreDelivery('')
     setDriverOutsideDurham('')
     setDriverPreference('')
     setDriverTime('')
-    // setDriverTime915('')
-    // setDriverTime930('')
-    // setDriverTime945('')
-    // setDriverTime10('')
-    // setDriverTime1015('')
-    // setDriverTime1030('')
-    // setDriverTime1045('')
   }
 
   // handle submit for packer
@@ -162,30 +166,24 @@ export default function SignUp() {
       setPackerDay3('')
       setPackerDay4('')
       setPackerDay5('')
+      setPackerDay6('')
+      setPackerDay7('')
+      setPackerDay8('')
   }
 
   // // handle submit for caller
   const handleSubmitCaller=(event)=>{ 
     event.preventDefault()
-    // setCallerDay('')
     setCallerDay1('')
     setCallerDay2('')
     setCallerDay3('')
     setCallerDay4('')
+    setCallerDay5('')
+    setCallerDay6('')
+    setCallerDay7('')
+    setCallerDay8('')
   }
 
-  // checkbox form created for the days to be marked for roles
-  // index passed, str passed to describe driver, packer, or caller
-  function CreateCheckBox(index, name, set) {
-    return (
-      <FormControlLabel control={<Checkbox />} 
-        name={name}
-        label={month + " " + sat_label[index]}
-        value={sat_value[index]} 
-        onChange={(e)=>set(e.target.value)} />
-    )
-  
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -208,7 +206,9 @@ export default function SignUp() {
           <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={1}>
 
-            <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Driver Form Questions */}
+
+            <form noValidate method = "post" action="http://127.0.0.1:5000/signup/driver">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -234,25 +234,48 @@ export default function SignUp() {
                   
                   <FormControlLabel control={<Checkbox />} 
                       name="driverDay1"
-                      label={month + " " + sat_label[0]}
+                      label={sat_label[0]}
                       value={sat_value[0]}
+                      style={{textDecorationLine: crossOut(sat_label[0]) }}
                       onChange={(e)=>setDriverDay1(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay2"
-                      label={month + " " + sat_label[1]}
+                      label={sat_label[1]}
                       value={sat_value[1]}
+                      style={{textDecorationLine: crossOut(sat_label[1]) }}
                       onChange={(e)=>setDriverDay2(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay3"
-                      label={month + " " + sat_label[2]}
+                      label={sat_label[2]}
                       value={sat_value[2]}
+                      style={{textDecorationLine: crossOut(sat_label[2]) }}
                       onChange={(e)=>setDriverDay3(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay4"
-                      label={month + " " + sat_label[3]}
+                      label={sat_label[3]}
                       value={sat_value[3]}
+                      style={{textDecorationLine: crossOut(sat_label[3]) }}
                       onChange={(e)=>setDriverDay4(e.target.value)}/>
-                  
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay5"
+                      label={sat_label[4]}
+                      value={sat_value[4]}
+                      onChange={(e)=>setDriverDay5(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay6"
+                      label={sat_label[5]}
+                      value={sat_value[5]}
+                      onChange={(e)=>setDriverDay5(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay7"
+                      label={sat_label[6]}
+                      value={sat_value[6]}
+                      onChange={(e)=>setDriverDay6(e.target.value)}/>
+                  <FormControlLabel control={<Checkbox />}
+                      name="driverDay8"
+                      label={sat_label[7]}
+                      value={sat_value[7]}
+                      onChange={(e)=>setDriverDay8(e.target.value)}/>
                 </FormGroup>  
               </FormLabel>
           
@@ -333,7 +356,9 @@ export default function SignUp() {
             </Grid>
             </form>
 
-            <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Packer Form Questions */}
+
+            <form noValidate method = "post" action="http://127.0.0.1:5000/signup/packer">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -349,25 +374,48 @@ export default function SignUp() {
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
-                        label={month + " " + sat_label[0]}
+                        label={sat_label[0]}
                         value={sat_value[0]}
+                        style={{textDecorationLine: crossOut(sat_label[0]) }}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
-                        label={month + " " + sat_label[1]}
+                        label={sat_label[1]}
                         value={sat_value[1]}
+                        style={{textDecorationLine: crossOut(sat_label[1]) }}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
-                        label={month + " " + sat_label[2]}
+                        label={sat_label[2]}
                         value={sat_value[2]}
+                        style={{textDecorationLine: crossOut(sat_label[2]) }}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
-                        label={month + " " + sat_label[3]}
+                        label={sat_label[3]}
                         value={sat_value[3]}
+                        style={{textDecorationLine: crossOut(sat_label[3]) }}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
-                    {CreateCheckBox(5, "packerDay5", setPackerDay5)}
+                    <FormControlLabel control={<Checkbox />} 
+                        name="packerDay5"
+                        label={sat_label[4]}
+                        value={sat_value[4]}
+                        onChange={(e)=>setPackerDay5(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay6"
+                        label={sat_label[5]}
+                        value={sat_value[5]}
+                        onChange={(e)=>setPackerDay6(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay7"
+                        label={sat_label[6]}
+                        value={sat_value[6]}
+                        onChange={(e)=>setPackerDay7(e.target.value)}/>
+                    <FormControlLabel control={<Checkbox />}
+                        name="packerDay8"
+                        label={sat_label[7]}
+                        value={sat_value[7]}
+                        onChange={(e)=>setPackerDay8(e.target.value)}/>
                   </FormGroup>  
                 </FormLabel>
                 
@@ -384,10 +432,11 @@ export default function SignUp() {
                   Submit
                 </Button>
               </Grid>
-             
               </form>
               
-              <form noValidate method = "post" action="http://127.0.0.1:5000/signup">
+{/* Caller Form Questions */}
+
+              <form noValidate method = "post" action="http://127.0.0.1:5000/signup/caller">
               <Grid item xs={12}>
                 <Typography 
                   component="h2" 
@@ -404,28 +453,56 @@ export default function SignUp() {
                 <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 
-                        label={month + " " + tues_label[0] + " - " + (tues_label[0] + 2)}
+                        label={tues_label[0]}
                         value={tues_value[0]}
+                        style={{textDecorationLine: crossOut(tues_label[0]) }}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
-                        label= {month + " " + tues_label[1] + " - " + (tues_label[1] + 2)}
+                        label= {tues_label[1]}
                         value= {tues_value[1]}
+                        style={{textDecorationLine: crossOut(tues_label[1]) }}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
-                        label= {month + " " + tues_label[2] + " - " + (tues_label[2] + 2)}
+                        label= {tues_label[2]}
                         value= {tues_value[2]}
+                        style={{textDecorationLine: crossOut(tues_label[2]) }}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
-                        label= {month + " " + tues_label[3] + " - " + (tues_label[3] + 2)}
+                        label= {tues_label[3]}
                         value= {tues_value[3]}
+                        style={{textDecorationLine: crossOut(tues_label[3]) }}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay5" 
+                        label= {tues_label[4]}
+                        value= {tues_value[4]}
+                        onChange={(e)=>setCallerDay5(e.target.value)}
+                      />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay6" 
+                        label= {tues_label[5]}
+                        value= {tues_value[5]}
+                        onChange={(e)=>setCallerDay6(e.target.value)}
+                        />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay7" 
+                        label= {tues_label[6]}
+                        value= {tues_value[6]}
+                        onChange={(e)=>setCallerDay7(e.target.value)}
+                        />
+                    <FormControlLabel control={<Checkbox />} 
+                        name="callerDay8" 
+                        label= {tues_label[7]}
+                        value= {tues_value[7]}
+                        onChange={(e)=>setCallerDay8(e.target.value)}
+                      />
                 </FormGroup>
                 </FormLabel>  
               </Grid>
@@ -443,6 +520,7 @@ export default function SignUp() {
                 </Button>
               </Grid>
             </form>
+
             </Grid>
           </Box>
         </Box>

@@ -7,6 +7,9 @@ Every project is different, so consider which of these sections apply to yours. 
 
 ## Description
 <!-- Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors. -->
+This API is used to retrieve data from and post data into a postgreSQL database hosted on a Root Causes Duke server. These calls are made in the respective React files, some through Axios calls.
+
+## Structure
 ### The purpose of Classes
 The Classes in the app.py file initialize the different tables in the database that will be used to make GET and POST requests. 
 
@@ -34,11 +37,11 @@ from twilio.rest import Client
 from werkzeug.utils import secure_filename
 ```
 
-## Usage
-This API is used to retrieve data from and post data into a postgreSQL database hosted on a Root Causes Duke server. These calls are made in the respective React files, some through Axios calls.
-
 ## Roadmap
 In the future, we'd like to see this API adapted for new functionalities for both admin and volunteer applications. 
+
+## Tips from the team
+* Make sure to always be connect to a Duke VPN. You won't be able to even run your app.py file if you're not.
 
 ## Authors and acknowledgment
 <!-- Show your appreciation to those who have contributed to the project. -->

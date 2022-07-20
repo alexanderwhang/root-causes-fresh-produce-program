@@ -6,6 +6,9 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+
+// radio buttons for recording called participants' statuses
+// volunteer will call their assigned participants and select their availability status (available, no response, not available) for food delivery for the given week
  
 export default function RadioButtonsAvailability() {
     const handleSubmit = (event) => {
