@@ -80,7 +80,7 @@ export function Driver() {
     console.log("DATA: ", data);
   };
 
-
+  // grabs participants and volunteers
   useEffect(() => {
     fetchParticipants();
     fetchVolunteers();
