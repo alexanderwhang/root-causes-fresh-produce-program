@@ -29,58 +29,69 @@ import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
 import { Users } from './users.js';
 
+//COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:
+    //npm install axios --save
+    //npm install @mui/material @emotion/react @emotion/styled
+    //npm install --save styled-components
+    //npm i react-csv
+    //npm install xlsx
+    //npm install react-paginate --save
+
+
+
+// CONNECTS TO THE DATABASE/BACKEND
 const baseUrl = "http://127.0.0.1:5000";
-// const baseUrl = "localhost:5000"
 
-//commands to run for it to work:
-//npm install axios --save
-//npm install @mui/material @emotion/react @emotion/styled
-//npm install --save styled-components
-//npm i react-csv
-//npm install xlsx
-//npm install react-paginate --save
-
+// PARTICIPANTS PAGE:
 export function Participants() {
-  const [participantsList, setParticipantsList] = useState([]);
 
-  // GET
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants`);
-    const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA: ", data);
-  };
+  // the following code allows us to access the full list of participants in database, through axios calls to the backend
+    const [participantsList, setParticipantsList] = useState([]);
 
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
+    // GET
+    const fetchParticipants = async () => {
+      const data = await axios.get(`${baseUrl}/participants`);
+      const { participants } = data.data;
+      setParticipantsList(participants);
+      console.log("DATA: ", data);
+    };
 
-  const navigate = useNavigate();
-
-  const [search, setSearch] = useState("");
+    useEffect(() => {
+      fetchParticipants();
+    }, []);
 
   return (
     <div>
       <Navbar />
 
+      {/* top of participant page */}
       <section id="contact_list">
         <h2> Participants </h2>
         
+        {/* the following div with the Table component includes the search bar, the participant Table
+          and the buttons on the participant page */}
         <div className="contact-list-container">
-
             <Table/>
         </div>
+
+        {/* the following div displays a color key for participant statuses */}
+        {/* to add a new color in the key:
+                1. copy and paste a "colorInKey div" 
+                2. change the color to the name of the preferred color
+                3. change text to reflect new color meaning */}
         <div className="colorKey">
           <h4> Key: </h4>
           <div className="colorInKey">
-            <SvgEllipse style={{ color: "grey" }} /> <p> No Status Set </p>
+            <SvgEllipse style={{ color: "grey" }} /> 
+            <p> No Status Set </p>
           </div>
           <div className="colorInKey">
             <SvgEllipse style={{ color: "green" }} />{" "}
             <p> Ready for Delivery </p>
           </div>
           <div className="colorInKey">
-            <SvgEllipse style={{ color: "tan" }} /> <p>Not This Week</p>
+            <SvgEllipse style={{ color: "tan" }} /> 
+            <p>Not This Week</p>
           </div>
           <div className="colorInKey">
             <SvgEllipse style={{ color: "salmon" }} />{" "}
@@ -89,6 +100,7 @@ export function Participants() {
         </div>
       </section>
 
+      {/* footer */}
       <div className="footer">
         <FooterContainer />
       </div>
@@ -96,10 +108,13 @@ export function Participants() {
   );
 }
 
+// ADD PARTICIPANT: ACCESSIBLE FROM PARTICIPANTS PAGE: "ADD PARTICIPANT" BUTTON
 export function AddParticipant() {
+  // code found in components folder under "addPt.js"
    return <NewParticipant/>;
 }
 
+// CALLER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)
 export function Callers() {
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
@@ -277,28 +292,29 @@ export function Callers() {
   );
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-export function Individual({ match }) {
+// INDIVIDUAL INFO PAGE. ACCESSIBLE BY CLICKING ON A PARTICIPANT'S NAME IN THE PARTICIPANTS PAGE
+export function Individual() {
+  // code found in pages folder under "Individual.js"
   return <Indiv/>
 }
 
+//SMS PAGE ACCESSIBLE FROM PARTICIPANTS PAGE: "SEND TEXTS" BUTTON
 export function SMSTexts() {
+  // code found in the pages folder under Texts.js
   return <Texts />;
 }
 
+// VOLUNTEER INFO PAGE:
 export function VolInfo() {
+  // found in pages folder under VolInfo.js
   return <VolInfoPage />;
 }
 
+// DRIVER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)  
 export function Drivers() {
+  // found in the pages folder under Driver.js
   return <Driver />;
 }
-
 
 // HOME PAGE:
 export function App({ library }) {
