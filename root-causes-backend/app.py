@@ -15,7 +15,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
 # from twilio.twiml.messaging/_response import MessagingResponse
-
+import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
 
@@ -827,7 +827,9 @@ def get_call_assignments():
         def chunkSize(participants,volunteers):   
             #prevent infinite chunking
             if len(volunteers)==0: 
-                return 0
+                return 1
+            if  len(participants)==0: 
+                return 1
             return math.ceil(len(participants)/len(volunteers))
         share=chunkSize(participants,volunteers)
         participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
