@@ -1,7 +1,7 @@
 import "./Individual.css";
 import React from "react";
 import axios from "axios";
-import PersonalInfo from "../components/PersonalInfo";
+import PersonalInfo from "../components/personalInfo";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from "../containers/footer";

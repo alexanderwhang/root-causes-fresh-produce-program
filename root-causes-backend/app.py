@@ -14,7 +14,8 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
+import math
+# from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
 # from twilio.twiml.messaging/_response import MessagingResponse
 
@@ -721,7 +722,7 @@ def get_volunteers():
 def get_volunteer(id):
     volunteer = Volunteer.query.filter_by(id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
-    return {'volunteers': formatted_volunteer}
+    return {'volunteer': formatted_volunteer}
 
 # GET VOLUNTEERS BY LANGUAGE
 @app.route('/volunteers/language/<language>', methods = ['GET'])
@@ -834,17 +835,21 @@ def get_call_assignments():
     list_of_volObjects_spanish= volObjects(volunteers_spanish)
     
     # array of participants that speak english
-    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    # participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    participants_english = db.session.query(Participant).filter_by(most_recent_status=3).filter(Participant.language=="English").all()
     
     #array of participants that speak spanish
-    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    # participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    participants_spanish = db.session.query(Participant).filter_by(most_recent_status=3).filter(Participant.language=="Spanish").all()
     
     #step 0: get the participants into chunks  
     def generate_assignments(volunteers,participants):
         def chunkSize(participants,volunteers):   
             #prevent infinite chunking
             if len(volunteers)==0: 
-                return 0
+                return 1
+            if len(participants)==0: 
+                return 1
             return math.ceil(len(participants)/len(volunteers))
         share=chunkSize(participants,volunteers)
         participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
