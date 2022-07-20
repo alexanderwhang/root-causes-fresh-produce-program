@@ -62,8 +62,12 @@ const getStyles=(params)=>{
 const displayLang = (first, second) => {
     if(first !== "English"){
         return first;
-    } else if(second !== "English"){
+    }
+    else if(second !== "English"){
         return second;
+    } 
+    else{
+        return null;
     }
 }
 
@@ -80,7 +84,7 @@ return (
         <div key={grp.index}  
         className={` ${grp.title==="Participants"? "participants": "dnd-group"} `}
         onDragEnter={dragging && !grp.items.length?(e)=>handleDragEnter(e,{grpI, itemI:0}):null}>   
-        <div className="group-title">{grp.title} 
+        <div className="group-title" data-tooltip={grp.title !== "Participants"? `${grp.primaryLan}, ${grp.secondaryLan}`: null}> {grp.title === "Participants" ? `${grp.title}`: `${grp.title} (${displayLang(grp.primaryLan, grp.secondaryLan)})`}
     </div>
     
 
