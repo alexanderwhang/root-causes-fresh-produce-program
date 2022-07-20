@@ -5,6 +5,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
+// radio buttons to input credit preference on volunteer profile creation page
+
 export default function RadioButtonsCredit() {
   return (
     <FormControl>

@@ -28,44 +28,41 @@ function NewParticipant() {
     [3, "salmon"],
   ]);
 
-
-  const [status, setStatus] = React.useState(0);
-  const [group, setGroup] = React.useState('');
-  const [language, setLanguage] = React.useState('');
+  // const [status, setStatus] = React.useState(0);
+  const [group, setGroup] = React.useState("");
+  const [language, setLanguage] = React.useState("");
   const [household_size, setHouseSize] = React.useState(0);
-  const [pronouns, setPronouns] = React.useState('');
+  const [pronouns, setPronouns] = React.useState("");
   const [age, setAge] = React.useState(0);
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [street, setStreet] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [state, setState] = React.useState('');
+  const [race, setRace] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [street, setStreet] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [state, setState] = React.useState("");
   const [zip, setZip] = React.useState(0);
-  const [apartment, setApartment] = React.useState('');
-
+  const [apartment, setApartment] = React.useState("");
 
   //   const [participantsList, setParticipantsList] = useState([]);
-//   const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
-//   const [groupDisplay, setGroupDisplay] = useState(props.participant.group);
-//   const [languageDisplay, setLanguageDisplay] = useState(props.participant.language);
-//   const [householdSizeDisplay, setHouseholdSizeDisplay] = useState(props.participant.household_size);
-//   const [pronounsDisplay, setPronounsDisplay] = useState(props.participant.pronouns);
-//   const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
-//   const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
-//   const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
-//   const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
-//   const [cityDisplay, setCityDisplay] = useState(props.participant.city);
-//   const [stateDisplay, setStateDisplay] = useState(props.participant.state);
-//   const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
-//   const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
-//   const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
+  //   const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
+  //   const [groupDisplay, setGroupDisplay] = useState(props.participant.group);
+  //   const [languageDisplay, setLanguageDisplay] = useState(props.participant.language);
+  //   const [householdSizeDisplay, setHouseholdSizeDisplay] = useState(props.participant.household_size);
+  //   const [pronounsDisplay, setPronounsDisplay] = useState(props.participant.pronouns);
+  //   const [ageDisplay, setAgeDisplay] = useState(props.participant.age);
+  //   const [emailDisplay, setEmailDisplay] = useState(props.participant.email);
+  //   const [phoneDisplay, setPhoneDisplay] = useState(props.participant.phone);
+  //   const [streetDisplay, setStreetDisplay] = useState(props.participant.street);
+  //   const [cityDisplay, setCityDisplay] = useState(props.participant.city);
+  //   const [stateDisplay, setStateDisplay] = useState(props.participant.state);
+  //   const [zipDisplay, setZipDisplay] = useState(props.participant.zip);
+  //   const [apartmentDisplay, setApartmentDisplay] = useState(props.participant.apartment);
+  //   const[addressDisplay, setAddressDisplay] = useState(props.participant.address);
 
-
-  
   //HANDLE CHANGE
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
-  };
+  // const handleStatusChange = (event: SelectChangeEvent) => {
+  //   setStatus(event.target.value);
+  // };
   const handleLanguageChange = (event: SelectChangeEvent) => {
     setLanguage(event.target.value);
   };
@@ -80,6 +77,9 @@ function NewParticipant() {
   };
   const handleAgeChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
+  };
+  const handleRaceChange = (event: SelectChangeEvent) => {
+    setRace(event.target.value);
   };
   const handleEmailChange = (event: SelectChangeEvent) => {
     setEmail(event.target.value);
@@ -105,88 +105,94 @@ function NewParticipant() {
 
   //HANDLE SUBMIT
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    editInfo();
+    if (
+      !(
+        language == null ||
+        household_size == null ||
+        age == null ||
+        email == null ||
+        phone == null ||
+        street == null ||
+        city == null ||
+        state == null ||
+        zip == null ||
+        race == null
+      )
+    ) {
+      e.preventDefault();
 
-    console.log(pronouns);
-    let new_participant = {};
+      console.log(pronouns);
+      let new_participant = {};
 
-    new_participant.status = status;
-    new_participant.group = group;
-    new_participant.language = language;
-    new_participant.household_size = household_size;
-    new_participant.pronouns = pronouns;
-    new_participant.age = age;
-    new_participant.email = email;
-    new_participant.phone = phone;
-    new_participant.street = street;
-    new_participant.city = city;
-    new_participant.state = state;
-    new_participant.zip = zip;
-    new_participant.apartment = apartment;
+      new_participant.status = 0;
+      new_participant.group = group;
+      new_participant.language = language;
+      new_participant.household_size = household_size;
+      new_participant.pronouns = pronouns;
+      new_participant.age = age;
+      new_participant.email = email;
+      new_participant.phone = phone;
+      new_participant.street = street;
+      new_participant.city = city;
+      new_participant.state = state;
+      new_participant.zip = zip;
+      new_participant.apartment = apartment;
+      new_participant.race = race;
 
-    var data = JSON.stringify({ participant: new_participant });
-    // setStatusDisplay(new_participant.status);
-    // setGroupDisplay(new_participant.group);
-    // setLanguageDisplay(new_participant.language);
-    // setHouseholdSizeDisplay(new_participant.household_size);
-    // setPronounsDisplay(new_participant.pronouns);
-    // setAgeDisplay(new_participant.age);
-    // setEmailDisplay(new_participant.email);
-    // setPhoneDisplay(new_participant.phone);
-    // setStreetDisplay(new_participant.street);
-    // setCityDisplay(new_participant.city);
-    // setStateDisplay(new_participant.state);
-    // setZipDisplay(new_participant.zip);
-    // setApartmentDisplay(new_participant.apartment);
-    let address_string = "";
-    if(!new_participant.apartment) {
-      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`
+      var data = JSON.stringify({ participant: new_participant });
+      let address_string = "";
+      if (!new_participant.apartment) {
+        address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip}`;
+      } else {
+        address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip} Apt. ${new_participant.apartment}`;
+      }
+      // setAddressDisplay(address_string);
+
+      var config = {
+        method: "post",
+        url: `http://localhost:5000/participants`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      axios(config)
+        .then(function(response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     } else {
-      address_string = `${new_participant.street} ${new_participant.city}, ${new_participant.state} ${new_participant.zip} Apt. ${new_participant.apartment}`
-
+      displayError();
     }
-    // setAddressDisplay(address_string);
-
-    var config = {
-      method: "post",
-      url: `http://localhost:5000/participants`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function(response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
   };
 
-  const [edit_form_status, setEdit] = React.useState(true)
+  const [edit_form_status, setEdit] = React.useState(true);
 
   const editInfo = () => {
-    if (edit_form_status){
+    if (edit_form_status) {
       setEdit(false);
-    }
-      
-    else if (!edit_form_status){
+    } else if (!edit_form_status) {
       setEdit(true);
     }
   };
 
+  const [errorDisplay, setErrorDisplay] = React.useState(false);
+
+  const displayError = () => {
+    setErrorDisplay(true);
+  };
+
   return (
     <div>
-        <div class="add_new">
-          <h1>Add New Participant</h1>
-        </div>
+      <div class="add_new">
+        <h1>Add New Participant</h1>
+      </div>
       <form onSubmit={handleSubmit} hidden={false}>
         {/* STATUS */}
-      <div class="status_dropdown">
+        {/* <div class="status_dropdown">
         <Box sx={{ maxWidth: 200 }}>
           <FormControl fullWidth>
             <InputLabel id="select-status-label">Status</InputLabel>
@@ -204,192 +210,221 @@ function NewParticipant() {
             </Select>
           </FormControl>
         </Box>
-      </div>
+      </div> */}
         {/* EMAIL */}
-    <div class="text-inputs">
-      <div>
-        <TextField
-          className="email-input"
-          id="filled-email-input"
-          label="Email"
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-      </div>
-        <div></div>
-        {/* PHONE  NUMBER */}
-      <div class="phoneNumber">
-        <TextField
-          id="filled-password-input"
-          label="Phone Number"
-          type="phone-number"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
-      </div>
-        {/* ADDRESS */}
-      <div>
-        <TextField id="filled-password-input" label="Street" type="street" value={street} onChange={handleStreetChange} />
-      </div>
-      <div>
-        <TextField id="filled-password-input" label="City" type="city" value={city} onChange={handleCityChange} />
-      </div>
-      <div>
-        <TextField id="filled-password-input" label="State" type="state" value={state} onChange={handleStateChange} />
-      </div>
-      <div>
-        <TextField
-          id="filled-password-input"
-          label="Zip Code"
-          type="zip-code"
-          value={zip}
-          onChange={handleZipChange}
-        /> 
-      </div>
-      <div>
-        <TextField
-          id="filled-password-input"
-          label="Apartment Number"
-          type="apartment-number"
-          value={apartment}
-          onChange={handleApartmentChange}
-        />
-      </div>
-    </div>
-        
-        {/* LANGUAGE */}
-      <div class="language-input">
-        <Box sx={{ maxWidth: 200 }} className="language">
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Language</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={language}
-              label="Status"
-              onChange={handleLanguageChange}
-            >
-              <MenuItem value={"English"}>English</MenuItem>
-              <MenuItem value={"Spanish"}>Spanish</MenuItem>
-            </Select>
-          </FormControl>
+        <div class="text-inputs">
+          <div>
+            <TextField
+              className="email-input"
+              id="filled-email-input"
+              label="Email"
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
+          </div>
           <div></div>
-        </Box>
-      </div>
+          {/* PHONE  NUMBER */}
+          <div class="phoneNumber">
+            <TextField
+              id="filled-password-input"
+              label="Phone Number"
+              type="phone-number"
+              value={phone}
+              onChange={handlePhoneChange}
+            />
+          </div>
+          {/* ADDRESS */}
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="Street"
+              type="street"
+              value={street}
+              onChange={handleStreetChange}
+            />
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="City"
+              type="city"
+              value={city}
+              onChange={handleCityChange}
+            />
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="State"
+              type="state"
+              value={state}
+              onChange={handleStateChange}
+            />
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="Zip Code"
+              type="zip-code"
+              value={zip}
+              onChange={handleZipChange}
+            />
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="Apartment Number"
+              type="apartment-number"
+              value={apartment}
+              onChange={handleApartmentChange}
+            />
+          </div>
+        </div>
+
+        {/* LANGUAGE */}
+        <div class="language-input">
+          <Box sx={{ maxWidth: 200 }} className="language">
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Language</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={language}
+                label="Status"
+                onChange={handleLanguageChange}
+              >
+                <MenuItem value={"English"}>English</MenuItem>
+                <MenuItem value={"Spanish"}>Spanish</MenuItem>
+              </Select>
+            </FormControl>
+            <div></div>
+          </Box>
+        </div>
 
         {/* GROUP */}
-      <div class="group_dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Group</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={group}
-              label="Status"
-              onChange={handleGroupChange}
-            >
-              <MenuItem value={"A"}>A</MenuItem>
-              <MenuItem value={"B"}>B</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
+        <div class="group_dropdown">
+          <Box sx={{ maxWidth: 200 }}>
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Group</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={group}
+                label="Status"
+                onChange={handleGroupChange}
+              >
+                <MenuItem value={"A"}>A</MenuItem>
+                <MenuItem value={"B"}>B</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
 
         {/* HOUSEHOLD SIZE */}
-      <div class="household_dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Household Size</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={household_size}
-              label="Status"
-              onChange={handleHouseSizeChange}
-            >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={6}>6</MenuItem>
-              <MenuItem value={7}>7</MenuItem>
-              <MenuItem value={8}>8</MenuItem>
-              <MenuItem value={9}>9</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              {/* <MenuItem value={11}>10+</MenuItem> */}
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
+        <div class="household_dropdown">
+          <Box sx={{ maxWidth: 200 }}>
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Household Size</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={household_size}
+                label="Status"
+                onChange={handleHouseSizeChange}
+              >
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={7}>7</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={9}>9</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                {/* <MenuItem value={11}>10+</MenuItem> */}
+              </Select>
+            </FormControl>
+          </Box>
+        </div>
 
         {/* PRONOUNS */}
-      <div class="pronouns_dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Pronouns</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={pronouns}
-              label="Pronouns"
-              onChange={handlePronounChange}
-            >
-              <MenuItem value={"she/her/hers"}>she/her/hers</MenuItem>
-              <MenuItem value={"he/him/his"}>he/him/his</MenuItem>
-              <MenuItem value={"they/them/theirs"}>they/them/theirs</MenuItem>
-              <MenuItem value={"Other"}>Other</MenuItem>
-              <MenuItem value={"Prefer Not to Share"}>
-                Prefer Not to Share
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
-      
-      <div class="age-input">
-        <TextField
-          id="outlined-number"
-          label="Age"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={age}
-          onChange={handleAgeChange}
-        />
-      </div>
-        <div></div>
-      <div class="race_dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={status}
-              label="Status"
-              onChange={handleStatusChange}
-            >
-              <MenuItem value={"Hispanic or Latino"}>Hispanic or Latino</MenuItem>
-              <MenuItem value={"American Indian or Alaskan Native"}>American Indian or Alaskan Native</MenuItem>
-              <MenuItem value={"Asian"}>Asian</MenuItem>
-              <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
-                Native Hawaiian or Other Pacific Islander
-              </MenuItem>
-              <MenuItem value={4}>Black or African American</MenuItem>
-              <MenuItem value={5}>White</MenuItem>
-              <MenuItem value={6}>Other</MenuItem>
-            </Select>
-          </FormControl>
-          <div></div>
-        </Box>
-      </div>
-        <div className="submit_button">
-          <Button variant="contained" type="submit">Submit</Button>
+        <div class="pronouns_dropdown">
+          <Box sx={{ maxWidth: 200 }}>
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Pronouns</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={pronouns}
+                label="Pronouns"
+                onChange={handlePronounChange}
+              >
+                <MenuItem value={"she/her/hers"}>she/her/hers</MenuItem>
+                <MenuItem value={"he/him/his"}>he/him/his</MenuItem>
+                <MenuItem value={"they/them/theirs"}>they/them/theirs</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+                <MenuItem value={"Prefer Not to Share"}>
+                  Prefer Not to Share
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </div>
+
+        <div class="age-input">
+          <TextField
+            id="outlined-number"
+            label="Age"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={age}
+            onChange={handleAgeChange}
+          />
+        </div>
+        <div></div>
+        <div class="race_dropdown">
+          <Box sx={{ maxWidth: 200 }}>
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                value={race}
+                label="Status"
+                onChange={handleRaceChange}
+              >
+                <MenuItem value={"Hispanic or Latino"}>
+                  Hispanic or Latino
+                </MenuItem>
+                <MenuItem value={"American Indian or Alaskan Native"}>
+                  American Indian or Alaskan Native
+                </MenuItem>
+                <MenuItem value={"Asian"}>Asian</MenuItem>
+                <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
+                  Native Hawaiian or Other Pacific Islander
+                </MenuItem>
+                <MenuItem value={"Black or African American"}>
+                  Black or African American
+                </MenuItem>
+                <MenuItem value={"White"}>White</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
+              </Select>
+            </FormControl>
+            <div></div>
+          </Box>
+        </div>
+        <div className="submit_button">
+          <Button variant="contained" type="submit">
+            Submit
+          </Button>
+        </div>
+      </form>
+      <form hidden={errorDisplay}>
+        <h2>Error: necessary fields left empty</h2>
       </form>
     </div>
   );
