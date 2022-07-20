@@ -124,7 +124,6 @@ img {
 
 }
 
-
 .pt_list{
   width: 1100px;
 }
@@ -203,95 +202,7 @@ img {
 
 /* INDIV */
 
-.indiv h2{
-  text-align: center;
-  margin-top: 1rem;
-}
-.indivButtonCont{
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
 
-.indivButtonCont button{
-  background-color: #d6a977;
-  border-radius: 5px;
-  font-size: 15px;
-  padding: 4px;
-  margin: 0.7rem;
-  margin-top: 0.7rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
-}
-
-.indivButtonCont button:hover{
-  background-color: #bd9669;
-}
-
-.personal_info{
-  /* width: 80%;
-  align-items: center;
-  margin: 0 auto;
-  padding: 10px; */
-  border: 2px solid #00743e; 
-  width: 800px;
-  height: 200px;
-  margin: 0 auto;
-  margin-bottom: 3rem;
-}
-
-.med_info{
-  border: 2px solid #00743e; 
-  width: 800px;
-  height: 200px;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-}
-
-.other_info{
-  border: 2px solid #00743e; 
-  width: 800px;
-  height: 200px;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-}
-
-.left{
-  /* display:inline-block; */
-  float: left;
-  margin: 1rem;
-}
-
-.left h4{
-  padding: 10px;
-}
-.right{
-  /* display: inline-block; */
-  float: right;
-  margin: 1rem;
-}
-.right p{
-  padding: 10px;
-}
-
-.indiv p{
-  font-family: 'Raleway Medium', sans-serif;
-  font-size: 15px;
-  text-align: center;
-  padding: 20px;
-}
-
-.editButton{
-  text-align: center;
-}
-
-/* .odd{
-  background-color: #f7c86d;
-} */
-
-.Divider{
-  background-color: #f7c86d;
-}
 
 
 /* CALLER: Volunteer pool css */
