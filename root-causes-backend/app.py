@@ -618,21 +618,22 @@ def update_participant(id):
 # OUTGOING SMS TEXT
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
-    # message = request.json['message']
-    
+    participants = Participant.query.order_by(Participant.id).all()
+    part_list = []
+    phone_numbers = []
+    for participant in participants:
+        part_list.append(format_participant(participant))
+    # for x in part_list:
+    #     phone_numbers.append(part_list[x].phone_number)
 
-    message1 = client.messages \
-                .create(
-                     body=message,
-                     from_='+19897046694',
-                     to='+17137398907'
-                 )
-    message2 = client.messages \
-                .create(
-                    body=message,
-                    from_='+19897046694',
-                    to='+15714713578'
-                )
+    for x in part_list:
+        messages = client.messages \
+                    .create(
+                        body=message,
+                        from_='+19897046694',
+                        to=f"+1{x.phone}"
+                    )
+
     return {"Message": message}
 
 # INCOMING SMS TEXT
