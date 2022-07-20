@@ -9,7 +9,7 @@ import { Users } from "./users";
 
 const baseUrl = "http://127.0.0.1:5000";
 
-export const DataDragPractice = ({ data }) => {
+export const DataDragPractice = (props) => {
 //   let userIdList = UserIdList();
 //   console.log("userIdList: ", userIdList);
 
@@ -23,7 +23,7 @@ export const DataDragPractice = ({ data }) => {
     // }
   };
 
-  const [list, setList] = useState(data);
+  const [list, setList] = useState(props);
   const [dragging, setDragging] = useState(false);
   const dragItem = useRef();
   const dragNode = useRef();
