@@ -39,8 +39,6 @@ export function VolInfoPage() {
       }
     }
   
-
-
   //backend calls
 
     // GET ALL VOLUNTEERS
@@ -140,176 +138,180 @@ export function VolInfoPage() {
       <Navbar />
       <h2> Volunteer Info </h2>
       <Box sx={{ borderBottom: 0, borderColor: "#f7c86d", color: "black" }}>
+      {/* tabs that display current week vs all volunteers */}
         <Tabs
           value={val}
           onChange={handleChange}
           aria-label="basic tabs example"
           centered
-        >
+        > 
+        {/* to add tab:
+              1. copy and paste a tab tag and change the label and the a11yProps number 
+              2. then create a new tab panel section with the appropriate index number corresponding to a11yProps */}
           <Tab label="Current Week Volunteers" {...a11yProps(0)} />
           <Tab label="All Volunteers" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <TabPanel value={val} index={0}>
-        <div className="curr_vols">
-          <h3> Callers </h3>
-          {/* date of availability? */}
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time?</th>
-                  <th>Credit?</th>
-                  <th>Availability </th>
-                </tr>
-                  {callersList.map((caller) => {
-                    return <tr key={caller.id}>
-                            <td>{caller.first_name} {caller.last_name}</td>
-                            <td>{caller.phone}</td>
-                            <td>{caller.email}</td>
-                            <td>{caller.language}</td>
-                            <td> {boolMap.get(caller.first_time)}</td>
-                            <td>{boolMap.get(caller.hipaa)}</td>
-                            <td>{boolMap.get(caller.credit)}</td>
-                            <td>...</td>
-                        </tr>;
-                  })}
-              </tbody>
-            </table>
-          </div>
+      {/* individual tabs */}
+        {/* first tab contains current week volunteers */}
+          <TabPanel value={val} index={0}>
+            <div className="curr_vols">
+              <h3> Callers </h3>
+              <div className="vol_type">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Language</th>
+                      <th>HIPAA?</th>
+                      <th>First Time?</th>
+                      <th>Credit?</th>
+                      <th>Availability </th>
+                    </tr>
+                      {callersList.map((caller) => {
+                        return <tr key={caller.id}>
+                                <td>{caller.first_name} {caller.last_name}</td>
+                                <td>{caller.phone}</td>
+                                <td>{caller.email}</td>
+                                <td>{caller.language}</td>
+                                <td> {boolMap.get(caller.first_time)}</td>
+                                <td>{boolMap.get(caller.hipaa)}</td>
+                                <td>{boolMap.get(caller.credit)}</td>
+                                <td>...</td> {/* should dynamically display a volunteer's sign up times */}
+                                
+                            </tr>;
+                      })}
+                  </tbody>
+                </table>
+              </div>
 
-          <h3> Drivers </h3>
+              <h3> Drivers </h3>
 
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time?</th>
-                  <th>Credit?</th>
-                  <th>Availability </th>
-                </tr>
-                  {driversList.map((driver) => {
-                    return <tr key={driver.id}>
-                            <td>{driver.first_name} {driver.last_name}</td>
-                            <td>{driver.phone}</td>
-                            <td>{driver.email}</td>
-                            <td>{driver.language}</td>
-                            <td> {boolMap.get(driver.first_time)}</td>
-                            <td>{boolMap.get(driver.hipaa)}</td>
-                            <td>{boolMap.get(driver.credit)}</td>
-                            <td>...</td>
-                        </tr>;
-                  })}
-              </tbody>
-            </table>
-          </div>
-          <h3> Packers </h3>
-          <div className="vol_type">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Language</th>
-                  <th>HIPAA?</th>
-                  <th>First Time?</th>
-                  <th>Credit?</th>
-                  <th>Availability </th>
-                </tr>
-                {packersList.map((packer) => {
-                    return <tr key={packer.id}>
-                            <td>{packer.first_name} {packer.last_name}</td>
-                            <td>{packer.phone}</td>
-                            <td>{packer.email}</td>
-                            <td>{packer.language}</td>
-                            <td> {boolMap.get(packer.first_time)}</td>
-                            <td>{boolMap.get(packer.hipaa)}</td>
-                            <td>{boolMap.get(packer.credit)}</td>
-                            <td>...</td>
-                        </tr>;
-                  })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </TabPanel>
-      <TabPanel value={val} index={1}>
-        <div className="all_vols">
-          <div id="search">
-            <TextField
-            id="searchField"
-            label="Search"
-            defaultValue={value}
-            onChange={filterData}
-            type="search"
-          />
-          </div>
-          <table class="vol_list">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Language</th>
-                {/* <th>Type</th> */}
-                <th>HIPAA?</th>
-                <th>Affiliation</th>
-                <th>For Credit?</th>
-                {/* Last date of activity?? */}
-                </tr>
-              </thead>
-              <tbody>
-              {(value.length > 0) ? tableFilter.map((volunteer) => {
-                return (
-                  <tr key={volunteer.id}>
-                    <td>
-                      {" "}
-                      {volunteer.first_name} {volunteer.last_name}{" "}
-                    </td>
-                    <td>{volunteer.phone}</td>
-                    <td>{volunteer.email}</td>
-                    <td>{volunteer.language}</td>
-                    {/* <td></td> */}
-                    <td> {boolMap.get(volunteer.first_time)}</td>
-                    <td>{boolMap.get(volunteer.hipaa)}</td>
-                    <td>{boolMap.get(volunteer.credit)}</td>
-                  </tr>
-                )
-                })
-                :
-                 volunteersList.map((volunteer) => {
+              <div className="vol_type">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Language</th>
+                      <th>HIPAA?</th>
+                      <th>First Time?</th>
+                      <th>Credit?</th>
+                      <th>Availability </th>
+                    </tr>
+                      {driversList.map((driver) => {
+                        return <tr key={driver.id}>
+                                <td>{driver.first_name} {driver.last_name}</td>
+                                <td>{driver.phone}</td>
+                                <td>{driver.email}</td>
+                                <td>{driver.language}</td>
+                                <td> {boolMap.get(driver.first_time)}</td>
+                                <td>{boolMap.get(driver.hipaa)}</td>
+                                <td>{boolMap.get(driver.credit)}</td>
+                                <td>...</td>
+                            </tr>;
+                      })}
+                  </tbody>
+                </table>
+              </div>
+              <h3> Packers </h3>
+              <div className="vol_type">
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Language</th>
+                      <th>HIPAA?</th>
+                      <th>First Time?</th>
+                      <th>Credit?</th>
+                      <th>Availability </th>
+                    </tr>
+                    {packersList.map((packer) => {
+                        return <tr key={packer.id}>
+                                <td>{packer.first_name} {packer.last_name}</td>
+                                <td>{packer.phone}</td>
+                                <td>{packer.email}</td>
+                                <td>{packer.language}</td>
+                                <td> {boolMap.get(packer.first_time)}</td>
+                                <td>{boolMap.get(packer.hipaa)}</td>
+                                <td>{boolMap.get(packer.credit)}</td>
+                                <td>...</td>
+                            </tr>;
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </TabPanel>
+        {/* second tab contains all volunteers*/}
+          <TabPanel value={val} index={1}>
+            <div className="all_vols">
+              <div id="search">
+                <TextField
+                id="searchField"
+                label="Search"
+                defaultValue={value}
+                onChange={filterData}
+                type="search"
+              />
+              </div>
+              <table class="vol_list">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Language</th>
+                    <th>HIPAA?</th>
+                    <th>Affiliation</th>
+                    <th>For Credit?</th>
+                    {/* Last date of activity?? */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {/* if searching, data is gotten from tableFilter variable, otherwise it is retrieved from participantsList */}
+                  {(value.length > 0) ? tableFilter.map((volunteer) => {
                     return (
                       <tr key={volunteer.id}>
-                    <td>
-                      {" "}
-                      {volunteer.first_name} {volunteer.last_name}{" "}
-                    </td>
-                    <td>{volunteer.phone}</td>
-                    <td>{volunteer.email}</td>
-                    <td>{volunteer.language}</td>
-                    {/* <td></td> */}
-                    <td> {boolMap.get(volunteer.first_time)}</td>
-                    <td>{boolMap.get(volunteer.hipaa)}</td>
-                    <td>{boolMap.get(volunteer.credit)}</td>
-                  </tr>
-              )
-        })
-} 
-        </tbody>
-          </table>
-        </div>
-      </TabPanel>
+                        <td>
+                          {" "}
+                          {volunteer.first_name} {volunteer.last_name}{" "}
+                        </td>
+                        <td>{volunteer.phone}</td>
+                        <td>{volunteer.email}</td>
+                        <td>{volunteer.language}</td>
+                        <td> {boolMap.get(volunteer.first_time)}</td>
+                        <td>{boolMap.get(volunteer.hipaa)}</td>
+                        <td>{boolMap.get(volunteer.credit)}</td>
+                      </tr>
+                    )
+                    })
+                    :
+                    volunteersList.map((volunteer) => {
+                        return (
+                          <tr key={volunteer.id}>
+                        <td>
+                          {" "}
+                          {volunteer.first_name} {volunteer.last_name}{" "}
+                        </td>
+                        <td>{volunteer.phone}</td>
+                        <td>{volunteer.email}</td>
+                        <td>{volunteer.language}</td>
+                        <td> {boolMap.get(volunteer.first_time)}</td>
+                        <td>{boolMap.get(volunteer.hipaa)}</td>
+                        <td>{boolMap.get(volunteer.credit)}</td>
+                      </tr>
+                  )
+            })} 
+            </tbody>
+              </table>
+            </div>
+          </TabPanel>
       <FooterContainer />
     </div>
   );

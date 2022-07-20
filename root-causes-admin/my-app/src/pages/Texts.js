@@ -26,87 +26,85 @@ import { Uncaught_Participants } from "../components/Uncaught_Participants.js";
 const baseUrl = "http://127.0.0.1:5000";
 
 export function BasicSelect() {
-  const [status, setStatus] = React.useState("");
+  // code that permits the selection of different filter groups
+    const [status, setStatus] = React.useState("");
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
-  };
+    const handleStatusChange = (event: SelectChangeEvent) => {
+      setStatus(event.target.value);
+    };
 
-  return (
-    <div className="basic-select">
-      <Box sx={{ maxWidth: 200 }}>
-        <div className="filter">
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Filter</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              sx={{ backgroundColor: "#f9f8e1" }}
-              value={status}
-              label="Status"
-              onChange={handleStatusChange}
-            >
-              <MenuItem value={0}>Group A English</MenuItem>
-              <MenuItem value={1}>Group A Spanish</MenuItem>
-              <MenuItem value={2}>Group B English</MenuItem>
-              <MenuItem value={3}>Group B Spanish</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="submitButton">
-          <Button variant="contained">Submit</Button>
-        </div>
-      </Box>
-    </div>
-  );
+    return (
+      <div className="basic-select">
+        <Box sx={{ maxWidth: 200 }}>
+          <div className="filter">
+            <FormControl fullWidth>
+              <InputLabel id="simple-select-label">Filter</InputLabel>
+              <Select
+                labelId="simple-select-label"
+                id="simple-select"
+                sx={{ backgroundColor: "#f9f8e1" }}
+                value={status}
+                label="Status"
+                onChange={handleStatusChange}
+              >
+                <MenuItem value={0}>Group A English</MenuItem>
+                <MenuItem value={1}>Group A Spanish</MenuItem>
+                <MenuItem value={2}>Group B English</MenuItem>
+                <MenuItem value={3}>Group B Spanish</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="submitButton">
+            <Button variant="contained">Submit</Button>
+          </div>
+        </Box>
+      </div>
+    );
 }
 
 export default function Texts() {
-  const [value, setValue] = React.useState("");
-  const [message, setMessage] = React.useState("");
-  const [participantsList, setParticipants] = useState([]);
+  // gets list of participants
+    const [participantsList, setParticipants] = useState([]);
 
-  // GET PARTICIPANTS
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/group/A`);
-    const participants = data.data.participants;
-    setParticipants(participants);
-    console.log("DATA: ", data);
-  };
+    // GET PARTICIPANTS
+    const fetchParticipants = async () => {
+      const data = await axios.get(`${baseUrl}/participants/group/A`);
+      const participants = data.data.participants;
+      setParticipants(participants);
+      console.log("DATA: ", data);
+    };
 
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
+    useEffect(() => {
+      fetchParticipants();
+    }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  // allows us to create a message to be sent
+    const [value, setValue] = React.useState("");
+    const [message, setMessage] = React.useState("");
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     setMessage(event.target.value);
   };
 
-  const handleOutgoingSMS = async (e) => {
-    var data = JSON.stringify({ message });
+  // code that allows us to send the message
+    const handleOutgoingSMS = async (e) => {
+      var data = JSON.stringify({ message });
 
-    const response = await axios.post(`${baseUrl}/smstexts/${message}`);
-  };
+      const response = await axios.post(`${baseUrl}/smstexts/${message}`);
+    };
 
-  const [status, setStatus] = React.useState("");
-
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
-  };
-  //const [status, setStatus] = React.useState(props.participant.status);
-  // const handleStatusChange = (event: SelectChangeEvent) => {
-  //   setStatus(event.target.value);
-  // };
 
   return (
     <div>
       <Navbar />
       <h2>SMS Texting</h2>
       <div className="sms">
+      {/* left side of the page: send SMS texts */}
         <div className="box">
           <h3> Sending Messages </h3>
           <div className="sending">
+          {/* filter form */}
             <BasicSelect />
             <div className="messaging">
               <Box
@@ -121,6 +119,7 @@ export default function Texts() {
                 noValidate
                 autoComplete="off"
               >
+              {/* message box */}
                 <div className="messageBox">
                   <TextField
                     id="outlined-multiline-static"
@@ -133,22 +132,23 @@ export default function Texts() {
                   />
                 </div>
               </Box>
+            {/* confirm message button  */}
               <div className="confirmMessage">
-                <header className="sendSMS">
                   <Button variant="contained" onClick={handleOutgoingSMS}>
                     {" "}
                     Send Message{" "}
                   </Button>
-                </header>
               </div>
             </div>
           </div>
         </div>
-
+      {/* right side of sms: receiving texts*/}
         <div className="box2">
           <h3> Receiving Messages </h3>
           <div className="receiving">
+          {/* "caught participants" are participants whose responses are simple enough to have their statuses automatically updated*/}
             <div className="caught">
+            {/* list header */}
               <List
                 sx={{ width: "100%", bgcolor: "#f9f8e1" }}
                 component="nav"
@@ -159,12 +159,16 @@ export default function Texts() {
                   </ListSubheader>
                 }
               >
+              {/* dropdown in list created by the following map */}
                 {participantsList.map((participant) => {
+                  // caught_participants code can be found in components folder
                   return <Caught_Participants participant={participant} />;
                 })}
               </List>
             </div>
+          {/* "uncaught participants" have more complex responses that should be handled and verified manually */}
             <div className="uncaught">
+            {/* list header */}
               <List
                 sx={{ width: "100%", bgcolor: "#f9f8e1" }}
                 component="nav"
@@ -176,6 +180,7 @@ export default function Texts() {
                 }
               >
                 {participantsList.map((participant) => {
+                  // uncaught_participants code found in components folder
                   return <Uncaught_Participants participant={participant} />;
                 })}
               </List>

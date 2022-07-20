@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {App,Participants,Individual,AddParticipant, SMSTexts, VolInfo,Callers,Drivers} from './App'; 
+import {App,Participants,Individual,AddParticipant, SMSTexts, VolInfo, Callers, Drivers} from './App'; 
 import reportWebVitals from './reportWebVitals'; 
 import {BrowserRouter,Routes,Route} from "react-router-dom";  
-// import { GlobalStyles } from './global-styles'
-// import { PracticeUsers } from './practiceUsers';
-
 
 
 
@@ -24,7 +21,6 @@ root.render(
         <Route path ="/callers"   element ={<Callers/>}/> 
         <Route path = "/packers" element = {<Drivers/>}/>
         <Route path ="/drivers"   element ={<Drivers/>}/> 
-        {/* <Route path ="/analytics" element ={<Analytics/>}/> */}
       </Routes>
     </BrowserRouter>
   </>

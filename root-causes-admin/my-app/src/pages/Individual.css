@@ -63,3 +63,24 @@
     background-color: #f7c86d;
   }
   
+   
+.paginationBttns{
+  width:80%;
+  height:40px;
+  list-style: none;
+  display:flex;
+  justify-content:center;
+  margin: 0 auto;
+}
+.paginationBttns a {  
+  padding:10px;
+  margin:8px;
+  border-radius:5px;
+  background-color: #d6a977;
+  color:white;
+  cursor:pointer;
+}
+.paginationBttns a:hover{
+  background-color:#bd9669;
+ 
+}
