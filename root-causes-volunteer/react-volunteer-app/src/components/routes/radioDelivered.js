@@ -6,6 +6,9 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
  
+// radio buttons handling delivery status of food to participants
+// volunteers will go onto the "Routes" page and mark "Delivered" once a participant has recieved their food for the week
+
 export default function RadioButtonsAvailability() {
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -799,6 +799,107 @@ def get_deliveries():
         delivery_list.append(format_delivery(delivery))
     return {'deliveries': delivery_list}
 
+# CALLER MANAGEMENT ALGORITHM
+class VolObj():  
+    def __init__(self,id,participant_list): 
+        self.particpant_list=participant_list
+        self.id =id 
+
+@app.route('/callermanagement', methods = ['GET'])
+def get_call_assignments():
+    type = "Caller"  
+    
+    def volObjects(array):  
+        ret = []
+        for i in range(len(array)): 
+             volunteer = array[i]   
+             volunteer_object=VolObj(volunteer.id,[]) 
+             ret.append(volunteer_object) 
+        return ret
+
+    #make each volunteer into an volunteer object 
+    #array of volunteers that speak english
+    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
+    
+    #array of volunteers that speak spanish
+    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
+    list_of_volObjects_english= volObjects(volunteers_english) 
+    list_of_volObjects_spanish= volObjects(volunteers_spanish)
+    
+    # array of participants that speak english
+    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    
+    #array of participants that speak spanish
+    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    
+    #step 0: get the participants into chunks  
+    def generate_assignments(volunteers,participants):
+        def chunkSize(participants,volunteers):   
+            #prevent infinite chunking
+            if len(volunteers)==0: 
+                return 0
+            return math.ceil(len(participants)/len(volunteers))
+        share=chunkSize(participants,volunteers)
+        participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
+        while len(volunteers)>len(participantChunks):  
+            participantChunks.append([])
+
+        for i in range(len(volunteers)): 
+            volunteer=volunteers[i] 
+            volunteer.participant_list=participantChunks[i]   
+        return volunteers
+    volunteersE = generate_assignments(volunteers_english,participants_english)  
+    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
+    allVolunteers =[] 
+    allVolunteers.extend(volunteersE)
+    allVolunteers.extend(volunteersS)  
+    volunteer_list = []
+    for volunteer in allVolunteers:
+        volunteer_list.append(format_sortedVolunteers(volunteer))
+    return {"sortedVolunteers": volunteer_list}
+    #how to deal with participants in the backend, the first thing to do is to try to create a participants list
+
+    # every volunteer should now have their participant chunks now e just need to do that for the spanish speakrs
+    
+
+
+#  def format_sortedVolunteers
+def format_sortedVolunteers(volunteers):
+    ids = "{"
+    # for participant in volunteers.participant_list:
+    for i in range(len(volunteers.participant_list)):
+        ids+='"'
+        ids+=str(i)
+        ids+='"'
+        ids+=": "
+        ids+=str(volunteers.participant_list[i].id)
+        if(i < len(volunteers.participant_list) -1 ):
+            ids+=", "
+    ids+="}"
+
+    idArr = []
+    for i in range(len(volunteers.participant_list)):
+        idArr.append(volunteers.participant_list[i].id)
+    return {
+        "id": volunteers.id,
+        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
+    }
+
+
+# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
+@app.route('/callermanagement/unsorted', methods = ['GET'])
+def get_unsoreted_call_assignments():
+    type="Caller"
+    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
+    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
+
+    ret = [{}]
+    for volunteer in volunteers:
+        ret.append({"vol": volunteer, "pts": []})
+    ret.append({"vol": {}, "pts": participants})
+
+    return { json.dumps(ret)}
+
 
 ########VOLUNTEER APP##########
 def format_participant_routes(participant):
@@ -1025,183 +1126,95 @@ def get_routes_image():
     
     
 # VOLUNTEER SIGN-UP FOR ROLES - SIGN-UP PAGE
-@app.route('/signup', methods = ['POST'])
-def add_signup():
-    if request.method == 'POST' and ('callerDay1' in request.form):
-        volunteer_type = "Caller"
-        callerDay1 = request.form.get('callerDay1')
-        callerDay2 = request.form.get('callerDay2')
-        callerDay3 = request.form.get('callerDay3')
-        callerDay4 = request.form.get('callerDay4')
-        callerDay = [callerDay1, callerDay2, callerDay3, callerDay4]
-        for day in callerDay:
-            if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d")
-                day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
-                db.session.add(person)
-        db.session.commit()
-        return redirect('http://127.0.0.1:3000/signup')
-    elif request.method == 'POST' and ('packerDay1' in request.form):
-        volunteer_type = "Packer"
-        packerDay1 = request.form.get('packerDay1')
-        packerDay2 = request.form.get('packerDay2')
-        packerDay3 = request.form.get('packerDay3')
-        packerDay4 = request.form.get('packerDay4')
-        packerDay = [packerDay1, packerDay2, packerDay3, packerDay4]
-        for day in packerDay:
-            if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d")
-                day = day.date()
-                person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
-                db.session.add(person)
-        db.session.commit()
-        return redirect('http://127.0.0.1:3000/signup')
-    elif request.method == 'POST' and ('driver_preference' in request.form):
-        volunteer_type = "Driver"
-        # more deliveries?
-        driverMoreDelivery = request.form.get('driverMoreDelivery')
-        if (driverMoreDelivery == "moreDelivery"):
-            driverMoreDelivery = True
-        else:
-            driverMoreDelivery = False
+@app.route('/signup/caller', methods = ['POST'])
+def add_signup_caller():
+    volunteer_type = "Caller"
+    callerDay1 = request.form.get('callerDay1')
+    callerDay2 = request.form.get('callerDay2')
+    callerDay3 = request.form.get('callerDay3')
+    callerDay4 = request.form.get('callerDay4')
+    callerDay5 = request.form.get('callerDay5')
+    callerDay6 = request.form.get('callerDay6')
+    callerDay7 = request.form.get('callerDay7')
+    callerDay8 = request.form.get('callerDay8')
+    callerDay = [callerDay1, callerDay2, callerDay3, callerDay4, callerDay5, callerDay6, callerDay7, callerDay8]
+    for day in callerDay:
+        if (day != None):
+            day = dt.datetime.strptime(day, "%Y-%m-%d")
+            day = day.date()
+            person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+            db.session.add(person)
+    db.session.commit()
+    return redirect('http://127.0.0.1:3000/signup')
+
+@app.route('/signup/packer', methods = ['POST'])
+def add_signup_packer():
+    volunteer_type = "Packer"
+    packerDay1 = request.form.get('packerDay1')
+    packerDay2 = request.form.get('packerDay2')
+    packerDay3 = request.form.get('packerDay3')
+    packerDay4 = request.form.get('packerDay4')
+    packerDay5 = request.form.get('packerDay5')
+    packerDay6 = request.form.get('packerDay6')
+    packerDay7 = request.form.get('packerDay7')
+    packerDay8 = request.form.get('packerDay8')
+    packerDay = [packerDay1, packerDay2, packerDay3, packerDay4, packerDay5, packerDay6, packerDay7, packerDay8]
+    for day in packerDay:
+        if (day != None):
+            day = dt.datetime.strptime(day, "%Y-%m-%d")
+            day = day.date()
+            person = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+            db.session.add(person)
+    db.session.commit()
+    return redirect('http://127.0.0.1:3000/signup')
+
+@app.route('/signup/driver', methods = ['POST'])
+def add_signup_driver():
+    volunteer_type = "Driver"
+    # more deliveries?
+    driverMoreDelivery = request.form.get('driverMoreDelivery')
+    if (driverMoreDelivery == "moreDelivery"):
+        driverMoreDelivery = True
+    else:
+        driverMoreDelivery = False
+        
+    # outside Durham?
+    driverOutsideDurham = request.form.get('driverOutsideDurham')
+    if (driverOutsideDurham == "outsideDurham"):
+        driverOutsideDurham = True
+    else:
+        driverOutsideDurham = False
+    
+    driver_preference = request.form['driver_preference']
+    
+    driverTime = request.form.get('driver_time')
+    driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
             
-        # outside Durham?
-        driverOutsideDurham = request.form.get('driverOutsideDurham')
-        if (driverOutsideDurham == "outsideDurham"):
-            driverOutsideDurham = True
-        else:
-            driverOutsideDurham = False
-        
-        driver_preference = request.form['driver_preference']
-        
-        driverTime = request.form.get('driver_time')
-        driverTime = dt.datetime.strptime(driverTime, "%H:%M").time()
-                
-        driverDay1 = request.form.get('driverDay1')
-        driverDay2 = request.form.get('driverDay2')
-        driverDay3 = request.form.get('driverDay3')
-        driverDay4 = request.form.get('driverDay4')
-        driverDay = [driverDay1, driverDay2, driverDay3, driverDay4]
-        for day in driverDay:
-            if (day != None):
-                day = dt.datetime.strptime(day, "%Y-%m-%d").date()
-                # person for VolunteerLog
-                person_vl = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
-                # person for DriverLog
-                person_dlp = DriverLog(volunteer_id=None, date_available=day, time_available=driverTime, 
-                                      deliver_more_preference=driverMoreDelivery,
-                                      live_outside_durham=driverOutsideDurham, 
-                                      route_preference=driver_preference, comments=None)
-                
-                db.session.add(person_vl)
-                db.session.add(person_dlp)
+    driverDay1 = request.form.get('driverDay1')
+    driverDay2 = request.form.get('driverDay2')
+    driverDay3 = request.form.get('driverDay3')
+    driverDay4 = request.form.get('driverDay4')
+    driverDay5 = request.form.get('driverDay5')
+    driverDay6 = request.form.get('driverDay6')
+    driverDay7 = request.form.get('driverDay7')
+    driverDay8 = request.form.get('driverDay8')
+    driverDay = [driverDay1, driverDay2, driverDay3, driverDay4, driverDay5, driverDay6, driverDay7, driverDay8]
+    for day in driverDay:
+        if (day != None):
+            day = dt.datetime.strptime(day, "%Y-%m-%d").date()
+            # person for VolunteerLog
+            person_vl = VolunteerLog(volunteer_type=volunteer_type, week_available=day, volunteer_id=None, notes=None)
+            # person for DriverLog
+            person_dlp = DriverLog(volunteer_id=None, date_available=day, time_available=driverTime, 
+                                deliver_more_preference=driverMoreDelivery,
+                                live_outside_durham=driverOutsideDurham, 
+                                route_preference=driver_preference, comments=None)
+            
+            db.session.add(person_vl)
+            db.session.add(person_dlp)
 
-        db.session.commit()
-        return redirect('http://127.0.0.1:3000/signup')
-
-
-
-# CALLER MANAGEMENT ALGORITHM
-class VolObj():  
-    def __init__(self,id,participant_list): 
-        self.particpant_list=participant_list
-        self.id =id 
-
-@app.route('/callermanagement', methods = ['GET'])
-def get_call_assignments():
-    type = "Caller"  
-    
-    def volObjects(array):  
-        ret = []
-        for i in range(len(array)): 
-             volunteer = array[i]   
-             volunteer_object=VolObj(volunteer.id,[]) 
-             ret.append(volunteer_object) 
-        return ret
-
-    #make each volunteer into an volunteer object 
-    #array of volunteers that speak english
-    volunteers_english = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="English").all()
-    
-    #array of volunteers that speak spanish
-    volunteers_spanish = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).filter(Volunteer.language=="Spanish").all()
-    list_of_volObjects_english= volObjects(volunteers_english) 
-    list_of_volObjects_spanish= volObjects(volunteers_spanish)
-    
-    # array of participants that speak english
-    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
-    
-    #array of participants that speak spanish
-    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
-    
-    #step 0: get the participants into chunks  
-    def generate_assignments(volunteers,participants):
-        def chunkSize(participants,volunteers):   
-            #prevent infinite chunking
-            if len(volunteers)==0: 
-                return 0
-            return math.ceil(len(participants)/len(volunteers))
-        share=chunkSize(participants,volunteers)
-        participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   
-        while len(volunteers)>len(participantChunks):  
-            participantChunks.append([])
-
-        for i in range(len(volunteers)): 
-            volunteer=volunteers[i] 
-            volunteer.participant_list=participantChunks[i]   
-        return volunteers
-    volunteersE = generate_assignments(volunteers_english,participants_english)  
-    volunteersS = generate_assignments(volunteers_spanish,participants_spanish) 
-    allVolunteers =[] 
-    allVolunteers.extend(volunteersE)
-    allVolunteers.extend(volunteersS)  
-    volunteer_list = []
-    for volunteer in allVolunteers:
-        volunteer_list.append(format_sortedVolunteers(volunteer))
-    return {"sortedVolunteers": volunteer_list}
-    #how to deal with participants in the backend, the first thing to do is to try to create a participants list
-
-    # every volunteer should now have their participant chunks now e just need to do that for the spanish speakrs
-    
-
-
-#  def format_sortedVolunteers
-def format_sortedVolunteers(volunteers):
-    ids = "{"
-    # for participant in volunteers.participant_list:
-    for i in range(len(volunteers.participant_list)):
-        ids+='"'
-        ids+=str(i)
-        ids+='"'
-        ids+=": "
-        ids+=str(volunteers.participant_list[i].id)
-        if(i < len(volunteers.participant_list) -1 ):
-            ids+=", "
-    ids+="}"
-
-    idArr = []
-    for i in range(len(volunteers.participant_list)):
-        idArr.append(volunteers.participant_list[i].id)
-    return {
-        "id": volunteers.id,
-        "items": json.dumps(idArr) # {1, 2, 3, 4, 5}
-    }
-
-
-# GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
-@app.route('/callermanagement/unsorted', methods = ['GET'])
-def get_unsoreted_call_assignments():
-    type="Caller"
-    volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
-
-    ret = [{}]
-    for volunteer in volunteers:
-        ret.append({"vol": volunteer, "pts": []})
-    ret.append({"vol": {}, "pts": participants})
-
-    return { json.dumps(ret)}
+    db.session.commit()
+    return redirect('http://127.0.0.1:3000/signup')
        
 if __name__ == '__main__':
     app.run(debug=True)

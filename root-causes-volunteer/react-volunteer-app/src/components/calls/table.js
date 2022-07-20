@@ -31,6 +31,7 @@ import '../../styleSheets/tableRoute.css';
 
 const baseUrl = "http://127.0.0.1:5000"
 
+// react table theme
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: "#00743e",
@@ -59,14 +60,14 @@ function Row(props) {
   const [notes, setNotes] = useState("");
 
   
-
+// handles submittion of participant availability for food delivery
   const handleSubmit = e => {
     e.preventDefault();
     setStatus(e.target.value);
     console.log(status);
   }
 
-
+// handles submittion of participant notes in participant drop down field
   const handleSubmit2 = e => {
     e.preventDefault();
     setNotes(e.target.value);
@@ -74,6 +75,7 @@ function Row(props) {
     
   }
 
+  // displays date and time of participant availability submission
   const time = null;
   const current = null;
   const date = null;
@@ -86,45 +88,13 @@ function Row(props) {
     setDate(time + " on " + date);
   }
 
-  // const current = new Date();
-  // const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-  // let time = current.toLocaleTimeString();
-
-  // to select button based on selection
-  // value = {row.status}
-
+  // changes color of participant availability submit button when mouse hovers over button
   function changeBackground1(e) {
     e.target.style.background = "#72bc44";
   }
 
   function changeBackground2(e) {
     e.target.style.background = "#00743e";
-  }
-
-
-  function printArray(obj) {
-    const myArray = obj.toString().split(",")
-    if (myArray.length === 0) {
-      return;
-    }
-    const listItems = myArray.map((note) => 
-                      <li style={{fontSize: "17px"}}>{note}</li>); 
-    return <ul> {listItems} </ul> 
-    }
-
-  function mostRecent(obj) {
-    const myArray = obj.toString().split(",")
-    const last = myArray.length - 1
-    return <h3 style={{display: "inline", color: "black", fontSize: "17px"}}>{myArray[last]} </h3>
-  }
-
-  function getdeleteIndex(obj) {
-    const myArray = obj.toString().split(",");
-    for (let i = 0; i < myArray.length; i++){
-      if (obj == myArray[i]){
-        return i;
-      }
-    }
   }
 
   {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
@@ -142,6 +112,7 @@ function Row(props) {
     }
   }
 
+  // entire "Calls" page table displaying list of assigned participants and option to set and submit their availability status for food delivery
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -154,6 +125,7 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
+        {/* displays participant's name (first and last name), preferred language, and "Most Recent Call" displaying the date and time of the most recent availability status submission */}
         <TableCell 
             component="th"
             scope="row"
@@ -163,7 +135,6 @@ function Row(props) {
           </span> <br /> 
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
-          {/* <br /> Most Recent Note: {row.call_notes} */}
           <br /> Most Recent Call: {row.most_recent_call}
 
           
@@ -184,7 +155,8 @@ function Row(props) {
               <FormControlLabel name = 'status' control={<Radio />} value={2} label="Not Available" />
             </RadioGroup>
             {/* STATUS KEY: 1 = ready for delivery | 2 = Not this week | 3 = Requires follow-up call | 4 =  No status set | 5 = No response*/}
-            
+
+        {/* participant availability for delivery submission button */}  
         <Button className="submitCall"
             style={{backgroundColor: "#00743e"}}
             type="submit"
@@ -199,22 +171,10 @@ function Row(props) {
         </Button>
         </FormControl>
         </form>
-
-          {/* <form 
-          method = "post" action="http://127.0.0.1:5000/calls">
-            <input type="hidden" name="id" value={row.id} />
-            <p>Enter participant's availability</p>
-            <div class="form-group">
-              <input class="form-control" type="text" name="status" placeholder="status" />
-            </div>
-            <div class="form-group">
-              <button 
-                class="btn btn-primary"
-                onSubmit={handleSubmit}>Submit</button>
-            </div>
-          </form> */}
         </TableCell>
       </TableRow>
+
+      {/* handles submission of notes field in participant drop down*/}
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -240,7 +200,8 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                      {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
+
+                      {/* button to delete entire notes history presently accessible by all volunteers; in future, make only accesible by admin to avoid deleting important information */}
                       {/* <form noValidate method = "post" action="http://127.0.0.1:5000/calls/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
                         <Button id="note_delete"
@@ -256,30 +217,22 @@ function Row(props) {
                       </form> */}
                     </form>
                     </div>
-                    <TableHead>
-                        <TableCell style={{ paddingBottom: 1, paddingTop: 5 }} colSpan={6}>
-                          <tr>
-                          <h2 style={{fontSize: "16px"}}>
-                          Most Recent Note:
-                          <span style={{fontWeight: "bold"}}>
-                          {row.call_notes}
-                          </span>
-                          </h2>
-                          </tr>
-                        </TableCell>
-                    </TableHead>
-                    <TableHead>
-                        <TableCell style={{ paddingBottom: 1, paddingTop: 5 }} colSpan={6}>
-                          <tr>
-                          <h2 style={{fontSize: "15px"}}>Note History:</h2>
-                          </tr>
-                        </TableCell>
-                    </TableHead>
-                    {/* {printArray(row.call_notes)} */}
-                      
                     </TableCell>
                   </TableRow>
                 </TableHead>
+                {/* displays note history of participant in drop down field*/}
+                <TableHead>
+                      <TableRow>
+                        <TableCell> <b> Note History </b> </TableCell>
+                      </TableRow>
+                    </TableHead>
+                        <TableBody>
+                          <TableRow key="extra2">
+                            <TableCell component="th" scope="row">
+                              {row.call_notes}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
                 <TableBody>
                     <TableRow key={row.id}>
                     </TableRow>
@@ -302,30 +255,16 @@ Row.propTypes = {
   }).isRequired,
 };
 
+// drop down field for individual participants
 export default function CollapsibleTable() {
-  // const [rows, setRows] = useState([])
-
-  // axios!
-  // const [rows, setRows] = useState([]);
-  // useEffect(() => {
-  //   axios
-  //   .get('http://127.0.0.1:5000/calls')
-  //   .then((res) => {console.log(res)
-  //      setRows(res.data)})
-  //   .catch((err) => {console.log(err)
-  //   })
-  //   }, [])
-
     const [rows, setRows] = useState([]);
 
     // GET PARTICIPANTS
     // 1 = GREEN, ready for delivery
     // 3 = SALMON, needs follow-up call
     const fetchRows = async () => {
-      // const data3 = await axios.get(`${baseUrl}/participants/status/3`);
       const data = await axios.get(`${baseUrl}/routesparticipants/status/3`);
       const { participants } = data.data;
-      // const participants3 = data3.data;
       setRows(participants);
     };
   
@@ -333,18 +272,7 @@ export default function CollapsibleTable() {
       fetchRows();
     }, []);
 
-    // const fetchRows2 = async () => {
-    //   const data5 = await axios.get(`${baseUrl}/participants/status/5`);
-    //   const { participants2 } = data5.data;
-    //   setRows2(participants2);
-    // };
-  
-    // useEffect(() => {
-    //   fetchRows2();
-    // }, []);
-
-    // setRows([...rows1, ...rows2]);
-
+// table labels
   return (
     <TableContainer 
         component={Paper}

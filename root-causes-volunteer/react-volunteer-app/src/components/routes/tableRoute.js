@@ -60,6 +60,7 @@ function Row(props) {
   const [notes, setNotes] = useState("");
   const [status_time, setDate] = useState(""); 
   
+  // displays date and time of most recent submition of "Delivered" status
   const handleTime = () => {
     let current = new Date();
     let date = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
@@ -67,12 +68,14 @@ function Row(props) {
     setDate(time + " on " + date);
   }
 
+  // handles submit button for delivery status
   const handleSubmit = e => {
     e.preventDefault();
     setDeliveryStatus(e.target.value);
     console.log(delivery_status);
   }
 
+  // handles submit button for notes feature on drop down field
   const handleSubmit2 = e => {
     e.preventDefault();
     setNotes(e.target.value);
@@ -80,6 +83,7 @@ function Row(props) {
     
   }
 
+  // changes the color of submit button when mouse hovers over it
   function changeBackground1(e) {
     e.target.style.background = "#72bc44";
   }
@@ -87,18 +91,8 @@ function Row(props) {
   function changeBackground2(e) {
     e.target.style.background = "#00743e";
   }
-
-  // const [selectedImage, setSelectedImage] = useState(null);
-  // const formData = new FormData();
   
-  // const handleChange = (event) => {
-  //   console.log(event.target.files[0]);
-  //   setSelectedImage(event.target.files[0]);
-  //   formData.append('image', event.target.files[0]);
-    
-  // }
-  
-
+  // handles uploaded image submission in drop down fields
   function CheckImage(){
     const [selectedImage, setSelectedImage] = useState(null);
     // const [selectedImage2, setSelectedImage2] = useState(null);
@@ -158,11 +152,7 @@ function Row(props) {
     setRoutesNotes(notes);
     console.log("DATA: ", data);
   };
-
-  // useEffect(() => {
-  //   fetchNotes();
-  // }, []);
-
+// entire "Routes" page table displaying list of assigned participants and option to set and submit their delivery status for food delivery
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -184,10 +174,6 @@ function Row(props) {
           <a href={"tel:" + row.phone}>{row.phone}</a>
           <br /> Preferred Language: {row.language}
           <br /> Most Recent Delivery: {row.most_recent_delivery}
-          <br /> Most Recent Note: {" "}
-            <span style={{fontWeight: "bold"}}>
-              {row.notes}
-            </span>
         </TableCell>
         <TableCell>
 
@@ -214,7 +200,8 @@ function Row(props) {
           Submit
       </Button>
    </form>
-
+  
+      {/* drop down menu for individual participants with field for notes and image upload; displays most recent note and notes history */}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -242,7 +229,7 @@ function Row(props) {
                           >
                           Submit
                       </Button>
-                       {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
+                      {/* button to delete entire notes history; in future, make only accesible by admin to avoid deleting important information */}
                       {/* <form noValidate method = "post" action="http://127.0.0.1:5000/routes/deletenotes">
                         <input type="hidden" name="id" value={row.id} />
                         <Button id = "note_delete"
@@ -267,7 +254,21 @@ function Row(props) {
                 </TableBody>
                 <TableHead>
                     <TableRow>
-                      <TableCell>Image Upload</TableCell>
+                      <TableCell> <b> Note History </b> </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key="extra2">
+                      <TableCell component="th" scope="row">
+                        {row.delivery_notes}
+                      </TableCell>
+                  </TableRow>
+                </TableBody>
+
+
+                <TableHead>
+                    <TableRow>
+                      <TableCell> <b> Image Upload </b> </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -296,24 +297,7 @@ Row.propTypes = {
   }).isRequired,
 };
 
-// Note.propTypes = {
-//   rowNote: PropTypes.shape({
-//     note: PropTypes.note,
-//   }).isRequired,
-// };
-
 export default function RouteTable() {
-
-  // axios!
-  // const [rowsRoutes, setRowsRoutes] = useState([]);
-  // useEffect(() => {
-  //   axios
-  //   .get('http://127.0.0.1:5000/routes')
-  //   .then((res) => {console.log(res)
-  //      setRowsRoutes(res.data)})
-  //   .catch((err) => {console.log(err)
-  //   })
-  //   }, [])
 
   const [rowsRoutes, setRowsRoutes] = useState([]);
 
@@ -328,19 +312,8 @@ export default function RouteTable() {
   useEffect(() => {
     fetchRows();
   }, []);
-
-
-
-// const[notesRoutes, setRoutesNotes] = useState([])
-
-// useEffect(() => {
-//   axios.get('http://127.0.0.1:5000/routes/notes')
-//   .then((res) => {console.log(res)
-//     setRoutesNotes(res.data)})
-//     .catch((err) => {console.log(err)
-//     })}, [])
   
-  
+  // table header
   return (
     <TableContainer 
       component={Paper}
@@ -357,9 +330,6 @@ export default function RouteTable() {
           {rowsRoutes.map((row) => (
             <Row key={row.id} row={row} />
           ))}
-          {/* {notesRoutes.map((rowNote) => (
-            <Row key={rowNote.id} row={rowNote} />
-          ))} */}
         </TableBody>
       </Table>
     </TableContainer>
