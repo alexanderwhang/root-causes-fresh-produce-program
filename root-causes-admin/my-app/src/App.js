@@ -2,6 +2,7 @@ import "./App.css";
 import Participant from "./components/participant";
 import NewParticipant from "./components/addPt.js";
 import Volunteer from "./components/volunteer";
+import {Indiv} from "./pages/Individual";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
@@ -10,7 +11,6 @@ import Navbar from "./components/Navbar/Navbar";
 import { Driver } from "./pages/Driver.js";
 import { VolInfoPage } from "./pages/VolInfo.js";
 import Texts from "./pages/Texts.js";
-import { Home } from "./home";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -29,58 +29,69 @@ import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
 import { Users } from './users.js';
 
+//COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:
+    //npm install axios --save
+    //npm install @mui/material @emotion/react @emotion/styled
+    //npm install --save styled-components
+    //npm i react-csv
+    //npm install xlsx
+    //npm install react-paginate --save
+
+
+
+// CONNECTS TO THE DATABASE/BACKEND
 const baseUrl = "http://127.0.0.1:5000";
-// const baseUrl = "localhost:5000"
 
-//commands to run for it to work:
-//npm install axios --save
-//npm install @mui/material @emotion/react @emotion/styled
-//npm install --save styled-components
-//npm i react-csv
-//npm install xlsx
-//npm install react-paginate --save
-
+// PARTICIPANTS PAGE:
 export function Participants() {
-  const [participantsList, setParticipantsList] = useState([]);
 
-  // GET
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants`);
-    const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA: ", data);
-  };
+  // the following code allows us to access the full list of participants in database, through axios calls to the backend
+    const [participantsList, setParticipantsList] = useState([]);
 
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
+    // GET
+    const fetchParticipants = async () => {
+      const data = await axios.get(`${baseUrl}/participants`);
+      const { participants } = data.data;
+      setParticipantsList(participants);
+      console.log("DATA: ", data);
+    };
 
-  const navigate = useNavigate();
-
-  const [search, setSearch] = useState("");
+    useEffect(() => {
+      fetchParticipants();
+    }, []);
 
   return (
     <div>
       <Navbar />
 
+      {/* top of participant page */}
       <section id="contact_list">
         <h2> Participants </h2>
         
+        {/* the following div with the Table component includes the search bar, the participant Table
+          and the buttons on the participant page */}
         <div className="contact-list-container">
-
             <Table/>
         </div>
+
+        {/* the following div displays a color key for participant statuses */}
+        {/* to add a new color in the key:
+                1. copy and paste a "colorInKey div" 
+                2. change the color to the name of the preferred color
+                3. change text to reflect new color meaning */}
         <div className="colorKey">
           <h4> Key: </h4>
           <div className="colorInKey">
-            <SvgEllipse style={{ color: "grey" }} /> <p> No Status Set </p>
+            <SvgEllipse style={{ color: "grey" }} /> 
+            <p> No Status Set </p>
           </div>
           <div className="colorInKey">
             <SvgEllipse style={{ color: "green" }} />{" "}
             <p> Ready for Delivery </p>
           </div>
           <div className="colorInKey">
-            <SvgEllipse style={{ color: "tan" }} /> <p>Not This Week</p>
+            <SvgEllipse style={{ color: "tan" }} /> 
+            <p>Not This Week</p>
           </div>
           <div className="colorInKey">
             <SvgEllipse style={{ color: "salmon" }} />{" "}
@@ -89,6 +100,7 @@ export function Participants() {
         </div>
       </section>
 
+      {/* footer */}
       <div className="footer">
         <FooterContainer />
       </div>
@@ -96,10 +108,13 @@ export function Participants() {
   );
 }
 
+// ADD PARTICIPANT: ACCESSIBLE FROM PARTICIPANTS PAGE: "ADD PARTICIPANT" BUTTON
 export function AddParticipant() {
+  // code found in components folder under "addPt.js"
    return <NewParticipant/>;
 }
 
+// CALLER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)
 export function Callers() {
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
@@ -277,236 +292,35 @@ export function Callers() {
   );
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
+// INDIVIDUAL INFO PAGE. ACCESSIBLE BY CLICKING ON A PARTICIPANT'S NAME IN THE PARTICIPANTS PAGE
+export function Individual() {
+  // code found in pages folder under "Individual.js"
+  return <Indiv/>
 }
 
-export function Individual({ match }) {
-
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-  const navigate = useNavigate();
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  const [participantsList, setParticipantsList] = useState([]);
-
-  // GET
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants`);
-    const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA: ", data);
-  };
-
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
-
-  const [person, setPerson] = useState(participantsList);
-  // console.log("pts: ", participantsList);
-  // console.log("users: ", Users);
-  const [pageNumber,setPageNumber]= useState(0);
-  const usersPerPage = 1;
-  const pagesVisited = pageNumber*usersPerPage;
-
-  const displayUsers = participantsList.slice(pagesVisited,pagesVisited + usersPerPage).map((val,key)=>  {
-    return (
-      <div>
-      <Navbar />
-          <div key={key}>
-            <div className="indiv">
-              {/* <Navbar/> */}
-              <div className="indivButtonCont">
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    navigate("/participants");
-                  }}
-                >
-                  Back
-                </Button>
-              </div>
-              <div className="indiv">
-                {/* <h1> Individuals </h1> */}
-                <h2>
-                  {val.first_name} {val.last_name}
-                </h2>
-
-                {/* tabs code */}
-                <Box
-                  sx={{
-                    borderBottom: 0,
-                    borderColor: "#f7c86d",
-                    color: "black",
-                  }}
-                >
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                    centered
-                  >
-                    <Tab label="General Info" {...a11yProps(0)} />
-                    <Tab label="Medical Info" {...a11yProps(1)} />
-                    <Tab label="Other Info" {...a11yProps(2)} />
-                    <Tab label="Delivery History" {...a11yProps(3)} />
-                    <Tab label="Call History" {...a11yProps(4)} />
-                  </Tabs>
-                </Box>
-                <TabPanel value={value} index={0}>
-                  <Participant participant={val} />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <table className="med_info">
-                    <tr>
-                      <th>Unique Identifier</th>
-                      <th>Provider Notes</th>
-                      <th>Adding Provider</th>
-                      <th>Referring Clinic Location</th>
-                      <th>Date Referred by Provider</th>
-                      <th>Med Equipment</th>
-                    </tr>
-                    <tr>
-                      <td>#12345</td>
-                      <td>Type 2 Diabetes</td>
-                      <td>Dr. Jones</td>
-                      <td>Duke Hospital</td>
-                      <td>8/23/21</td>
-                      <td>KN95 Masks</td>
-                    </tr>
-                  </table>
-                </TabPanel>
-
-                <TabPanel value={value} index={2}>
-                  <table className="other_info">
-                    <tr>
-                      <th>EAM Interest?</th>
-                      <th>Call or Text Reminders?</th>
-                      <th>Household Essentials Bag Requested?</th>
-                      <th>Total HE Bags Received</th>
-                      <th>Masks Requested?</th>
-                      <th>Total Masks Received</th>
-                    </tr>
-                    <tr>
-                      <td>Yes</td>
-                      <td>Call</td>
-                      <td>Yes</td>
-                      <td>2</td>
-                      <td>Yes</td>
-                      <td>10</td>
-                    </tr>
-                  </table>
-                </TabPanel>
-
-                <TabPanel value={value} index={3}>
-                  <table className="del_history">
-                    <tr>
-                      <th>Date</th>
-                      <th>Participant Interaction Notes</th>
-                      <th>Delivery Notes</th>
-                    </tr>
-                    <tr>
-                      <td>06/18/2022</td>
-                      <td>Participant is doing well</td>
-                      <td>Yellow house, red windows</td>
-                    </tr>
-                    <tr>
-                      <td>06/4/2022</td>
-                      <td>N/A</td>
-                      <td>Parking around the corner</td>
-                    </tr>
-                  </table>
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                  <table className="call_history">
-                    <tr>
-                      <th>Date</th>
-                      <th>Participant Interaction Notes</th>
-                    </tr>
-                    <tr>
-                      <td>06/18/2022</td>
-                      <td>Participant is doing well, ready for delivery</td>
-                    </tr>
-                    <tr>
-                      <td>06/4/2022</td>
-                      <td>Participant does not want delivery this week.</td>
-                    </tr>
-                  </table>
-                </TabPanel>
-              </div>
-            </div>
-          </div>
-        </div>
-  )});
-
-  const pageCount = Math.ceil(participantsList.length/usersPerPage);
-  const changePage = ({selected})=>{
-    setPageNumber(selected);
-  }
-
-   return(
-    <div>
-      {displayUsers}
-      <ReactPaginate
-       previousLabel ={"Previous"}
-       nextLabel={"Next"}
-       pageCount ={pageCount}
-       onPageChange = {changePage}
-       containerClassName={"paginationBttns"}
-       previousLinkClassName={"previousBttn"}
-       nextLinkClassName ={"nextBttn"}
-       disabledClassName ={"paginationDisabled"}
-       activeClassName= {"paginationActive"}
-      />
-      </div>
-    );
-}
-
+//SMS PAGE ACCESSIBLE FROM PARTICIPANTS PAGE: "SEND TEXTS" BUTTON
 export function SMSTexts() {
+  // code found in the pages folder under Texts.js
   return <Texts />;
 }
 
+// VOLUNTEER INFO PAGE:
 export function VolInfo() {
+  // found in pages folder under VolInfo.js
   return <VolInfoPage />;
 }
 
+// DRIVER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)  
 export function Drivers() {
+  // found in the pages folder under Driver.js
   return <Driver />;
 }
 
-
+// HOME PAGE:
 export function App({ library }) {
+
+  // .getDay() and .getMonth() return numbers. the following maps translate those 
+  // numbers into the appropriate days and months for easy display
   let dayMap = new Map([
     [0, "Sunday"],
     [1, "Monday"],
@@ -534,11 +348,13 @@ export function App({ library }) {
   const date = `${dayMap.get(current.getDay())} ${monthMap.get(
     current.getMonth()
   )} ${current.getDate()}, ${current.getFullYear()}`;
+
   return (
     <div>
-      <Home />
+      <Navbar/>
       <div className="welcome">
         <h2>{date}</h2>
+        {/* the following link is the image displayed on home page */}
         <img
           src="https://static.wixstatic.com/media/508ee3_ff1e79887699439ba7be28422d68d318~mv2.jpg/v1/crop/x_136,y_0,w_5743,h_4016/fill/w_798,h_558,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/_DSC8483%20(2).jpg"
           alt="welcome"
@@ -547,7 +363,6 @@ export function App({ library }) {
           <h1 id="picText"> Welcome Admin! </h1>
         </div>
       </div>
-      <NewParticipant />
       <FooterContainer />
     </div>
   );
