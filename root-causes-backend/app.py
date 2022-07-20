@@ -21,31 +21,28 @@ from datetime import date
 # import needed for file upload
 from werkzeug.utils import secure_filename
 
-
-# start VPN!
-# to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
-
-# Backend Installations **cd into backend**:
+### BACKEND INSTALLATION INSTRUCTIONS ###
+# cd into the backend in the terminal
 
 # pip install pipenv
-# - To activate: pipenv shell
+        # activate it: pipenv shell
 # pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors flask-marshmallow
-        # If pyscopg2 is not installing -> pip install postgres first or xcode-select --install
-# Flask run
-# python (to activate python)
+        # if pyscopg2 is not installing -> pip install postgres first or xcode-select --install
+        # or pipenv install psycopg2-binary
+# go into python shell (type python in terminal)
 # from app import db
-# db.create_all() (will create our event table for us)
+# db.create_all() (this will create an event table)
 
-# After initial installation **the usual**
-# pipenv shell
-# Flask run
-
-# To get Twilio working (open your computer terminal)
+### TWILIO INSTALLATION INSTRUCTIONS ###
 # pipenv install twilio (OR pip install twilio)
 # FOR MAC: run ' brew tap twilio/brew && brew install twilio '
 # * FOR WINDOWS: INSTALL SCOOP --> https://scoop.sh 
 # FOR WINDOWS: run ' scoop bucket add twilio-scoop https://github.com/twilio/scoop-twilio-cli '
 # FOR WINDOWS (part 2): run ' scoop install twilio '
+
+### RUN THE BACKEND ###
+# TURN ON YOUR DUKE VPN!
+# cd into backend and enter 'flask run' OR 'python -m flask run'
 
 UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
