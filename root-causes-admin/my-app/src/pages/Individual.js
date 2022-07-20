@@ -1,7 +1,7 @@
 import "./Individual.css";
 import React from "react";
 import axios from "axios";
-import PersonalInfo from "../components/PersonalInfo";
+import PersonalInfo from "../components/personalInfo";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from "../containers/footer";
@@ -16,13 +16,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 
-
-const baseUrl = "http://127.0.0.1:5000";
-
 // BUG FIXES AND FUTURE FEATURES INSTRUCTIONS:
-    // as of right now, when you click on a participant from the participant table, it always routes to the top participant's page
+    // as of right now, when you click on a participant from the participant table, it always routes to the top participant's indiv page
     // the only way to access other participant's pages is to use the buttons on the individual page to navigate
     // this should be fixed, and when someone clicks on a participant, it should route to that specific participant's information
+
+const baseUrl = "http://127.0.0.1:5000";
 
 export function Indiv() {
 // function declarations:

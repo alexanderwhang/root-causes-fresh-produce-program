@@ -19,9 +19,8 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import MenuItem from "@mui/material/MenuItem";
-// import { Container, Wrapper, Row, Column, Link, Title } from './styles/footer'
 
-// const baseUrl = "http://127.0.0.1:5000";
+
 const baseUrl = "http://localhost:5000";
 
 export function Caught_Participants(props) {
