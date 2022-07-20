@@ -1,5 +1,5 @@
  export let PracticeUsers= 
-[{index:1,title:"John Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:2,title:"Jane Doe",items:[],primaryLan:"Spanish",secondaryLan:"Lao"},{index:3,title:"Joseph Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:4,title:"Julia Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:5,title:"James Doe",items:[],primaryLan:"English",secondaryLan:"Haitian Creole"},{index:6,title:"Janet Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:7,title:"Participants",items:[
+[{index:1,title:"John Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:2,title:"Jane Doe",items:[],primaryLan:"Spanish",secondaryLan:"Lao"},{index:3,title:"Joseph Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:4,title:"Julia Doe",items:[],primaryLan:"English",secondaryLan:"Spanish"},{index:5,title:"James Doe",items:[],primaryLan:"English",secondaryLan:"Haitian Creole"},{index:6,title:"Janet Doe",items:[],primaryLan:"Spanish",secondaryLan:"English"},{index:7,title:"Participants",items:[
     {"id": 1,
     "firstName": "Gelya",
     "lastName": "Patman",
