@@ -114,13 +114,6 @@ export default function SignIn() {
                   {"Don't have an account? Register"}
                 </Link>
               </Grid>
-              
-              <Grid item >
-                <Link href="/volunteeroradmin" variant="body2" 
-                  style={{color: "#00743e"}}>
-                  {"Volunteer & Admin Page"}
-                </Link>
-              </Grid>
 
             </Grid>
           </Box>

@@ -66,9 +66,8 @@ export default function TrueProfile() {
                   variant="h3" 
                   style={{textAlign: "left", paddingTop: "20px",
                   color: "black", fontSize: "17px"}}>
-                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faUser}
-                    style={{paddingRight: "7px"}} />
-                  Name: Blue Devil
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faUser} />
+                  <b> Name: </b> Blue Devil
                   
           </Typography>
 
@@ -77,9 +76,8 @@ export default function TrueProfile() {
                   variant="h3" 
                   style={{textAlign: "left", paddingTop: "20px",
                   color: "black", fontSize: "17px"}}>
-                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faEnvelope}
-                    style={{paddingRight: "7px"}} />
-                  Email: blue.devil@duke.edu
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faEnvelope} />
+                  <b> Email: </b> blue.devil@duke.edu
           </Typography>
 
           <Typography 
@@ -87,9 +85,8 @@ export default function TrueProfile() {
                   variant="h3" 
                   style={{textAlign: "left", paddingTop: "20px",
                   color: "black", fontSize: "17px"}}>
-                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faPhone}
-                    style={{paddingRight: "7px"}} />
-                  Phone: 123-456-7890
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faPhone} />
+                  <b> Phone: </b> 123-456-7890
           </Typography>
 
           <Typography 
@@ -98,9 +95,8 @@ export default function TrueProfile() {
                   variant="h3" 
                   style={{textAlign: "left", paddingTop: "20px",
                   color: "black", fontSize: "17px"}}>
-                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faBuildingColumns} 
-                    style={{paddingRight: "7px"}} />
-                  Duke Affiliation: Duke Mascot
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faBuildingColumns} />
+                  <b> Duke Affiliation: </b> Duke Mascot
           </Typography>
 
           <Typography 
@@ -108,9 +104,8 @@ export default function TrueProfile() {
                   variant="h3" 
                   style={{textAlign: "left", paddingTop: "20px", paddingBottom: "20px",
                   color: "black", fontSize: "17px"}}>
-                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faGlobe}
-                    style={{paddingRight: "7px"}} />
-                  Non-English Languages: Spanish 
+                  <FontAwesomeIcon size="lg" color='#009a4b' icon={faGlobe} />
+                  <b> Non-English Languages: </b> Spanish 
           </Typography>
         
         </Box>

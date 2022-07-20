@@ -71,6 +71,16 @@ export const Table = () => {
             >
               Send Texts
             </Button>
+               <Button
+              onClick={() => {
+                navigate("/addPt");
+              }}
+              variant="contained"
+              sx={{backgroundColor:"#d6a977"}}
+            >
+              Add Participant
+            </Button>
+            
           </div>
     <div className="container1">
     <table class="pt_list">

@@ -263,7 +263,7 @@ export function VolInfoPage() {
                 <th>Email</th>
                 <th>Language</th>
                 {/* <th>Type</th> */}
-                <th>HIPPA?</th>
+                <th>HIPAA?</th>
                 <th>Affiliation</th>
                 <th>For Credit?</th>
                 {/* Last date of activity?? */}
