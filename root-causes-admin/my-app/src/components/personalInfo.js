@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 const baseUrl = "http://localhost:5000";
 
-function Participant(props) {
+function PersonalInfo(props) {
   // gets participant status from database and matches it to a color
     let statusMap = new Map([
       [0, "grey"],
@@ -167,7 +167,7 @@ function Participant(props) {
       };
 
   
-  //edit form
+  //edit form statuses 
     const [edit_form_status, setEdit] = React.useState(true)
 
     const editInfo = () => {
@@ -182,23 +182,23 @@ function Participant(props) {
 
   return (
     <div>
-        {/* edit button code */}
-        <div className="edit_button">
-          <Button variant="contained" size="small" onClick={editInfo}>
-            Edit
-          </Button>
-        </div>
+      {/* edit button code */}
+          <div className="edit_button">
+            <Button variant="contained" size="small" onClick={editInfo}>
+              Edit
+            </Button>
+          </div>
       <table className="personal_info">
+      {/* table headers */}
         <tr>
-          {/* table headers */}
           <th>Status</th>
           <th>Address</th>
           <th>Email</th>
           <th>Phone Number</th>
           <th>Language</th>
         </tr>
+      {/* table rows */}
         <tr>
-          {/* table rows */}
           <td>
             <div
             // svg ellipse for status 
@@ -233,215 +233,217 @@ function Participant(props) {
       </table>
 
       {/* edit form (pops up when edit button is clicked) */}
-      <form onSubmit={handleSubmit} hidden={edit_form_status}>
+        <form onSubmit={handleSubmit} hidden={edit_form_status}>
         {/* STATUS */}
-      <div class="status-dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="select-status-label">Status</InputLabel>
-            <Select
-              labelId="select-status-label"
-              id="select-status"
-              value={status}
-              label="Status"
-              onChange={handleStatusChange}
-            >
-              <MenuItem value={0}>No Status Set</MenuItem>
-              <MenuItem value={1}>Ready for Delivery</MenuItem>
-              <MenuItem value={2}>Not This Week</MenuItem>
-              <MenuItem value={3}>Requires Follow Up</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
+          <div class="status-dropdown">
+            <Box sx={{ maxWidth: 200 }}>
+              <FormControl fullWidth>
+                <InputLabel id="select-status-label">Status</InputLabel>
+                <Select
+                  labelId="select-status-label"
+                  id="select-status"
+                  value={status}
+                  label="Status"
+                  onChange={handleStatusChange}
+                >
+                  <MenuItem value={0}>No Status Set</MenuItem>
+                  <MenuItem value={1}>Ready for Delivery</MenuItem>
+                  <MenuItem value={2}>Not This Week</MenuItem>
+                  <MenuItem value={3}>Requires Follow Up</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
         {/* EMAIL */}
-    <div class="textInputs">
-      <div>
-        <TextField
-          className="email"
-          id="filled-email-input"
-          label="Email"
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-      </div>
-        <div></div>
+          <div class="textInputs">
+            <div>
+              <TextField
+                className="email"
+                id="filled-email-input"
+                label="Email"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            </div>
         {/* PHONE  NUMBER */}
-      <div class="phoneNumber">
-        <TextField
-          id="filled-password-input"
-          label="Phone Number"
-          type="phone-number"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
-      </div>
+          <div class="phoneNumber">
+            <TextField
+              id="filled-password-input"
+              label="Phone Number"
+              type="phone-number"
+              value={phone}
+              onChange={handlePhoneChange}
+            />
+          </div>
         {/* ADDRESS */}
-      <div>
-        <TextField id="filled-password-input" label="Street" type="street" value={street} onChange={handleStreetChange} />
-      </div>
-      <div>
-        <TextField id="filled-password-input" label="City" type="city" value={city} onChange={handleCityChange} />
-      </div>
-      <div>
-        <TextField id="filled-password-input" label="State" type="state" value={state} onChange={handleStateChange} />
-      </div>
-      <div>
-        <TextField
-          id="filled-password-input"
-          label="Zip Code"
-          type="zip-code"
-          value={zip}
-          onChange={handleZipChange}
-        /> 
-      </div>
-      <div>
-        <TextField
-          id="filled-password-input"
-          label="Apartment Number"
-          type="apartment-number"
-          value={apartment}
-          onChange={handleApartmentChange}
-        />
-      </div>
-    </div>
-        
+          <div>
+            <TextField id="filled-password-input" label="Street" type="street" value={street} onChange={handleStreetChange} />
+          </div>
+          <div>
+            <TextField id="filled-password-input" label="City" type="city" value={city} onChange={handleCityChange} />
+          </div>
+          <div>
+            <TextField id="filled-password-input" label="State" type="state" value={state} onChange={handleStateChange} />
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="Zip Code"
+              type="zip-code"
+              value={zip}
+              onChange={handleZipChange}
+            /> 
+          </div>
+          <div>
+            <TextField
+              id="filled-password-input"
+              label="Apartment Number"
+              type="apartment-number"
+              value={apartment}
+              onChange={handleApartmentChange}
+            />
+          </div>
+          </div>
+          
         {/* LANGUAGE */}
-      <div class="language">
-        <Box sx={{ maxWidth: 200 }} className="language">
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Language</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={language}
-              label="Status"
-              onChange={handleLanguageChange}
-            >
-              <MenuItem value={"English"}>English</MenuItem>
-              <MenuItem value={"Spanish"}>Spanish</MenuItem>
-            </Select>
-          </FormControl>
-          <div></div>
-        </Box>
-      </div>
+          <div class="language">
+            <Box sx={{ maxWidth: 200 }} className="language">
+              <FormControl fullWidth>
+                <InputLabel id="simple-select-label">Language</InputLabel>
+                <Select
+                  labelId="simple-select-label"
+                  id="simple-select"
+                  value={language}
+                  label="Status"
+                  onChange={handleLanguageChange}
+                >
+                  <MenuItem value={"English"}>English</MenuItem>
+                  <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                </Select>
+              </FormControl>
+              <div></div>
+            </Box>
+          </div>
 
         {/* GROUP */}
-      <div class="group-dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Group</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={group}
-              label="Status"
-              onChange={handleGroupChange}
-            >
-              <MenuItem value={"A"}>A</MenuItem>
-              <MenuItem value={"B"}>B</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
+          <div class="group-dropdown">
+            <Box sx={{ maxWidth: 200 }}>
+              <FormControl fullWidth>
+                <InputLabel id="simple-select-label">Group</InputLabel>
+                <Select
+                  labelId="simple-select-label"
+                  id="simple-select"
+                  value={group}
+                  label="Status"
+                  onChange={handleGroupChange}
+                >
+                  <MenuItem value={"A"}>A</MenuItem>
+                  <MenuItem value={"B"}>B</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
 
         {/* HOUSEHOLD SIZE */}
-      <div class="household-dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Household Size</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={household_size}
-              label="Status"
-              onChange={handleHouseSizeChange}
-            >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={6}>6</MenuItem>
-              <MenuItem value={7}>7</MenuItem>
-              <MenuItem value={8}>8</MenuItem>
-              <MenuItem value={9}>9</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              {/* <MenuItem value={11}>10+</MenuItem> */}
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
+          <div class="household-dropdown">
+            <Box sx={{ maxWidth: 200 }}>
+              <FormControl fullWidth>
+                <InputLabel id="simple-select-label">Household Size</InputLabel>
+                <Select
+                  labelId="simple-select-label"
+                  id="simple-select"
+                  value={household_size}
+                  label="Status"
+                  onChange={handleHouseSizeChange}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={9}>9</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  {/* <MenuItem value={11}>10+</MenuItem> */}
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
 
         {/* PRONOUNS */}
-      <div class="pronouns-dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Pronouns</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={pronouns}
-              label="Pronouns"
-              onChange={handlePronounChange}
-            >
-              <MenuItem value={"she/her/hers"}>she/her/hers</MenuItem>
-              <MenuItem value={"he/him/his"}>he/him/his</MenuItem>
-              <MenuItem value={"they/them/theirs"}>they/them/theirs</MenuItem>
-              <MenuItem value={"Other"}>Other</MenuItem>
-              <MenuItem value={"Prefer Not to Share"}>
-                Prefer Not to Share
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </div>
-
-      <div class="age">
-        <TextField
-          id="outlined-number"
-          label="Age"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={age}
-          onChange={handleAgeChange}
-        />
-      </div>
-        <div></div>
-      <div class="race-dropdown">
-        <Box sx={{ maxWidth: 200 }}>
-          <FormControl fullWidth>
-            <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
-            <Select
-              labelId="simple-select-label"
-              id="simple-select"
-              value={status}
-              label="Status"
-              // onChange={handleStatusChange}
-            >
-              <MenuItem value={"Hispanic or Latino"}>Hispanic or Latino</MenuItem>
-              <MenuItem value={"American Indian or Alaskan Native"}>American Indian or Alaskan Native</MenuItem>
-              <MenuItem value={"Asian"}>Asian</MenuItem>
-              <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
-                Native Hawaiian or Other Pacific Islander
-              </MenuItem>
-              <MenuItem value={"Black or African American"}>Black or African American</MenuItem>
-              <MenuItem value={"White"}>White</MenuItem>
-              <MenuItem value={"Other"}>Other</MenuItem>
-            </Select>
-          </FormControl>
+          <div class="pronouns-dropdown">
+            <Box sx={{ maxWidth: 200 }}>
+              <FormControl fullWidth>
+                <InputLabel id="simple-select-label">Pronouns</InputLabel>
+                <Select
+                  labelId="simple-select-label"
+                  id="simple-select"
+                  value={pronouns}
+                  label="Pronouns"
+                  onChange={handlePronounChange}
+                >
+                  <MenuItem value={"she/her/hers"}>she/her/hers</MenuItem>
+                  <MenuItem value={"he/him/his"}>he/him/his</MenuItem>
+                  <MenuItem value={"they/them/theirs"}>they/them/theirs</MenuItem>
+                  <MenuItem value={"Other"}>Other</MenuItem>
+                  <MenuItem value={"Prefer Not to Share"}>
+                    Prefer Not to Share
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
+        {/* AGE */}
+          <div class="age">
+            <TextField
+              id="outlined-number"
+              label="Age"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={age}
+              onChange={handleAgeChange}
+            />
+          </div>
           <div></div>
-        </Box>
-        <div className="submit-button">
-          <Button variant="contained" type="submit">Submit</Button>
+        
+        {/* RACE */}
+          <div class="race-dropdown">
+            <Box sx={{ maxWidth: 200 }}>
+              <FormControl fullWidth>
+                <InputLabel id="simple-select-label">Race/Ethnicty</InputLabel>
+                <Select
+                  labelId="simple-select-label"
+                  id="simple-select"
+                  value={status}
+                  label="Status"
+                  // onChange={handleStatusChange}
+                >
+                  <MenuItem value={"Hispanic or Latino"}>Hispanic or Latino</MenuItem>
+                  <MenuItem value={"American Indian or Alaskan Native"}>American Indian or Alaskan Native</MenuItem>
+                  <MenuItem value={"Asian"}>Asian</MenuItem>
+                  <MenuItem value={"Native Hawaiian or Other Pacific Islander"}>
+                    Native Hawaiian or Other Pacific Islander
+                  </MenuItem>
+                  <MenuItem value={"Black or African American"}>Black or African American</MenuItem>
+                  <MenuItem value={"White"}>White</MenuItem>
+                  <MenuItem value={"Other"}>Other</MenuItem>
+                </Select>
+              </FormControl>
+              <div></div>
+            </Box>
+        {/* SUBMIT EDITS BUTTON */}
+            <div className="submit-button">
+              <Button variant="contained" type="submit">Submit</Button>
+            </div>
         </div>
-      </div>
-      </form>
+        </form>
     </div>
   );
 }
 
-export default Participant;
+export default PersonalInfo;

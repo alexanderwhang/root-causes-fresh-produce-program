@@ -1,5 +1,4 @@
 import "./App.css";
-import Participant from "./components/participant";
 import NewParticipant from "./components/addPt.js";
 import Volunteer from "./components/volunteer";
 import {Indiv} from "./pages/Individual";
