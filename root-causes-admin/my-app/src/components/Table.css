@@ -1,12 +1,62 @@
-/* #green{
-    background-color: green;
+#search {
+    margin: 10px;
+    text-align: center;
+    position: initial;
+    z-index: 1;
+  }
+#searchField {
+    background-color: white;
 }
-#tan{
-    background-color: tan;
+  
+#search label{
+    z-index: 2;
+    position: absolute;
 }
-#salmon{
-    background-color: salmon;
+
+.pt_list{
+    width: 1100px;
 }
-#no-color{
-    background-color: grey;
-} */
+  
+.pt_list td{
+    padding: 0.5rem;
+}
+.table_buttons{
+    margin-bottom: 1rem;
+    justify-content: right;
+    height: 40px;
+  }
+  
+  .table_buttons button{
+    float: right;
+    margin: 5px;
+  }
+  .table_buttons button:hover{
+    background-color: #e8c297;
+  }
+  
+  .container1{
+    justify-content: center;
+    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 600px;
+    max-width: 100%;
+    margin: 0 auto;
+    z-index: -1;
+  }
+
+
+#pt_button {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    display: table;
+    font-family: 'Raleway Black', sans-serif;
+    color: #00743e;
+  }
+  
+  #pt_button p{
+    font-weight: bold;
+  }
+  

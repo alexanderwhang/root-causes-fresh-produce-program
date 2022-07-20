@@ -80,6 +80,7 @@ export function Uncaught_Participants(props) {
       props.participant.sms_response != "Si" &&
       props.participant.sms_response != "Si" &&
       props.participant.sms_response != "sí" &&
+      props.participant.sms_response != "Sí" &&
       props.participant.sms_response != "No"
     ) {
       return (
@@ -92,7 +93,7 @@ export function Uncaught_Participants(props) {
             >
               <SvgEllipse id="text_status" />
             </div>
-            <ListItemText primary={props.participant.first_name} />
+            <ListItemText primary={`${props.participant.first_name} ${props.participant.last_name} `}/>
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
