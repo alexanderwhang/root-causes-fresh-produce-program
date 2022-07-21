@@ -205,7 +205,8 @@ img {
   overflow-y: auto;
   padding:.5rem;
   border-radius:5px;
-  position: left;
+  position: flex;
+  float: left;
   height: 60vh;
 }
 
@@ -218,6 +219,11 @@ img {
   padding:.5rem;
   margin-left: 400px;
   position: flex;
+  float: right;
+}
+
+#pre-click-grps {
+  height: 50px;
 }
 
 .dnd-item{
