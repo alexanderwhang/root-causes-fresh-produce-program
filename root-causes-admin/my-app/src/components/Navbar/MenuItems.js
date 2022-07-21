@@ -1,3 +1,6 @@
+
+// menu items are the menu items on the nav bar. submenus are in the dropdown
+// each one has a title, a url to which it links to, and a className (cName) used for styling
 export const MenuItems = [
     {
         title: 'Home',
@@ -31,11 +34,6 @@ export const MenuItems = [
             }
         ]
     },
-    // {
-    //     title: 'Analytics',
-    //     url: "/analytics",
-    //     cName: 'nav-links'
-    // },
     {
         title: 'Account',
         url:"/",
