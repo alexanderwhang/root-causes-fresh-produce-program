@@ -25,72 +25,72 @@ const baseUrl = "http://localhost:5000";
 
 export function Caught_Participants(props) {
   // this const handles participant status changes
-  const [status, setStatus] = React.useState();
-  const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
+    const [status, setStatus] = React.useState();
+    const [statusDisplay, setStatusDisplay] = useState(props.participant.status);
   //this const is used as the state for the collapsable list
-  const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(true);
 
 
   // sets states when status is changed
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    event.preventDefault();
-    setStatus(event.target.value);
-    setStatusDisplay(event.target.value);
-    updatePt(event.target.value);
-  };
+    const handleStatusChange = (event: SelectChangeEvent) => {
+      event.preventDefault();
+      setStatus(event.target.value);
+      setStatusDisplay(event.target.value);
+      updatePt(event.target.value);
+    };
 
   // the function responsible for changing the status. takes in the status chosen by user 
   // and posts it to database
-  function updatePt (ptStatus) {
-    console.log("update: ", ptStatus);
-    let new_participant = props.participant;
+    function updatePt (ptStatus) {
+      console.log("update: ", ptStatus);
+      let new_participant = props.participant;
 
-    new_participant.status = ptStatus;
+      new_participant.status = ptStatus;
 
-    var data = JSON.stringify({ participant: new_participant });
-    let id = props.participant.id;
+      var data = JSON.stringify({ participant: new_participant });
+      let id = props.participant.id;
 
-    var config = {
-      method: "put",
-      url: `http://localhost:5000/participants/${id}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
+      var config = {
+        method: "put",
+        url: `http://localhost:5000/participants/${id}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
 
-    axios(config)
-      .then(function(response) {
-        console.log(JSON.stringify(response.data));
-      })
-      // error catching
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
+      axios(config)
+        .then(function(response) {
+          console.log(JSON.stringify(response.data));
+        })
+        // error catching
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
 
   // when you click on a list item, it expands to show the sublist
-  const handleClick = () => {
-    setOpen(!open);
-  };
+    const handleClick = () => {
+      setOpen(!open);
+    };
 
   //database has numbers as statuses, this maps them to the corresponding color 
-  let statusMap = new Map([
-    [0, "grey"],
-    [1, "green"],
-    [2, "tan"],
-    [3, "salmon"],
-  ]);
+    let statusMap = new Map([
+      [0, "grey"],
+      [1, "green"],
+      [2, "tan"],
+      [3, "salmon"],
+    ]);
 
   // variables that will allow us to check for conditions that permit automatic status change
-  const affirmatives = ["yes", "si", "sí", "sure"];
-  const negatives = ["no"]
+    const affirmatives = ["yes", "si", "sí", "sure"];
+    const negatives = ["no"]
   // variable with participant's name
-  const FULLNAME = props.participant.first_name + " " + props.participant.last_name
+    const FULLNAME = props.participant.first_name + " " + props.participant.last_name
 
 
   {
-    //conditions that are easy to use for automatic status changes
+  //conditions that are easy to use for automatic status changes
         // in the future could include more options, such as "not this week", "yes please", etc.
     if (
       props.participant.sms_response.toLowerCase() == "yes" ||
@@ -99,14 +99,14 @@ export function Caught_Participants(props) {
       props.participant.sms_response.toLowerCase() == "sí" ||
       props.participant.sms_response.toLowerCase() == "no"
     ) {
-      //changes the status of participants with affirmative responses
+    //changes the status of participants with affirmative responses
       { if (affirmatives.includes(props.participant.sms_response.toLowerCase()) && props.participant.status != 1) {
         console.log("affirmative")
         setStatus(1);
         setStatusDisplay(1);
         updatePt(1);
       }}
-      //changes the status of participants with negative responses
+    //changes the status of participants with negative responses
       { if (negatives.includes(props.participant.sms_response.toLowerCase()) && props.participant.status != 2) {
         console.log("negative")
         setStatus(2);
@@ -127,7 +127,7 @@ export function Caught_Participants(props) {
             <ListItemText primary={FULLNAME} />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
-          {/* collapsable list item with response */}
+        {/* collapsable list item with response */}
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding className="sublist">
               <ListItemButton sx={{ pl: 4 }}>
