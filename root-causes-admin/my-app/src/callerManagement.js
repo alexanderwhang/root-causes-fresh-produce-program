@@ -6,63 +6,113 @@ import { useEffect, useState } from "react";
 import { FooterContainer } from "./containers/footer";
 import Button from "@mui/material/Button";
 import Navbar from "./components/Navbar/Navbar";
- 
+
 const baseUrl = "http://127.0.0.1:5000";
-let users = [];
-let users2 = [];
-// let userList = [];
+// let users = [];
+// let users2 = [];
+let userObjs = [{}];
+let userIdList = [];
+let unsortedUserObjs = [];
+let volunteersList = [{}];
+let participantsList = [{}];
+
 
 export const CallAssignments = () => {
   // let userList = [{}];
 
-  const [userList, setUserList] = useState([]);
-  const [participantsList, setParticipantsList] = useState([]);
-  const [volunteersList, setVolunteersList] = useState([]);
-  const [userObjSet, setUserObjSet] = useState(false);
-  // let userObjSet = false;
+  //   const [userList, setUserList] = useState([]);
+//   const [participantsList, setParticipantsList] = useState([{}]);
+//   const [volunteersList, setVolunteersList] = useState([{}]);
+  const [listDefined, setListDefined] = useState(false);
+  const [assignmentsGenerated, setAssignmentsGenerated] = useState(false);
+  const [list, setList] = useState(unsortedUserObjs);
+  const [dragging, setDragging] = useState(false);
+  const dragItem = useRef();
+  const dragNode = useRef();
+
   // GET
   const fetchUserList = async () => {
     const data = await axios.get(`${baseUrl}/callermanagement`);
-    const userList = data.data.sortedVolunteers;
+    userIdList = data.data.sortedVolunteers;
     // setUserList(list);
     // setUserList(userList);
     // console.log("USER LIST: ", data);\
-    console.log("USER LIST: ");
-    console.log(userList);
-    getUserObjs(userList);
+    console.log("USER ID LIST: ");
+    console.log(userIdList);
+    // getUserObjs(userList);
   };
+
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants/status/3`);
     const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA1: ", data);
+    // setParticipantsList(participants);
+    // console.log("DATA1: ", data);
+    participantsList = data.data.participants;
+    console.log("participantsList: ", participantsList);
+    
+
+    getInitUserList();
   };
+
   // GET VOLUNTEERS
   const fetchVolunteers = async () => {
     const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
-    const { volunteers } = data.data;
-    setVolunteersList(volunteers);
-    console.log("DATA2: ", data);
+    const volunteers = data.data.volunteers;
+    // setVolunteersList(data.data.volunteers);
+    // console.log("DATA2: ", data);
+    // console.log("data.data.volunteers: ", data.data.volunteers);
+    volunteersList = data.data.volunteers;
+    console.log("volunteersList: ", volunteersList);
+
+    getInitUserList();
   };
+
+  useEffect(() => {
+    fetchParticipants();
+    fetchVolunteers();
     fetchUserList();
+  }, []);
 
   // console.log("output for userList");
   // console.log(userList);
-  let userObjs = [{}];
 
-  const getUserObjs = async (userList) => {
+  const getInitUserList = () => {
+    console.log("getInitUserList");
+    console.log("volunteersList.length: ", volunteersList.length);
+    console.log("participantsList.length: ", participantsList.length);
+
+    if (volunteersList.length > 0 && participantsList.length > 0) {
+        console.log("passed if statement");
+      unsortedUserObjs[0] = { vol: {first_name:"Participants"}, pts: participantsList };
+
+      let i = 1;
+      volunteersList.map((vol) => {
+        unsortedUserObjs[i] = ({ vol: vol, pts: [] });
+        setList(unsortedUserObjs);
+        i++;
+      });
+      setListDefined(true);
+    }
+    console.log("unsortedUserObjs: ", unsortedUserObjs);
+  };
+
+  const getUserObjs = async (userIdList) => {
+    setListDefined(false);
+
     console.log("getting user objs...");
-    console.log("userList: ", userList);
-    for (let i = 0; i < userList.length; i++) {
+    console.log("userIdList: ", userIdList);
+    for (let i = 0; i < userIdList.length; i++) {
       console.log("i: ", i);
-      let volData = await axios.get(`${baseUrl}/volunteers/${userList[i].id}`);
+      let volData = await axios.get(
+        `${baseUrl}/volunteers/${userIdList[i].id}`
+      );
       let vol = volData.data.volunteer;
-    //   console.log("volData : ", volData);
+      //   console.log("volData : ", volData);
 
       let pts = [];
-      let ptIds = getArr(userList[i].items);
-      console.log("userList[i].items: ", userList[i].items);
+      let ptIds = getArr(userIdList[i].items);
+      console.log("userIdList[i].items: ", userIdList[i].items);
       console.log("ptIds: ", ptIds);
       for (let j = 0; j < ptIds.length; j++) {
         let ptData = await axios.get(`${baseUrl}/participants/${ptIds[j]}`);
@@ -70,6 +120,7 @@ export const CallAssignments = () => {
         console.log("ptData: ", ptData);
         pts.push(pt);
       }
+
       if (i === 0) {
         userObjs[0] = { vol: vol, pts: pts };
       } else {
@@ -80,8 +131,8 @@ export const CallAssignments = () => {
     setList(userObjs);
     console.log("LIST: ", list);
 
-    setUserObjSet(true);
-    console.log("userObjSet:", userObjSet);
+    setListDefined(true);
+    console.log("listDefined: ", listDefined);
   };
 
   // userObjs.push({"vol": vol, "pts": pts});
@@ -102,16 +153,12 @@ export const CallAssignments = () => {
     }
     return arr;
   };
-  // users2[0] = { vol: {}, pts: participantsList };
-  // volunteersList.map((vol) => {
-  //   return users2.push({ vol: vol, pts: [] });
-  // });
-  // console.log("users: ", users);
-  // console.log("users2: ", users2);
-  // console.log("userObjs: ", userObjs);
 
   // return userList;
 
+  const handleGenerateAssignments = () => {
+    getUserObjs(userIdList);
+  };
   const handleConfirmAssignments = async (e) => {
     // for (let i = 0; i < userIdList.length; i++) {
     //   const data = userIdList[0];
@@ -121,10 +168,7 @@ export const CallAssignments = () => {
     //   const response = await axios.post(`${baseUrl}/callassignment`, data);
     // }
   };
-  const [list, setList] = useState(userObjs);
-  const [dragging, setDragging] = useState(false);
-  const dragItem = useRef();
-  const dragNode = useRef();
+
   const handleDragStart = (e, params) => {
     console.log("drag starting...", params);
     dragItem.current = params;
@@ -134,18 +178,19 @@ export const CallAssignments = () => {
       setDragging(true);
     }, 0);
   };
+
   //you have to index into volnteers
   //items =pts
   const handleDragEnter = (e, params) => {
     console.log("Entering drag...", params);
     const currentItem = dragItem.current;
     if (e.target !== dragNode.current) {
-      console.log("TARGET IS NOT THE SAME"); 
-      setList((oldList) => {  
-        console.log("________")
+      console.log("TARGET IS NOT THE SAME");
+      setList((oldList) => {
+        console.log("________");
         console.log(oldList);
 
-        let newList = JSON.parse(JSON.stringify(oldList)); 
+        let newList = JSON.parse(JSON.stringify(oldList));
         newList[params.grpI].pts.splice(
           params.itemI,
           0,
@@ -156,6 +201,7 @@ export const CallAssignments = () => {
       });
     }
   };
+
   const handleDragEnd = () => {
     console.log("Ending drag...");
     setDragging(false);
@@ -163,6 +209,7 @@ export const CallAssignments = () => {
     dragItem.current = null;
     dragNode.current = null;
   };
+
   const getStyles = (params) => {
     const currentItem = dragItem.current;
     if (
@@ -175,10 +222,16 @@ export const CallAssignments = () => {
   };
   // console.log("list: ", list);
 
-   if (userObjSet) {
-    console.log("userObjSet: ", userObjSet);
+  if (listDefined) {
+    console.log("listDefined: ", listDefined);
     console.log("User objs: ", userObjs);
     console.log("List: ", list);
+
+    // if(!assignmentsGenerated) {
+    //     setList(unsortedUserObjs);
+    // } else {
+    //     setList(userObjs);
+    // }
     return (
       <div>
         <Navbar />
@@ -190,7 +243,7 @@ export const CallAssignments = () => {
                 <div
                   key={grp.vol.id}
                   className={
-                    ` ${grp.vol.first_name} ` === "Participants"
+                    `${grp.vol.first_name}`=="Participants"
                       ? "participants"
                       : "dnd-group"
                   }
@@ -200,7 +253,8 @@ export const CallAssignments = () => {
                       : null
                   }
                 >
-                  <div className="group-title">{grp.vol.first_name} {grp.vol.last_name}</div>
+                  <div className="group-title">{grp.vol.first_name}</div>
+
                   {grp.pts.map((item, itemI) => (
                     <div
                       draggable={true}
@@ -223,13 +277,13 @@ export const CallAssignments = () => {
                         <li id="ptName">
                           {item.first_name} {item.last_name}{" "}
                         </li>
-                        {/* <li>{item.email} </li> */}
-                        {/* <li>{item.last_name}</li>  */}
-                        {/* <li>{item.address}</li>  */}
+                        <li>{item.email} </li>
+                        <li>{item.last_name}</li>
+                        <li>{item.address}</li>
                         <li>{item.phone} </li>
-                        <li>{item.email}</li> 
+                        <li>{item.email}</li>
                         <li>{item.language} </li>
-                        {/* <li>{item.status}</li>  */}
+                        <li>{item.status}</li>
                       </ul>
                     </div>
                   ))}
@@ -241,7 +295,9 @@ export const CallAssignments = () => {
         {/* buttons */}
         <section id="call_assign">
           <div className="call_buttons">
-            <Button variant="contained">Generate Assignments</Button>
+            <Button variant="contained" onClick={handleGenerateAssignments}>
+              Generate Assignments
+            </Button>
             <Button
               color="success"
               variant="contained"
@@ -255,7 +311,7 @@ export const CallAssignments = () => {
       </div>
     );
   } else {
-    console.log("userObjSet: ", userObjSet);
+    console.log("listDefined: ", listDefined);
     console.log("User objs: ", userObjs);
     console.log("List: ", list);
   }
