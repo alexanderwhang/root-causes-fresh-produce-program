@@ -625,7 +625,7 @@ def update_participant(id):
 # OUTGOING SMS TEXT
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
-    participants = Participant.query.order_by(Participant.id).all()
+    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
     part_list = []
     phone_numbers = []
     for participant in participants:
@@ -638,8 +638,21 @@ def outgoing_sms(message):
                     .create(
                         body=message,
                         from_='+19897046694',
-                        to=f"+1{x.phone}"
+                        to=f'+1{x.phone}'
                     )
+
+    # messages = client.messages \
+    #                 .create(
+    #                     body=message,
+    #                     from_='+19897046694',
+    #                     to=f"+17137398907"
+    #                 )
+    # messages = client.messages \
+    #                 .create(
+    #                     body=message,
+    #                     from_='+19897046694',
+    #                     to=f"+14107079295"
+    #                 )
 
     return {"Message": message}
 
