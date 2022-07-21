@@ -635,19 +635,6 @@ def outgoing_sms(message):
                         to=f'+1{x.phone}' 
                     )
 
-    # messages = client.messages \
-    #                 .create(
-    #                     body=message,
-    #                     from_='+19897046694',
-    #                     to=f"+17137398907"
-    #                 )
-    # messages = client.messages \
-    #                 .create(
-    #                     body=message,
-    #                     from_='+19897046694',
-    #                     to=f"+14107079295"
-    #                 )
-
     return {"Message": message}
 
 # incoming sms texts (WIP)
