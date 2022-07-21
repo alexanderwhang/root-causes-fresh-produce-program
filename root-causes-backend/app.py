@@ -923,51 +923,6 @@ def get_unsoreted_call_assignments():
 
 
 ########VOLUNTEER APP##########
-def format_participant_routes(participant):
-    status = Status.query.filter_by(participant_id=participant.id).one()
-    address = Address.query.filter_by(participant_id=participant.id).one()
-    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
-        notes = "No notes."
-    else:
-        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
-    formatted_address = format_address(address)
-    return {
-        "id": participant.id,
-        "first_name": participant.first_name,
-        "last_name": participant.last_name,
-        "date_of_birth": participant.date_of_birth,
-        "age": participant.age,
-        "status": status.status_type_id,
-        # "updated_at": participant.updated_at,
-        "address": formatted_address,
-        "email": participant.email,
-        "phone": participant.phone,
-        "language": participant.language,
-        "pronouns": participant.pronouns,
-        "group": participant.group,
-        "household_size": participant.household_size,
-        "street": address.street,
-        "city": address.city,
-        "state": address.state,
-        "zip": address.zip,
-        "apartment": address.apartment,
-        "most_recent_delivery": participant.most_recent_delivery,
-        "most_recent_call": participant.most_recent_call,
-        "sms_response": participant.sms_response, 
-        "image": participant.image,
-        "notes" : notes
-    }
-
-# GET PARTICIPANTS BY STATUS - ROUTES PAGE
-@app.route('/routesparticipants/status/<status>', methods = ['GET'])
-def get_participants_by_status_routes(status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
-    participant_list = []
-    for participant in participants:
-        participant_list.append(format_participant_routes(participant))
-    return {'participants': participant_list}
-
-
 # FORMATS PARTICIPANTS TO DISPLAY - ROUTES AND CALLS PAGES
 def volunteer_format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()
