@@ -200,7 +200,7 @@ export const CallAssignments = () => {
                       : null
                   }
                 >
-                  <div className="group-title">{grp.vol.first_name}</div>
+                  <div className="group-title">{grp.vol.first_name} {grp.vol.last_name}</div>
                   {grp.pts.map((item, itemI) => (
                     <div
                       draggable={true}
@@ -223,13 +223,13 @@ export const CallAssignments = () => {
                         <li id="ptName">
                           {item.first_name} {item.last_name}{" "}
                         </li>
-                        <li>{item.email} </li>
-                        <li>{item.last_name}</li> 
-                        <li>{item.address}</li> 
+                        {/* <li>{item.email} </li> */}
+                        {/* <li>{item.last_name}</li>  */}
+                        {/* <li>{item.address}</li>  */}
                         <li>{item.phone} </li>
                         <li>{item.email}</li> 
                         <li>{item.language} </li>
-                        <li>{item.status}</li>
+                        {/* <li>{item.status}</li>  */}
                       </ul>
                     </div>
                   ))}
