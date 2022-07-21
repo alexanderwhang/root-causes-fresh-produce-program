@@ -407,7 +407,7 @@ class CallHistory(db.Model):
     __table_args__ = {"schema":"RC"}
 
     call_history_id = db.Column("call_history_id", db.Integer, primary_key=True)
-    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant3.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     call_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)

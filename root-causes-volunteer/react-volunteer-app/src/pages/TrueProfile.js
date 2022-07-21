@@ -77,7 +77,7 @@ export default function TrueProfile() {
                   style={{textAlign: "left", paddingTop: "20px",
                   color: "black", fontSize: "17px"}}>
                   <FontAwesomeIcon size="lg" color='#009a4b' icon={faEnvelope} />
-                  <b> Email: </b> blue.devil@duke.edu
+                  <b> Email: </b> blue_devil@duke.edu
           </Typography>
 
           <Typography 
