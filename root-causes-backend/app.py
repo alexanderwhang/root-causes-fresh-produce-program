@@ -440,7 +440,7 @@ def hello():
 ### FLASK ROUTING ###
 # the next part of this app includes routing
 # this allows for the app to have specific functions and a structure that is easy to organize
-# thes routes are the main way for the frontend to interact with the backend
+# the routes are the main way for the frontend to interact with the backend
 
 ### PARTICIPANTS ###
 
