@@ -58,23 +58,6 @@ const Home = () => {
             container justify="center"
             alignItems="center"
             justifyContent="center">
-            <Link href="/signup" style={{textDecoration: 'none'}}>
-              <Button id="volunteerRedirect"
-                // size="large" 
-                fullWidth
-                type="submit" 
-                variant="contained"
-                justify="center">
-                Click here to sign up for volunteering!
-              </Button>
-            </Link>
-          </Grid>
-          <Grid 
-            paddingTop= "10px"
-            paddingBottom = "85px"
-            container justify="center"
-            alignItems="center"
-            justifyContent="center">
             <Link href="/trueprofile" style={{textDecoration: 'none'}}>
               <Button id="volunteerRedirect" 
                 fullWidth
@@ -86,6 +69,23 @@ const Home = () => {
               </Button>
             </Link>
             </Grid>
+            <Grid 
+            paddingTop= "10px"
+            paddingBottom = "85px"
+            container justify="center"
+            alignItems="center"
+            justifyContent="center">
+            <Link href="/signup" style={{textDecoration: 'none'}}>
+              <Button id="volunteerRedirect"
+                // size="large" 
+                fullWidth
+                type="submit" 
+                variant="contained"
+                justify="center">
+                Click here to sign up for volunteering!
+              </Button>
+            </Link>
+          </Grid>
 
         </div>
     </div>
