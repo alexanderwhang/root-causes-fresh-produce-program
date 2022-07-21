@@ -84,7 +84,7 @@ export const CallAssignments = () => {
 
     if (volunteersList.length > 0 && participantsList.length > 0) {
         console.log("passed if statement");
-      unsortedUserObjs[0] = { vol: {}, pts: participantsList };
+      unsortedUserObjs[0] = { vol: {first_name:"Participants"}, pts: participantsList };
 
       let i = 1;
       volunteersList.map((vol) => {
@@ -243,7 +243,7 @@ export const CallAssignments = () => {
                 <div
                   key={grp.vol.id}
                   className={
-                    ` ${grp.vol.first_name} ` === "Participants"
+                    `${grp.vol.first_name}`=="Participants"
                       ? "participants"
                       : "dnd-group"
                   }
@@ -253,7 +253,7 @@ export const CallAssignments = () => {
                       : null
                   }
                 >
-                  <div className="group-title">{grp.vol.first_name}</div>
+                  <div className="group-title">{grp.vol.first_name} {grp.vol.last_name} ({grp.vol.language})</div>
 
                   {grp.pts.map((item, itemI) => (
                     <div
@@ -277,13 +277,9 @@ export const CallAssignments = () => {
                         <li id="ptName">
                           {item.first_name} {item.last_name}{" "}
                         </li>
-                        <li>{item.email} </li>
-                        <li>{item.last_name}</li>
                         <li>{item.address}</li>
                         <li>{item.phone} </li>
-                        <li>{item.email}</li>
                         <li>{item.language} </li>
-                        <li>{item.status}</li>
                       </ul>
                     </div>
                   ))}
