@@ -62,7 +62,7 @@ auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
 
 ### CLASS INFORMATION ###
-# all the classes are set up to take information from the database
+# all the classes are set up to take information from the databa
 
 class Participant(db.Model):
     __tablename__ = 'participant3'
@@ -440,7 +440,7 @@ def hello():
 ### FLASK ROUTING ###
 # the next part of this app includes routing
 # this allows for the app to have specific functions and a structure that is easy to organize
-# thes routes are the main way for the frontend to interact with the backend
+# the routes are the main way for the frontend to interact with the backend
 
 ### PARTICIPANTS ###
 
@@ -626,14 +626,17 @@ def update_participant(id):
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
     participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
+<<<<<<< HEAD
     part_list = []
     phone_numbers = []
     for participant in participants:
         part_list.append(format_participant(participant))
     # for x in part_list:
     #     phone_numbers.append(part_list[x].phone_number)
+=======
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
-    for x in part_list:
+    for x in participants:
         messages = client.messages \
                     .create(
                         body=message,

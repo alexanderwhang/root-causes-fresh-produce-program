@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { FooterContainer } from "./containers/footer";
 import Button from "@mui/material/Button";
 import Navbar from "./components/Navbar/Navbar";
-
+ 
 const baseUrl = "http://127.0.0.1:5000";
 // let users = [];
 // let users2 = [];
@@ -20,6 +20,7 @@ let participantsList = [{}];
 export const CallAssignments = () => {
   // let userList = [{}];
 
+<<<<<<< HEAD
   //   const [userList, setUserList] = useState([]);
 //   const [participantsList, setParticipantsList] = useState([{}]);
 //   const [volunteersList, setVolunteersList] = useState([{}]);
@@ -30,6 +31,13 @@ export const CallAssignments = () => {
   const dragItem = useRef();
   const dragNode = useRef();
 
+=======
+  const [userList, setUserList] = useState([]);
+  const [participantsList, setParticipantsList] = useState([]);
+  const [volunteersList, setVolunteersList] = useState([]);
+  const [userObjSet, setUserObjSet] = useState(false);
+  // let userObjSet = false;
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
   // GET
   const fetchUserList = async () => {
     const data = await axios.get(`${baseUrl}/callermanagement`);
@@ -41,7 +49,6 @@ export const CallAssignments = () => {
     console.log(userIdList);
     // getUserObjs(userList);
   };
-
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
     const data = await axios.get(`${baseUrl}/participants/status/3`);
@@ -54,7 +61,6 @@ export const CallAssignments = () => {
 
     getInitUserList();
   };
-
   // GET VOLUNTEERS
   const fetchVolunteers = async () => {
     const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
@@ -67,12 +73,7 @@ export const CallAssignments = () => {
 
     getInitUserList();
   };
-
-  useEffect(() => {
-    fetchParticipants();
-    fetchVolunteers();
     fetchUserList();
-  }, []);
 
   // console.log("output for userList");
   // console.log(userList);
@@ -120,7 +121,6 @@ export const CallAssignments = () => {
         console.log("ptData: ", ptData);
         pts.push(pt);
       }
-
       if (i === 0) {
         userObjs[0] = { vol: vol, pts: pts };
       } else {
@@ -153,6 +153,16 @@ export const CallAssignments = () => {
     }
     return arr;
   };
+<<<<<<< HEAD
+=======
+  // users2[0] = { vol: {}, pts: participantsList };
+  // volunteersList.map((vol) => {
+  //   return users2.push({ vol: vol, pts: [] });
+  // });
+  // console.log("users: ", users);
+  // console.log("users2: ", users2);
+  // console.log("userObjs: ", userObjs);
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
   // return userList;
 
@@ -168,7 +178,14 @@ export const CallAssignments = () => {
     //   const response = await axios.post(`${baseUrl}/callassignment`, data);
     // }
   };
+<<<<<<< HEAD
 
+=======
+  const [list, setList] = useState(userObjs);
+  const [dragging, setDragging] = useState(false);
+  const dragItem = useRef();
+  const dragNode = useRef();
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
   const handleDragStart = (e, params) => {
     console.log("drag starting...", params);
     dragItem.current = params;
@@ -178,7 +195,6 @@ export const CallAssignments = () => {
       setDragging(true);
     }, 0);
   };
-
   //you have to index into volnteers
   //items =pts
   const handleDragEnter = (e, params) => {
@@ -201,7 +217,6 @@ export const CallAssignments = () => {
       });
     }
   };
-
   const handleDragEnd = () => {
     console.log("Ending drag...");
     setDragging(false);
@@ -209,7 +224,6 @@ export const CallAssignments = () => {
     dragItem.current = null;
     dragNode.current = null;
   };
-
   const getStyles = (params) => {
     const currentItem = dragItem.current;
     if (
@@ -253,8 +267,7 @@ export const CallAssignments = () => {
                       : null
                   }
                 >
-                  <div className="group-title">{grp.vol.first_name}</div>
-
+                  <div className="group-title">{grp.vol.first_name} {grp.vol.last_name}</div>
                   {grp.pts.map((item, itemI) => (
                     <div
                       draggable={true}
@@ -277,13 +290,19 @@ export const CallAssignments = () => {
                         <li id="ptName">
                           {item.first_name} {item.last_name}{" "}
                         </li>
+<<<<<<< HEAD
                         <li>{item.email} </li>
                         <li>{item.last_name}</li>
                         <li>{item.address}</li>
+=======
+                        {/* <li>{item.email} </li> */}
+                        {/* <li>{item.last_name}</li>  */}
+                        {/* <li>{item.address}</li>  */}
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
                         <li>{item.phone} </li>
                         <li>{item.email}</li>
                         <li>{item.language} </li>
-                        <li>{item.status}</li>
+                        {/* <li>{item.status}</li>  */}
                       </ul>
                     </div>
                   ))}
