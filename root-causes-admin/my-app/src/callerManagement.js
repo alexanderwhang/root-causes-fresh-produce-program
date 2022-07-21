@@ -248,6 +248,11 @@ export const CallAssignments = () => {
                       ? "participants"
                       : "dnd-group"
                   }
+                  id={
+                    `${grp.pts.length}` < 1
+                    ? "pre-click-grps"
+                    : "post-click-grps"
+                  }
                   onDragEnter={
                     dragging && !grp.pts.length
                       ? (e) => handleDragEnter(e, { grpI, itemI: 0 })
