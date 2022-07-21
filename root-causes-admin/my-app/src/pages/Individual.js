@@ -1,7 +1,7 @@
 import "./Individual.css";
 import React from "react";
 import axios from "axios";
-import PersonalInfo from "../components/PersonalInfo";
+import PersonalInfo from "../components/personalInfo";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from "../containers/footer";
@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
+
 
 
 const baseUrl = "http://127.0.0.1:5000";
