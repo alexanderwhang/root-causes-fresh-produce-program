@@ -3,3 +3,27 @@
     overflow: hidden;
     overflow-y: auto;
 }
+
+.curr_vols h3{
+    text-align: center;
+    margin: 1rem;
+    align-items: center;
+  }
+  
+.vol_type{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 300px;
+    padding: 20px;
+    margin-bottom: 1rem;
+    float: center;
+  } 
+  
+  .vol_list{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 10px;
+  }
+  .vol_list td{
+    padding: 0.5rem;
+  }

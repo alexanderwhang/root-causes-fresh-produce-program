@@ -14,38 +14,36 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
+import math
+# from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
 # from twilio.twiml.messaging/_response import MessagingResponse
-
+import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
 
-
-# start VPN!
-# to start cd into backend and enter into command line 'flask run' OR 'python -m flask run'
-
-# Backend Installations **cd into backend**:
+### BACKEND INSTALLATION INSTRUCTIONS ###
+# cd into the backend in the terminal
 
 # pip install pipenv
-# - To activate: pipenv shell
+        # activate it: pipenv shell
 # pipenv install flask flask-sqlalchemy psycopg2 python-dotenv flask-cors flask-marshmallow
-        # If pyscopg2 is not installing -> pip install postgres first or xcode-select --install
-# Flask run
-# python (to activate python)
+        # if pyscopg2 is not installing -> pip install postgres first or xcode-select --install
+        # or pipenv install psycopg2-binary
+# go into python shell (type python in terminal)
 # from app import db
-# db.create_all() (will create our event table for us)
+# db.create_all() (this will create an event table)
 
-# After initial installation **the usual**
-# pipenv shell
-# Flask run
-
-# To get Twilio working (open your computer terminal)
+### TWILIO INSTALLATION INSTRUCTIONS ###
 # pipenv install twilio (OR pip install twilio)
 # FOR MAC: run ' brew tap twilio/brew && brew install twilio '
 # * FOR WINDOWS: INSTALL SCOOP --> https://scoop.sh 
 # FOR WINDOWS: run ' scoop bucket add twilio-scoop https://github.com/twilio/scoop-twilio-cli '
 # FOR WINDOWS (part 2): run ' scoop install twilio '
+
+### RUN THE BACKEND ###
+# TURN ON YOUR DUKE VPN!
+# cd into backend and enter 'flask run' OR 'python -m flask run'
 
 UPLOAD_FOLDER = '../root-causes-volunteer/react-volunteer-app/src/images-react'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -58,10 +56,13 @@ db = SQLAlchemy(app)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-#SMS INFO
+# SMS INFO
 account_sid = "ACa19caaefab10dead0bf946d4e3190175"
 auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
+
+### CLASS INFORMATION ###
+# all the classes are set up to take information from the databa
 
 class Participant(db.Model):
     __tablename__ = 'participant3'
@@ -90,9 +91,9 @@ class Participant(db.Model):
     most_recent_status_update = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
     image = db.Column(db.String(200), nullable=True)
 
+    # children are used to establish foreign keys in order to join tables
     children = relationship("Status")
     children = relationship("DeliveryHistory")
-
 
     def __repr__(self):
         return f"Participant: {self.first_name} {self.last_name}"
@@ -119,7 +120,7 @@ class Participant(db.Model):
         self.most_recent_status = most_recent_status
         self.image = image
 
-
+# makes an object for the participant and allows all fields to be easily found for each participant
 def format_participant(participant):
     # status = Status.query.filter_by(participant_id=participant.id).one()
     # address = Address.query.filter_by(participant_id=participant.id).one()
@@ -200,18 +201,21 @@ class Address(db.Model):
         self.zip = zip
         self.apartment = apartment
 
+# adds all the components of an address into a single string
 def format_address(address):
     if address.apartment:
         return f"{address.street}, Apartment {address.apartment}, {address.city}, {address.state} {address.zip}"
     
     return f"{address.street}, {address.city}, {address.state} {address.zip}"
 
+# calculates age based on date of birth
 def age(participant):
     dob = participant.date_of_birth
     today = date.today()
     age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
     return age
 
+# makes an object for the volunteer and allows all fields to be easily found for each volunteer
 class Volunteer(db.Model):
     __tablename__ = 'volunteer'
     __table_args__ = {"schema": "RC"}
@@ -232,8 +236,6 @@ class Volunteer(db.Model):
     children = relationship("DeliveryAssignment")
     children = relationship("VolunteerLog")
     children = relationship("DeliveryHistory")
-
-
 
     def __repr__(self):
         return f"Volunteer: {self.first_name} {self.last_name}"
@@ -401,8 +403,7 @@ class DeliveryHistory(db.Model):
         self.volunteer_id = volunteer_id
         self.delivery_date = delivery_date
         self.notes = notes
-    
-        
+
 class CallHistory(db.Model):
     __tablename__ = 'call_history'
     __table_args__ = {"schema":"RC"}
@@ -422,7 +423,6 @@ class CallHistory(db.Model):
         self.call_date = call_date
         self.notes = notes
 
-
 def format_delivery_history(delivery_history):
     return {
         "delivery_history_id": delivery_history.delivery_history_id,
@@ -431,13 +431,20 @@ def format_delivery_history(delivery_history):
         "delivery_date": delivery_history.delivery_date,
         "notes": delivery_history.notes
     }
-    
+
+# if things don't work try to see if you're connected to the backend first
 @app.route('/')
 def hello():
     return 'Backend connected to host'
 
-############# PARTCIPANTS ##############
-# CREATE PARTICIPANT
+### FLASK ROUTING ###
+# the next part of this app includes routing
+# this allows for the app to have specific functions and a structure that is easy to organize
+# the routes are the main way for the frontend to interact with the backend
+
+### PARTICIPANTS ###
+
+# create a participant
 @app.route('/participants', methods = ['POST'])
 def create_participant():
     # else:
@@ -477,7 +484,7 @@ def create_participant():
         db.session.commit()
         return format_participant(participant)
 
-# GET ALL PARTICIPANTS
+# get all participants
 @app.route('/participants', methods = ['GET'])
 def get_participants():
     participants = Participant.query.order_by(Participant.last_name.asc()).all()
@@ -486,14 +493,14 @@ def get_participants():
         participant_list.append(format_participant(participant))
     return {'participants': participant_list}
 
-# GET PARTICIPANT BY ID
+# get a participant by id
 @app.route('/participants/<id>', methods = ['GET'])
 def get_participant(id):
     participant = Participant.query.filter_by(id=id).one()
     formatted_participant = format_participant(participant)
     return {'participant': formatted_participant}
 
-# GET PARTICIPANTS BY STATUS
+# get participants by status
 @app.route('/participants/status/<status>', methods = ['GET'])
 def get_participants_by_status(status):
     # participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
@@ -504,7 +511,7 @@ def get_participants_by_status(status):
     
     return {'participants': participant_list}
 
-# GET PARTICIPANTS BY LANGUAGE
+# get participants by language
 @app.route('/participants/language/<language>', methods = ['GET'])
 def get_participants_by_language(language):
     participants = Participant.query.filter_by(language=language).all()
@@ -514,7 +521,7 @@ def get_participants_by_language(language):
     
     return {'participants': participant_list}
 
-# GET PARTICIPANTS BY GROUP
+# get participants by group (group A or B)
 @app.route('/participants/group/<group>', methods = ['GET'])
 def get_participants_by_group(group):
     participants = Participant.query.filter_by(group=group).all()
@@ -524,7 +531,7 @@ def get_participants_by_group(group):
     
     return {'participants': participant_list}
 
-# GET PARTICIPANTS BY GROUP AND STATUS
+# get participants by group and status
 @app.route('/participants/group/<group>/status/<status>', methods = ['GET'])
 def get_participants_by_group_and_status(group, status):
     participants = db.session.query(Participant).filter_by(most_recent_status=status).filter_by(group=group).all()
@@ -534,7 +541,7 @@ def get_participants_by_group_and_status(group, status):
     
     return {'participants': participant_list}
 
-# GET PARTICIPANTS BY GROUP AND LANGUAGE
+# get participants by group and language
 @app.route('/participants/group/<group>/language/<language>', methods = ['GET'])
 def get_participants_by_group_and_language(group, language):
     participants = Participant.query.filter_by(group=group).filter_by(language=language).all()
@@ -544,7 +551,7 @@ def get_participants_by_group_and_language(group, language):
     
     return {'participants': participant_list}
 
-# GET PARTICIPANTS BY GROUP AND SMS RESPONSE
+# get participants by group and and sms response
 @app.route('/participants/group/<group>/sms_response/<sms_response>', methods = ['GET'])
 def get_participants_by_group_and_sms_response(group, sms_response):
     participants = Participant.query.filter_by(group=group).filter_by(sms_response=sms_response).all()
@@ -554,7 +561,7 @@ def get_participants_by_group_and_sms_response(group, sms_response):
     
     return {'participants': participant_list}
 
-# DELETE PARTICIPANT
+# delete a participant
 @app.route('/participants/<id>', methods = ['DELETE'])
 def delete_participant(id):
     participant = Participant.query.filter_by(id=id).one()
@@ -562,7 +569,7 @@ def delete_participant(id):
     db.session.commit()
     return f'Participant (id: {id}) deleted.'
 
-# UPDATE PARTICIPANT
+# update a participant
 @app.route('/participants/<id>', methods = ['PUT'])
 def update_participant(id):
     participant = Participant.query.filter_by(id=id)
@@ -621,7 +628,7 @@ def outgoing_sms(message):
     participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
 
     for x in participants:
-        globals()['message%s' % x] = client.messages \
+        messages = client.messages \
                     .create(
                         body=message,
                         from_='+19897046694',
@@ -709,7 +716,7 @@ def get_volunteers():
 def get_volunteer(id):
     volunteer = Volunteer.query.filter_by(id=id).one()
     formatted_volunteer = format_volunteer(volunteer)
-    return {'volunteers': formatted_volunteer}
+    return {'volunteer': formatted_volunteer}
 
 # GET VOLUNTEERS BY LANGUAGE
 @app.route('/volunteers/language/<language>', methods = ['GET'])
@@ -822,17 +829,22 @@ def get_call_assignments():
     list_of_volObjects_spanish= volObjects(volunteers_spanish)
     
     # array of participants that speak english
-    participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    # participants_english = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Participant.language=="English").all()
+    participants_english = db.session.query(Participant).filter_by(most_recent_status=3).filter(Participant.language=="English").all()
     
     #array of participants that speak spanish
-    participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    # participants_spanish = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).filter(Volunteer.language=="Spanish").all()
+    participants_spanish = db.session.query(Participant).filter_by(most_recent_status=3).filter(Participant.language=="Spanish").all()
     
+
     #step 0: get the participants into chunks  
     def generate_assignments(volunteers,participants):
         def chunkSize(participants,volunteers):   
             #prevent infinite chunking
             if len(volunteers)==0: 
-                return 0
+                return 1
+            if len(participants)==0: 
+                return 1
             return math.ceil(len(participants)/len(volunteers))
         share=chunkSize(participants,volunteers)
         participantChunks = [participants[i:i + share] for i in range(0,len(participants),share)]   

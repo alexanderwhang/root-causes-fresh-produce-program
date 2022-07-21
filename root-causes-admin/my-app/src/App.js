@@ -1,5 +1,4 @@
 import "./App.css";
-import Participant from "./components/participant";
 import NewParticipant from "./components/addPt.js";
 import Volunteer from "./components/volunteer";
 import {Indiv} from "./pages/Individual";
@@ -28,6 +27,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
 import { Users } from './users.js';
+import { CallAssignments } from "./callerManagement";
+
 
 //COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:
     //npm install axios --save
@@ -116,179 +117,8 @@ export function AddParticipant() {
 
 // CALLER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)
 export function Callers() {
-  const [participantsList, setParticipantsList] = useState([]);
-  const [volunteersList, setVolunteersList] = useState([]);
-
-  // GET PARTICIPANTS
-  const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/status/3`);
-    const { participants } = data.data;
-    setParticipantsList(participants);
-    console.log("DATA: ", data);
-  };
-
-  useEffect(() => {
-    fetchParticipants();
-    fetchVolunteers();
-  }, []);
-
-  // GET VOLUNTEERS
-  const fetchVolunteers = async () => {
-    const data = await axios.get(`${baseUrl}/volunteers`);
-    const { volunteers } = data.data;
-    setVolunteersList(volunteers);
-    console.log("DATA: ", data);
-  };
-
-  let users = [];
-  volunteersList.map((vol) => {
-    return users.push({ title: vol.id, items: [] });
-  });
-
-  users.push({ title: "pts", items: participantsList });
-  console.log(users);
-
-  const [peoples, setPeople] = useState(PracticeUsers);
-  const CreateAssignment = () => {
-    const participantsList = PracticeUsers[PracticeUsers.length - 1].items;
-    // let Lans = [];
-
-    let DistributedUsers = [];
-
-    //Splits the participants into chunks for volunteers
-    function splitParticipants(data, chunkSize) {
-      let ret = [];
-      for (let i = 0; i < data.length; i += chunkSize) {
-        const chunk = data.slice(i, i + chunkSize);
-        ret.push(chunk);
-      }  
-      while(ret.length<PracticeUsers.length-1){ 
-        ret.push([]);
-      }
-      return ret;
-    }
-
-    //gets and stores the languages of the volunteers
-    function volunteersToLanguages(data) {
-      var languagesSpoken = new Map();
-      const participants = data[data.length - 1].items;
-
-      //set the map
-      for (let i = 0; i < participants.length; i++) {
-        let participant = participants[i];
-        languagesSpoken.set(participant.language, []);
-      }
-      for (let j = 0; j < data.length - 1; j++) {
-        let volunteer = data[j];
-
-        for (const [key, value] of languagesSpoken.entries()) {
-          if (key === volunteer.primaryLan) {
-            value.push(volunteer);
-          }
-        }
-      }
-      return languagesSpoken;
-      //return languagesSpoken;
-    }
-
-    //gets and stores the languages of the volunteers
-    function participantToLanguages(data) {
-      var languagesSpoken = new Map();
-      for (let i = 0; i < data.length; i++) {
-        let participant = data[i];
-        if (languagesSpoken.has(participant.language)) {
-          languagesSpoken.get(participant.language).push(data[i]);
-        } else {
-          languagesSpoken.set(participant.language, []);
-          languagesSpoken.get(participant.language).push(participant);
-        }
-      }
-      return languagesSpoken;
-    }
-
-    //assigns the participants to the volunteers
-    //the function assumes that the part.lan ===vol.lang
-    function partToVol(volunteers, participants) {
-      //ret
-      let ret = [];
-      //break up the participants into chunks
-      const participantChunks = splitParticipants(
-        participants,
-        Math.ceil(participants.length / volunteers.length)
-      );
-      //iterate through each volunteer based on language
-      //set each volunteer to a chunks
-      for (let i = 0; i < volunteers.length; i++) {
-        let volunteer = volunteers[i];
-        volunteer.items = participantChunks[i];
-        ret.push(volunteer);
-      }
-      return ret;
-    }
-    //if no volunteer speaks the languages put in participants
-    //if the algorithm will catch the 1 case
-    /*if multiple volunteers speak the same language as participants then distribute amongst the volunteers
-    then throw them in to the final array*/
-    function matchVolstoParts(part, vol) {
-      //creat the participants list object
-      let ret = [];
-      let Participants = {
-        index: null,
-        title: "Participants",
-        items: [],
-        primaryLan: null,
-        secondaryLan: null,
-      };
-      let languages = vol.keys();
-      for (const key of languages) {
-        if (volunteers.get(key).length === 0) {
-          let temp = participants.get(key);
-          for (let j = 0; j < temp.length; j++) {
-            let participant = temp[j];
-            Participants.items.push(participant);
-          }
-        } else {
-          //returns all the volunteers
-          let temp = partToVol(volunteers.get(key), participants.get(key));
-
-          for (let i = 0; i < temp.length; i++) {
-            ret.push(temp[i]);
-          }
-        }
-      }
-      Participants.index = ret.length + 1;
-      ret.push(Participants);
-      for (let k = 0; k < ret.length; k++) {
-        let person = ret[k];
-        person.index = k + 1;
-      }
-
-      return ret;
-    }
-
-    let participants = participantToLanguages(participantsList);
-    let volunteers = volunteersToLanguages(PracticeUsers);
-
-    DistributedUsers = matchVolstoParts(participants, volunteers);
-    setPeople(DistributedUsers);
-   // PracticeUsers = matchVolstoParts(participants, volunteers);
-  };
   return (
-    <div>
-      <DragPractice data={peoples} />
-      {/* buttons */}
-      <section id="call_assign">
-        <div className="call_buttons">
-          <Button variant="contained" onClick={CreateAssignment}>
-            Generate Assignments
-          </Button>
-          <Button color="success" variant="contained">
-            Confirm Assignments{" "}
-          </Button>
-        </div>
-      </section>
-      <FooterContainer />
-    </div>
+    <CallAssignments />
   );
 }
 

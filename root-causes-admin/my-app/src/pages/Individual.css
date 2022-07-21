@@ -1,0 +1,86 @@
+.indiv h2{
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.indiv p{
+    font-family: 'Raleway Medium', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    padding: 20px;
+}
+
+  .indivButtonCont{
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .indivButtonCont button{
+    background-color: #d6a977;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 4px;
+    margin: 0.7rem;
+    margin-top: 0.7rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+  
+  .indivButtonCont button:hover{
+    background-color: #bd9669;
+  }
+  
+  .personal_info{
+    border: 2px solid #00743e; 
+    width: 800px;
+    height: 200px;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+  }
+  
+  .med_info{
+    border: 2px solid #00743e; 
+    width: 800px;
+    height: 200px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+  
+  .other_info{
+    border: 2px solid #00743e; 
+    width: 800px;
+    height: 200px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+  
+  .editButton{
+    text-align: center;
+  }
+  
+  .Divider{
+    background-color: #f7c86d;
+  }
+  
+   
+.paginationBttns{
+  width:80%;
+  height:40px;
+  list-style: none;
+  display:flex;
+  justify-content:center;
+  margin: 0 auto;
+}
+.paginationBttns a {  
+  padding:10px;
+  margin:8px;
+  border-radius:5px;
+  background-color: #d6a977;
+  color:white;
+  cursor:pointer;
+}
+.paginationBttns a:hover{
+  background-color:#bd9669;
+ 
+}

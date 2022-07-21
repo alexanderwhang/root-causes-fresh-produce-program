@@ -26,7 +26,6 @@
 }
 
 .sending{
-    /* margin-left: 150px; */
     display: flex;
     width: 100%;
     float: left;
@@ -48,7 +47,6 @@
     max-height: 20vh;
     align-items: center;
     justify-content: center;
-    /* width: 150px; */
 }
 
 .filter{
@@ -76,8 +74,6 @@
 
 
 .confirmMessage {
-    /* margin-top: 0.5rem;
-    margin-left: 20px; */
     margin: 0 auto;
     width: 50%;
 }
@@ -100,8 +96,6 @@
     border-radius: 30px;
     background-color: #e0cba4;
     max-height: 150vh;
-    /* overflow: hidden;
-    overflow-y: auto; */
 }
 
 .receiving h4{
@@ -112,7 +106,6 @@
 .caught{
     max-height: 70vh;
     width: 90%;
-    /* display: inline-block; */
     margin: 1rem;
     margin-left: 2rem;
     position: relative;
@@ -126,7 +119,6 @@
 .uncaught{
     max-height: 70vh;
     width: 90%;
-    /* display: inline-block; */
     margin: 1rem;
     margin-left: 2rem;
     position: relative;
