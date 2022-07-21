@@ -1,3 +1,4 @@
+from ast import Call
 from flask import Flask, request, jsonify, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -14,13 +15,12 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-import math
 # from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
-# from twilio.twiml.messaging/_response import MessagingResponse
 import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
+import numpy as np
 
 ### BACKEND INSTALLATION INSTRUCTIONS ###
 # cd into the backend in the terminal
@@ -31,6 +31,7 @@ from werkzeug.utils import secure_filename
         # if pyscopg2 is not installing -> pip install postgres first or xcode-select --install
         # or pipenv install psycopg2-binary
 # go into python shell (type python in terminal)
+# pip install numpy
 # from app import db
 # db.create_all() (this will create an event table)
 
@@ -56,7 +57,7 @@ db = SQLAlchemy(app)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# SMS INFO
+# SMS AUTHENTICATION INFO
 account_sid = "ACa19caaefab10dead0bf946d4e3190175"
 auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
@@ -337,18 +338,18 @@ class CallAssignment(db.Model):
 
     call_assignment_id = db.Column(db.Integer, primary_key=True)
     volunteer_id = db.Column(db.Integer, nullable=False)
-    assigment_date = db.Column(db.DateTime, nullable=False)
+    assignment_date = db.Column(db.DateTime, nullable=False)
     participant_list = db.Column(db.ARRAY(Integer), nullable=False)
 
     def __repr__(self):
-        return f"Caller ID #{self.volunteer_id} calling Participant ID#{self.participant_id} on Date {self.assignment_date}"
+        return f"Caller ID #{self.volunteer_id} calling Participant ID#{self.participant_list} on Date {self.assignment_date}"
 
     def __init__(self, volunteer_id, assignment_date, participant_list):
         self.volunteer_id = volunteer_id
         self.assignment_date = assignment_date
         self.participant_list = participant_list
 
-def format_calls(calls):
+def format_call_assignment(calls):
     return {
         "call_assignment_id": calls.call_assignment_id,
         "volunteer_id": calls.volunteer_id,
@@ -409,7 +410,7 @@ class CallHistory(db.Model):
     __table_args__ = {"schema":"RC"}
 
     call_history_id = db.Column("call_history_id", db.Integer, primary_key=True)
-    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant.id'), nullable=False)
+    participant_id = db.Column(db.Integer, db.ForeignKey('RC.participant3.id'), nullable=False)
     volunteer_id = db.Column(db.Integer, db.ForeignKey('RC.volunteer.id'), nullable=False)
     call_date = db.Column(db.Date, nullable=True, default=datetime.utcnow)
     notes = db.Column(db.Text, nullable=True)
@@ -622,26 +623,19 @@ def update_participant(id):
     db.session.commit()
     return {'participant': format_participant(participant.one())}
 
-# OUTGOING SMS TEXT
+# outgoing sms texts 
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
-    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
-<<<<<<< HEAD
-    part_list = []
-    phone_numbers = []
-    for participant in participants:
-        part_list.append(format_participant(participant))
-    # for x in part_list:
-    #     phone_numbers.append(part_list[x].phone_number)
-=======
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
-    for x in participants:
+    # an error will occur if you try sending a message to an unverified phone number since this is a trial account
+    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all() # for now, we filter by group a since these are the verified phone numbers
+    
+    for x in participants: # iterates through list of participants and sends custom message to each phone number
         messages = client.messages \
                     .create(
                         body=message,
-                        from_='+19897046694',
-                        to=f'+1{x.phone}'
+                        from_='+19897046694', # purchased phone number
+                        to=f'+1{x.phone}' 
                     )
 
     # messages = client.messages \
@@ -659,23 +653,24 @@ def outgoing_sms(message):
 
     return {"Message": message}
 
-# INCOMING SMS TEXT
-@app.route('/smstexts', methods=['GET', 'POST'])
-def incoming_sms():
-    # """Send a dynamic reply to an incoming text message"""
-    # # Get the message the user sent our Twilio number
-    body = request.values.get('Body', None)
+# incoming sms texts (WIP)
+# @app.route('/smstexts', methods=['GET', 'POST'])
+# def incoming_sms():
+#     # get the message the user sent our twilio number
+#     body = request.values.get('Body', None)
 
-    # Start our TwiML response
-    resp = MessagingResponse()
+#     # start our TwiML response
+#     resp = MessagingResponse() # make sure to uncomment the import statement that imports messagingresponse when attempting to get this code working
 
-    # Determine the right reply for this message
-    if body == '1':
-        resp.message("You have selected YES!")
-    elif body == '2':
-        resp.message("You have selected NO!")
+#     # determine the right reply for this message
+#     if body == 'yes': 
+#         resp.message("You have selected YES!")
+#     elif body == 'si':
+#         resp.message("Has seleccionado SÍ!")
+#     elif body == 'no':
+#         resp.message("You have selected NO!\n Has seleccionado NO!")
 
-    return str(resp)
+#     return str(resp)
 
 ######### VOLUNTEERS ##########
 
@@ -917,7 +912,7 @@ def format_sortedVolunteers(volunteers):
 
 # GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
 @app.route('/callermanagement/unsorted', methods = ['GET'])
-def get_unsoreted_call_assignments():
+def get_unsorted_call_assignments():
     type="Caller"
     volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
     participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
@@ -929,53 +924,31 @@ def get_unsoreted_call_assignments():
 
     return { json.dumps(ret)}
 
+# POST NEW CALL ASSIGNMENT
+@app.route('/callassignment', methods = ['POST'])
+def post_call_assignment():
+    volunteer = request.json['vol']
+    volunteer_id = volunteer.get("id")
+    pt_list = request.json['pts']
+    pt_ids = []
+
+    for pt in pt_list:
+        pt_ids.append(pt.get("id"))
+
+    assignment_date = datetime.now(timezone.utc)
+
+    call_assignment = CallAssignment(volunteer_id, assignment_date, pt_ids)
+
+    db.session.add(call_assignment)
+    db.session.commit()
+    
+    return format_call_assignment(call_assignment)
+    typeString = type(pt_ids)
+    # return {"pt_ids": list(np.array(pt_ids))}
+    # return {"id": volunteer_id}
+
 
 ########VOLUNTEER APP##########
-def format_participant_routes(participant):
-    status = Status.query.filter_by(participant_id=participant.id).one()
-    address = Address.query.filter_by(participant_id=participant.id).one()
-    if (DeliveryHistory.query.filter_by(participant_id=participant.id).first() == None):
-        notes = "No notes."
-    else:
-        notes = DeliveryHistory.query.filter_by(participant_id=participant.id).first().notes
-    formatted_address = format_address(address)
-    return {
-        "id": participant.id,
-        "first_name": participant.first_name,
-        "last_name": participant.last_name,
-        "date_of_birth": participant.date_of_birth,
-        "age": participant.age,
-        "status": status.status_type_id,
-        # "updated_at": participant.updated_at,
-        "address": formatted_address,
-        "email": participant.email,
-        "phone": participant.phone,
-        "language": participant.language,
-        "pronouns": participant.pronouns,
-        "group": participant.group,
-        "household_size": participant.household_size,
-        "street": address.street,
-        "city": address.city,
-        "state": address.state,
-        "zip": address.zip,
-        "apartment": address.apartment,
-        "most_recent_delivery": participant.most_recent_delivery,
-        "most_recent_call": participant.most_recent_call,
-        "sms_response": participant.sms_response, 
-        "image": participant.image,
-        "notes" : notes
-    }
-
-# GET PARTICIPANTS BY STATUS - ROUTES PAGE
-@app.route('/routesparticipants/status/<status>', methods = ['GET'])
-def get_participants_by_status_routes(status):
-    participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==status).all()
-    participant_list = []
-    for participant in participants:
-        participant_list.append(format_participant_routes(participant))
-    return {'participants': participant_list}
-
-
 # FORMATS PARTICIPANTS TO DISPLAY - ROUTES AND CALLS PAGES
 def volunteer_format_participant(participant):
     status = Status.query.filter_by(participant_id=participant.id).one()

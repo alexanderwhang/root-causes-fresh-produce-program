@@ -264,8 +264,6 @@ function Row(props) {
                       </TableCell>
                   </TableRow>
                 </TableBody>
-
-
                 <TableHead>
                     <TableRow>
                       <TableCell> <b> Image Upload </b> </TableCell>
