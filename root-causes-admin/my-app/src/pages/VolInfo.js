@@ -11,6 +11,13 @@ import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { FooterContainer } from "../containers/footer";
 
+
+// NOTES ABOUT BUGS:
+    // currently, our search bar does not fully work. it is believed to be because of a bug with React Synthetic vs Native Events
+    // the bug is that you have to click the search bar in order to type even one character
+    // additionally, there are sometimes inaccurate results for a search query
+        //for example, if you type "j", one of the volunteers returned does not have j in any of their info fields
+        
 const baseUrl = "http://127.0.0.1:5000";
 
 export function VolInfoPage() {

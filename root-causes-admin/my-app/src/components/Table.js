@@ -7,6 +7,9 @@ import {useEffect, useState} from 'react';
 import axios from "axios"
 import TextField from "@mui/material/TextField";
 
+// FUTURE FEATURE NOTES:
+    // it would be nice to have a filter function in which a specific group (A or B) or color status can be displayed 
+
 const baseUrl = "http://localhost:5000"
 
 // this function contains the table of all the participants, and also contains the search bar and participant page buttons

@@ -26,10 +26,8 @@ import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
-import { Users } from './users.js'; 
-import { CallAssignments } from "./BackendUsers"; 
-import { DataDragPractice } from "./dataPractice";
-
+import { Users } from './users.js';
+import { CallAssignments } from "./callerManagement";
 
 
 //COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:
@@ -117,9 +115,11 @@ export function AddParticipant() {
    return <NewParticipant/>;
 }
 
-export function Callers(){  
-  return <CallAssignments />;
-
+// CALLER MANAGEMENT PAGE (FOUND IN NAVBAR'S VOLUNTEER MANAGEMENT)
+export function Callers() {
+  return (
+    <CallAssignments />
+  );
 }
 
 // INDIVIDUAL INFO PAGE. ACCESSIBLE BY CLICKING ON A PARTICIPANT'S NAME IN THE PARTICIPANTS PAGE

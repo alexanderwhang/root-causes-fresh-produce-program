@@ -14,7 +14,8 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
+import math
+# from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
 # from twilio.twiml.messaging/_response import MessagingResponse
 import math 
@@ -439,7 +440,7 @@ def hello():
 ### FLASK ROUTING ###
 # the next part of this app includes routing
 # this allows for the app to have specific functions and a structure that is easy to organize
-# thes routes are the main way for the frontend to interact with the backend
+# the routes are the main way for the frontend to interact with the backend
 
 ### PARTICIPANTS ###
 
@@ -848,7 +849,7 @@ def get_call_assignments():
             #prevent infinite chunking
             if len(volunteers)==0: 
                 return 1
-            if  len(participants)==0: 
+            if len(participants)==0: 
                 return 1
             return math.ceil(len(participants)/len(volunteers))
         share=chunkSize(participants,volunteers)
