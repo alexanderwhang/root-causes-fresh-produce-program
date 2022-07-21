@@ -628,7 +628,7 @@ def update_participant(id):
 def outgoing_sms(message):
 
     # an error will occur if you try sending a message to an unverified phone number since this is a trial account
-    participants = Participant.query.filter_by(group='C').order_by(Participant.id).all() # for now, we filter by group a since these are the verified phone numbers
+    participants = Participant.query.filter_by(group='C').order_by(Participant.id).all() # for now, we filter by group c since these are the verified phone numbers
     
     for x in participants: # iterates through list of participants and sends custom message to each phone number
         messages = client.messages \
