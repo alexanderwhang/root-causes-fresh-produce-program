@@ -62,7 +62,7 @@ auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
 
 ### CLASS INFORMATION ###
-# all the classes are set up to take information from the database
+# all the classes are set up to take information from the databa
 
 class Participant(db.Model):
     __tablename__ = 'participant3'
@@ -625,21 +625,37 @@ def update_participant(id):
 # OUTGOING SMS TEXT
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
-    participants = Participant.query.order_by(Participant.id).all()
+    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
+<<<<<<< HEAD
     part_list = []
     phone_numbers = []
     for participant in participants:
         part_list.append(format_participant(participant))
     # for x in part_list:
     #     phone_numbers.append(part_list[x].phone_number)
+=======
+>>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
-    for x in part_list:
+    for x in participants:
         messages = client.messages \
                     .create(
                         body=message,
                         from_='+19897046694',
-                        to=f"+1{x.phone}"
+                        to=f'+1{x.phone}'
                     )
+
+    # messages = client.messages \
+    #                 .create(
+    #                     body=message,
+    #                     from_='+19897046694',
+    #                     to=f"+17137398907"
+    #                 )
+    # messages = client.messages \
+    #                 .create(
+    #                     body=message,
+    #                     from_='+19897046694',
+    #                     to=f"+14107079295"
+    #                 )
 
     return {"Message": message}
 
