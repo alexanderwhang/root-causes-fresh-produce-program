@@ -2,6 +2,8 @@ import React from 'react'
 import Footer from '../components/footer'
 import Icon from '../components/icons'
 
+// the actual footer function that is imported into all of our pages
+    // it works with footer.js in components/footer/styles and index.js in components/footer
 export function FooterContainer() {
     return(
         <Footer>
