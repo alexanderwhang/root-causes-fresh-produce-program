@@ -20,24 +20,11 @@ let participantsList = [{}];
 export const CallAssignments = () => {
   // let userList = [{}];
 
-<<<<<<< HEAD
-  //   const [userList, setUserList] = useState([]);
-//   const [participantsList, setParticipantsList] = useState([{}]);
-//   const [volunteersList, setVolunteersList] = useState([{}]);
-  const [listDefined, setListDefined] = useState(false);
-  const [assignmentsGenerated, setAssignmentsGenerated] = useState(false);
-  const [list, setList] = useState(unsortedUserObjs);
-  const [dragging, setDragging] = useState(false);
-  const dragItem = useRef();
-  const dragNode = useRef();
-
-=======
   const [userList, setUserList] = useState([]);
   const [participantsList, setParticipantsList] = useState([]);
   const [volunteersList, setVolunteersList] = useState([]);
   const [userObjSet, setUserObjSet] = useState(false);
   // let userObjSet = false;
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
   // GET
   const fetchUserList = async () => {
     const data = await axios.get(`${baseUrl}/callermanagement`);
@@ -153,8 +140,6 @@ export const CallAssignments = () => {
     }
     return arr;
   };
-<<<<<<< HEAD
-=======
   // users2[0] = { vol: {}, pts: participantsList };
   // volunteersList.map((vol) => {
   //   return users2.push({ vol: vol, pts: [] });
@@ -162,7 +147,6 @@ export const CallAssignments = () => {
   // console.log("users: ", users);
   // console.log("users2: ", users2);
   // console.log("userObjs: ", userObjs);
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
   // return userList;
 
@@ -178,14 +162,10 @@ export const CallAssignments = () => {
     //   const response = await axios.post(`${baseUrl}/callassignment`, data);
     // }
   };
-<<<<<<< HEAD
-
-=======
   const [list, setList] = useState(userObjs);
   const [dragging, setDragging] = useState(false);
   const dragItem = useRef();
   const dragNode = useRef();
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
   const handleDragStart = (e, params) => {
     console.log("drag starting...", params);
     dragItem.current = params;
@@ -290,18 +270,12 @@ export const CallAssignments = () => {
                         <li id="ptName">
                           {item.first_name} {item.last_name}{" "}
                         </li>
-<<<<<<< HEAD
-                        <li>{item.email} </li>
-                        <li>{item.last_name}</li>
-                        <li>{item.address}</li>
-=======
                         {/* <li>{item.email} </li> */}
                         {/* <li>{item.last_name}</li>  */}
                         {/* <li>{item.address}</li>  */}
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
-                        <li>{item.phone} </li>
+                        {/* <li>{item.phone} </li>
                         <li>{item.email}</li>
-                        <li>{item.language} </li>
+                        <li>{item.language} </li> */}
                         {/* <li>{item.status}</li>  */}
                       </ul>
                     </div>
