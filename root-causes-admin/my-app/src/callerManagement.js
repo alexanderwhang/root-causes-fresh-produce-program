@@ -160,13 +160,14 @@ export const CallAssignments = () => {
     getUserObjs(userIdList);
   };
   const handleConfirmAssignments = async (e) => {
-    // for (let i = 0; i < userIdList.length; i++) {
-    //   const data = userIdList[0];
-    //   console.log("confirm assignments");
-    //   console.log("userIdList: ", userIdList);
-    //   console.log("data: ", data);
-    //   const response = await axios.post(`${baseUrl}/callassignment`, data);
-    // }
+    for (let i = 0; i < list.length; i++) {
+      const data = list[i];
+      console.log("confirm assignments");
+      console.log("list: ", list);
+      console.log("data: ", data);
+      const response = await axios.post(`${baseUrl}/callassignment`, data);
+      console.log("response: ", response);
+    }
   };
 
   const handleDragStart = (e, params) => {

@@ -1,3 +1,4 @@
+from ast import Call
 from flask import Flask, request, jsonify, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -19,6 +20,7 @@ from datetime import date
 import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
+import numpy as np
 
 ### BACKEND INSTALLATION INSTRUCTIONS ###
 # cd into the backend in the terminal
@@ -29,6 +31,7 @@ from werkzeug.utils import secure_filename
         # if pyscopg2 is not installing -> pip install postgres first or xcode-select --install
         # or pipenv install psycopg2-binary
 # go into python shell (type python in terminal)
+# pip install numpy
 # from app import db
 # db.create_all() (this will create an event table)
 
@@ -335,18 +338,18 @@ class CallAssignment(db.Model):
 
     call_assignment_id = db.Column(db.Integer, primary_key=True)
     volunteer_id = db.Column(db.Integer, nullable=False)
-    assigment_date = db.Column(db.DateTime, nullable=False)
+    assignment_date = db.Column(db.DateTime, nullable=False)
     participant_list = db.Column(db.ARRAY(Integer), nullable=False)
 
     def __repr__(self):
-        return f"Caller ID #{self.volunteer_id} calling Participant ID#{self.participant_id} on Date {self.assignment_date}"
+        return f"Caller ID #{self.volunteer_id} calling Participant ID#{self.participant_list} on Date {self.assignment_date}"
 
     def __init__(self, volunteer_id, assignment_date, participant_list):
         self.volunteer_id = volunteer_id
         self.assignment_date = assignment_date
         self.participant_list = participant_list
 
-def format_calls(calls):
+def format_call_assignment(calls):
     return {
         "call_assignment_id": calls.call_assignment_id,
         "volunteer_id": calls.volunteer_id,
@@ -909,7 +912,7 @@ def format_sortedVolunteers(volunteers):
 
 # GET UNSORTED VOLS & PTS FOR CALLER MANAGEMENT PAGE
 @app.route('/callermanagement/unsorted', methods = ['GET'])
-def get_unsoreted_call_assignments():
+def get_unsorted_call_assignments():
     type="Caller"
     volunteers = db.session.query(Volunteer).join(VolunteerLog, Volunteer.id == VolunteerLog.volunteer_id).filter(VolunteerLog.volunteer_type==type).order_by(Volunteer.language.asc()).all()
     participants = db.session.query(Participant).join(Status, Participant.id == Status.participant_id, isouter=True).filter(Status.status_type_id==3).order_by(Participant.language.asc()).all()
@@ -920,6 +923,29 @@ def get_unsoreted_call_assignments():
     ret.append({"vol": {}, "pts": participants})
 
     return { json.dumps(ret)}
+
+# POST NEW CALL ASSIGNMENT
+@app.route('/callassignment', methods = ['POST'])
+def post_call_assignment():
+    volunteer = request.json['vol']
+    volunteer_id = volunteer.get("id")
+    pt_list = request.json['pts']
+    pt_ids = []
+
+    for pt in pt_list:
+        pt_ids.append(pt.get("id"))
+
+    assignment_date = datetime.now(timezone.utc)
+
+    call_assignment = CallAssignment(volunteer_id, assignment_date, pt_ids)
+
+    db.session.add(call_assignment)
+    db.session.commit()
+    
+    return format_call_assignment(call_assignment)
+    typeString = type(pt_ids)
+    # return {"pt_ids": list(np.array(pt_ids))}
+    # return {"id": volunteer_id}
 
 
 ########VOLUNTEER APP##########
