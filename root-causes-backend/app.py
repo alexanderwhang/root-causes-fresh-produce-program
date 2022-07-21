@@ -14,10 +14,8 @@ import psycopg2
 from sqlalchemy.dialects.postgresql import ARRAY
 import os
 from twilio.rest import Client
-import math
 # from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
-# from twilio.twiml.messaging/_response import MessagingResponse
 import math 
 # import needed for file upload
 from werkzeug.utils import secure_filename
@@ -56,7 +54,7 @@ db = SQLAlchemy(app)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# SMS INFO
+# SMS AUTHENTICATION INFO
 account_sid = "ACa19caaefab10dead0bf946d4e3190175"
 auth_token = "99238e6ddab706ec700abe98ed63cac3"
 client = Client(account_sid, auth_token)
@@ -622,38 +620,41 @@ def update_participant(id):
     db.session.commit()
     return {'participant': format_participant(participant.one())}
 
-# OUTGOING SMS TEXT
+# outgoing sms texts 
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
-    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
 
-    for x in participants:
+    # an error will occur if you try sending a message to an unverified phone number since this is a trial account
+    participants = Participant.query.filter_by(group='A').order_by(Participant.id).all() # for now, we filter by group a since these are the verified phone numbers
+    
+    for x in participants: # iterates through list of participants and sends custom message to each phone number
         messages = client.messages \
                     .create(
                         body=message,
-                        from_='+19897046694',
-                        to=f'+1{x.phone}'
+                        from_='+19897046694', # purchased phone number
+                        to=f'+1{x.phone}' 
                     )
 
     return {"Message": message}
 
-# INCOMING SMS TEXT
-@app.route('/smstexts', methods=['GET', 'POST'])
-def incoming_sms():
-    # """Send a dynamic reply to an incoming text message"""
-    # # Get the message the user sent our Twilio number
-    body = request.values.get('Body', None)
+# incoming sms texts (WIP)
+# @app.route('/smstexts', methods=['GET', 'POST'])
+# def incoming_sms():
+#     # get the message the user sent our twilio number
+#     body = request.values.get('Body', None)
 
-    # Start our TwiML response
-    resp = MessagingResponse()
+#     # start our TwiML response
+#     resp = MessagingResponse() # make sure to uncomment the import statement that imports messagingresponse when attempting to get this code working
 
-    # Determine the right reply for this message
-    if body == '1':
-        resp.message("You have selected YES!")
-    elif body == '2':
-        resp.message("You have selected NO!")
+#     # determine the right reply for this message
+#     if body == 'yes': 
+#         resp.message("You have selected YES!")
+#     elif body == 'si':
+#         resp.message("Has seleccionado SÍ!")
+#     elif body == 'no':
+#         resp.message("You have selected NO!\n Has seleccionado NO!")
 
-    return str(resp)
+#     return str(resp)
 
 ######### VOLUNTEERS ##########
 
