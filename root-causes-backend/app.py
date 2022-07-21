@@ -626,15 +626,6 @@ def update_participant(id):
 @app.route('/smstexts/<message>', methods=['POST'])
 def outgoing_sms(message):
     participants = Participant.query.filter_by(group='A').order_by(Participant.id).all()
-<<<<<<< HEAD
-    part_list = []
-    phone_numbers = []
-    for participant in participants:
-        part_list.append(format_participant(participant))
-    # for x in part_list:
-    #     phone_numbers.append(part_list[x].phone_number)
-=======
->>>>>>> d7f957aab47168bf25f80341a79d5637871be38a
 
     for x in participants:
         messages = client.messages \
