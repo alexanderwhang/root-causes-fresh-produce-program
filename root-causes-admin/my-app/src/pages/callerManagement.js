@@ -26,6 +26,7 @@ export const CallAssignments = () => {
   const [assignmentsGenerated, setAssignmentsGenerated] = useState(false);
   const [list, setList] = useState(unsortedUserObjs);
   const [dragging, setDragging] = useState(false);
+  const [confirmed, setConfirmed] = useState(false)
   const dragItem = useRef();
   const dragNode = useRef();
 
@@ -169,6 +170,7 @@ export const CallAssignments = () => {
       console.log("data: ", data);
       const response = await axios.post(`${baseUrl}/callassignment`, data);
       console.log("response: ", response);
+      setConfirmed(true);
     }
   };
 
@@ -315,6 +317,7 @@ export const CallAssignments = () => {
               >
                 Confirm Assignments{" "}
               </Button>
+              <h4 hidden={!confirmed}>Call Assignments Posted!</h4>
             </div>
           </section>
         </div>
