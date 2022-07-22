@@ -228,11 +228,10 @@ export const CallAssignments = () => {
     console.log("User objs: ", userObjs);
     console.log("List: ", list);
 
-    // if(!assignmentsGenerated) {
-    //     setList(unsortedUserObjs);
-    // } else {
-    //     setList(userObjs);
-    // }
+    //This part of the app renders the caller page 
+    // using the data inputed from the backend, each object in the array of objects is the group(grp) 
+    //the items inside the object.pts is are the items 
+    //
     return (
       <div>
         <Navbar />
