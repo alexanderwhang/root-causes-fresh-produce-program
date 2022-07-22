@@ -262,10 +262,7 @@ export const CallAssignments = () => {
                         : null
                     }
                   >
-                    <div className="group-title">
-                      {grp.vol.first_name} {grp.vol.last_name} (
-                      {grp.vol.language})
-                    </div>
+                    <div className="group-title">{grp.vol.first_name === "Participants"? `${grp.vol.first_name}` : `${grp.vol.first_name} ${grp.vol.last_name} (${grp.vol.language})`}</div>
 
                     {grp.pts.map((item, itemI) => (
                       <div
