@@ -96,13 +96,13 @@ export default function SignUp() {
   }
 
   // set color of checkbox to grey if the day has already passed!
-  function crossOut(str) {
+  function disable(str) {
     const arr = str.split(" ")
     const num = parseInt(arr[arr.length - 1]);
     if (num < d.getDate()) {
-      return "line-through";
+      return true;
     } else {
-      return ""
+      return false;
     }
   }
 
@@ -236,25 +236,25 @@ export default function SignUp() {
                       name="driverDay1"
                       label={sat_label[0]}
                       value={sat_value[0]}
-                      style={{textDecorationLine: crossOut(sat_label[0]) }}
+                      disabled = {disable(sat_label[0])}
                       onChange={(e)=>setDriverDay1(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay2"
                       label={sat_label[1]}
                       value={sat_value[1]}
-                      style={{textDecorationLine: crossOut(sat_label[1]) }}
+                      disabled = {disable(sat_label[1])}
                       onChange={(e)=>setDriverDay2(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay3"
                       label={sat_label[2]}
                       value={sat_value[2]}
-                      style={{textDecorationLine: crossOut(sat_label[2]) }}
+                      disabled = {disable(sat_label[2])}
                       onChange={(e)=>setDriverDay3(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay4"
                       label={sat_label[3]}
                       value={sat_value[3]}
-                      style={{textDecorationLine: crossOut(sat_label[3]) }}
+                      disabled = {disable(sat_label[3])}
                       onChange={(e)=>setDriverDay4(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay5"
@@ -376,25 +376,25 @@ export default function SignUp() {
                         name="packerDay1"
                         label={sat_label[0]}
                         value={sat_value[0]}
-                        style={{textDecorationLine: crossOut(sat_label[0]) }}
+                        disabled = {disable(sat_label[0])}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
                         label={sat_label[1]}
                         value={sat_value[1]}
-                        style={{textDecorationLine: crossOut(sat_label[1]) }}
+                        disabled = {disable(sat_label[1])}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
                         label={sat_label[2]}
                         value={sat_value[2]}
-                        style={{textDecorationLine: crossOut(sat_label[2]) }}
+                        disabled = {disable(sat_label[2])}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
                         label={sat_label[3]}
                         value={sat_value[3]}
-                        style={{textDecorationLine: crossOut(sat_label[3]) }}
+                        disabled = {disable(sat_label[3])}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay5"
@@ -455,28 +455,28 @@ export default function SignUp() {
                         name="callerDay1" 
                         label={tues_label[0]}
                         value={tues_value[0]}
-                        style={{textDecorationLine: crossOut(tues_label[0]) }}
+                        disabled = {disable(tues_label[0])}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
                         label= {tues_label[1]}
                         value= {tues_value[1]}
-                        style={{textDecorationLine: crossOut(tues_label[1]) }}
+                        disabled = {disable(tues_label[1])}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
                         label= {tues_label[2]}
                         value= {tues_value[2]}
-                        style={{textDecorationLine: crossOut(tues_label[2]) }}
+                        disabled = {disable(tues_label[2])}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
                         label= {tues_label[3]}
                         value= {tues_value[3]}
-                        style={{textDecorationLine: crossOut(tues_label[3]) }}
+                        disabled = {disable(tues_label[3])}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
