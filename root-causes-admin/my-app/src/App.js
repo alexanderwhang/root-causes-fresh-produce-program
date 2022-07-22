@@ -27,7 +27,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
 import { Users } from './users.js';
-import { CallAssignments } from "./callerManagement";
+import { CallAssignments } from "./pages/callerManagement";
 
 
 //COMMANDS TO EXECUTE IN TERMINAL IN ORDER FOR APP TO WORK PROPERLY:

@@ -3,9 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 // import { Button, cardClasses } from "@mui/material";
 // import { DataDragPractice } from "./dataPractice";
-import { FooterContainer } from "./containers/footer";
+import { FooterContainer } from "../containers/footer";
 import Button from "@mui/material/Button";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
 const baseUrl = "http://127.0.0.1:5000";
 // let users = [];
