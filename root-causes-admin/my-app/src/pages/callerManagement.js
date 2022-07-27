@@ -3,9 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 // import { Button, cardClasses } from "@mui/material";
 // import { DataDragPractice } from "./dataPractice";
-import { FooterContainer } from "./containers/footer";
+import { FooterContainer } from "../containers/footer";
 import Button from "@mui/material/Button";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
 const baseUrl = "http://127.0.0.1:5000";
 // let users = [];
@@ -16,7 +16,8 @@ let unsortedUserObjs = [];
 let volunteersList = [{}];
 let participantsList = [{}];
 
-export const CallAssignments = () => {
+export const CallAssignments = () => { 
+  //This react hook is responsible for grabbing data from the backend, creating and adding the data to the drag and drop area, and then returning everything in the caller page
   // let userList = [{}];
 
   //   const [userList, setUserList] = useState([]);
@@ -30,7 +31,7 @@ export const CallAssignments = () => {
   const dragNode = useRef();
 
   // GET
-  const fetchUserList = async () => {
+  const fetchUserList = async () => { 
     const data = await axios.get(`${baseUrl}/callermanagement`);
     userIdList = data.data.sortedVolunteers;
     // setUserList(list);
@@ -42,7 +43,8 @@ export const CallAssignments = () => {
   };
 
   // GET PARTICIPANTS
-  const fetchParticipants = async () => {
+  const fetchParticipants = async () => { 
+    //This react hook is responsible for grabing a participants list with a status of needing to be called.
     const data = await axios.get(`${baseUrl}/participants/status/3`);
     const { participants } = data.data;
     // setParticipantsList(participants);
@@ -55,6 +57,7 @@ export const CallAssignments = () => {
 
   // GET VOLUNTEERS
   const fetchVolunteers = async () => {
+    // This react hook grabs from the backend a list of volunteers who are responsible for calling participants
     const data = await axios.get(`${baseUrl}/volunteers/type/Caller`);
     const volunteers = data.data.volunteers;
     // setVolunteersList(data.data.volunteers);
@@ -66,7 +69,8 @@ export const CallAssignments = () => {
     getInitUserList();
   };
 
-  useEffect(() => {
+  useEffect(() => { 
+    //This allows for each of these react hooks to be called once
     fetchParticipants();
     fetchVolunteers();
     fetchUserList();
@@ -75,7 +79,9 @@ export const CallAssignments = () => {
   // console.log("output for userList");
   // console.log(userList);
 
-  const getInitUserList = () => {
+  const getInitUserList = () => { 
+    // This react hook is responsible for taking the user objects and formatting them into a manner that javascript can understand
+    // This formatting is also what allows for the  objects to work with the drag and drop
     console.log("getInitUserList");
     console.log("volunteersList.length: ", volunteersList.length);
     console.log("participantsList.length: ", participantsList.length);
@@ -99,7 +105,8 @@ export const CallAssignments = () => {
     console.log("unsortedUserObjs: ", unsortedUserObjs);
   };
 
-  const getUserObjs = async (userIdList) => {
+  const getUserObjs = async (userIdList) => {  
+    //gets the userObjects from the backend and then formats the objects 
     setListDefined(false);
 
     console.log("getting user objs...");
@@ -141,7 +148,8 @@ export const CallAssignments = () => {
   const getArr = (str) => {
     // if(str.length<3) {
     //   return [];
-    // }
+    // } 
+    // This code takes an array, casted as an string, and turns it back into an array while keeping allow the arrays elements intact
     let intStr = "";
     let arr = [];
     for (let i = 0; i < str.length; i++) {
@@ -158,7 +166,9 @@ export const CallAssignments = () => {
 
   // return userList;
 
-  const handleGenerateAssignments = () => {
+  const handleGenerateAssignments = () => { 
+    // This grabs the sorted volunteers with each volunteer being pared with participants who speak the same language 
+    // The paring is done equitably such that each volunteer gets an equal number of participants
     getUserObjs(userIdList);
   };
   const handleConfirmAssignments = async (e) => {
@@ -172,7 +182,9 @@ export const CallAssignments = () => {
     }
   };
 
-  const handleDragStart = (e, params) => {
+  const handleDragStart = (e, params) => { 
+    //This code allows for the current item to be dragged 
+    // using an event listener, the code checks to see whether you are still dragging the item
     console.log("drag starting...", params);
     dragItem.current = params;
     dragNode.current = e.target;
@@ -184,7 +196,9 @@ export const CallAssignments = () => {
 
   //you have to index into volnteers
   //items =pts
-  const handleDragEnter = (e, params) => {
+  const handleDragEnter = (e, params) => { 
+    //This code is responsible for allowing for what happens when you want to drag into another group 
+    // Once you have dragged into another group, the list that was input is then updated 
     console.log("Entering drag...", params);
     const currentItem = dragItem.current;
     if (e.target !== dragNode.current) {
@@ -205,7 +219,8 @@ export const CallAssignments = () => {
     }
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = () => { 
+    // This react hook deals with resetting the event handler and then ending the drag and drop
     console.log("Ending drag...");
     setDragging(false);
     dragNode.current.removeEventListener("dragend", handleDragEnd);
@@ -213,7 +228,9 @@ export const CallAssignments = () => {
     dragNode.current = null;
   };
 
-  const getStyles = (params) => {
+  const getStyles = (params) => { 
+    //this line of code is responsible for the styling of the item background of the item once the item is being dragged
+    //it creates the appearance of an item being removed from the group
     const currentItem = dragItem.current;
     if (
       currentItem.grpI === params.grpI &&
@@ -261,10 +278,7 @@ export const CallAssignments = () => {
                         : null
                     }
                   >
-                    <div className="group-title">
-                      {grp.vol.first_name} {grp.vol.last_name} (
-                      {grp.vol.language})
-                    </div>
+                    <div className="group-title">{grp.vol.first_name === "Participants"? `${grp.vol.first_name}` : `${grp.vol.first_name} ${grp.vol.last_name} (${grp.vol.language})`}</div>
 
                     {grp.pts.map((item, itemI) => (
                       <div

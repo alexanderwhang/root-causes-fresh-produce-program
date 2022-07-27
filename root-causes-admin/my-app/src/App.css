@@ -223,6 +223,7 @@ img {
   margin-left: 400px;
   position: flex;
   float: right;
+  overflow-y: auto;
 }
 
 #pre-click-grps {
