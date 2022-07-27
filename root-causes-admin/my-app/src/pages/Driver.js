@@ -79,7 +79,7 @@ export function Driver() {
 
   // GET PARTICIPANTS
   const fetchParticipants = async () => {
-    const data = await axios.get(`${baseUrl}/participants/group/A/status/1`); // GET PATIENTS READY FOR DELIVERY (GREEN)
+    const data = await axios.get(`${baseUrl}/participants/group/B/status/1`); // GET PATIENTS READY FOR DELIVERY (GREEN)
     const { participants } = data.data;
     setParticipantsList(participants);
     console.log("DATA: ", data);

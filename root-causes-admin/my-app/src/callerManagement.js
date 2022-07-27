@@ -247,18 +247,13 @@ export const CallAssignments = () => {
                       ? "participants"
                       : "dnd-group"
                   }
-                  id={
-                    `${grp.pts.length}` < 1
-                    ? "pre-click-grps"
-                    : "post-click-grps"
-                  }
                   onDragEnter={
                     dragging && !grp.pts.length
                       ? (e) => handleDragEnter(e, { grpI, itemI: 0 })
                       : null
                   }
                 >
-                  <div className="group-title">{grp.vol.first_name} {grp.vol.last_name} ({grp.vol.language})</div>
+                  <div className="group-title">{grp.vol.first_name === "Participants"? `${grp.vol.first_name}` : `${grp.vol.first_name} ${grp.vol.last_name} (${grp.vol.language})`}</div>
 
                   {grp.pts.map((item, itemI) => (
                     <div
