@@ -244,7 +244,7 @@ export default function SignUp() {
             <AssignmentOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Monthly Sign Up
+            Volunteer Sign Up
           </Typography>
           <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={1}>
@@ -272,7 +272,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
               <FormLabel id="day-questions" 
-                > Please mark your availability for the following two months: 
+                > Please mark your availability for the following list of dates: 
                 <FormGroup>
                   
                   <FormControlLabel control={<Checkbox />} 
@@ -413,7 +413,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormLabel id="day-questions" 
-                  > Please mark your availability for the following two months: 
+                  > Please mark your availability for the following list of dates: 
                   <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay1"
@@ -492,7 +492,7 @@ export default function SignUp() {
               
               <Grid item xs={12}>
               <FormLabel id='caller_day'
-                > Please mark your availability for the following two months: 
+                > Please mark your availability for the following list of dates: 
                 <FormGroup>
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay1" 
