@@ -1,7 +1,6 @@
 import "./Driver.css";
 import React from "react";
 import axios from "axios";
-import { Vol_data } from "../vol_data";
 import Navbar from "../components/Navbar/Navbar";
 import { FooterContainer } from "../containers/footer";
 import { useEffect, useState } from "react";
