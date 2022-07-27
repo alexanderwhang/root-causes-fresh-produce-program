@@ -20,13 +20,10 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import { FooterContainer } from "./containers/footer";
 import SvgEllipse from "./symbolComponents/Ellipse";
-import { DragPractice } from "./practice.js"; 
-import {PracticeUsers} from "./practiceUsers"
 import { useEffect, useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import ReactPaginate from 'react-paginate';
-import { Users } from './users.js';
 import { CallAssignments } from "./pages/callerManagement";
 
 
