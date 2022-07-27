@@ -46,22 +46,30 @@ export default function SignUp() {
   var d = new Date();
 
   // first day in the next month
-  if (d.getMonth() === 11) {
-    d_next_month = new Date(d.getFullYear() + 1, d.getMonth()+1, 1);
+  if (d.getMonth() === 11 ) {
+    var d_next_month = new Date(d.getFullYear() + 1, 0, 1);
+    var d_next2_month = new Date(d.getFullYear() + 1, 1, 1);
+  } else if (d.getMonth() === 10) {
+    var d_next_month = new Date(d.getFullYear(), 11, 1);
+    var d_next2_month = new Date(d.getFullYear() + 1, 0, 1);
   } else {
     var d_next_month = new Date(d.getFullYear(), d.getMonth()+1, 1);
+    var d_next2_month = new Date(d.getFullYear() + 1, d.getMonth() + 2, 1);
   }
 
   var getTot = daysInMonth(d.getMonth(),d.getFullYear()); //Get total days in a month
-  var getTotNext = daysInMonth(d_next_month.getMonth(), d.getFullYear());
+  var getTotNext = daysInMonth(d_next_month.getMonth(), d_next_month.getFullYear());
+  var getTotNext2 = daysInMonth(d_next2_month.getMonth(), d_next2_month.getFullYear());
+
   var sat_label = new Array();   //Declaring array for inserting Saturdays
   var sat_value = new Array();
   var tues_label = new Array();   //Declaring array for inserting Tuesdays
   var tues_value = new Array();
 
+// TO FIND SATURDAYS
   for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
-    if(newDate.getDay()==6){   //if Saturday
+    if(i >= d.getDate() && newDate.getDay()==6){   //if Saturday
         sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i)
         sat_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
@@ -69,43 +77,78 @@ export default function SignUp() {
   }
 
   for(var i=1;i<=getTotNext;i++){ //looping through days in following month
-    var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    if (d.getMonth() + 1 > 11) {
+      var num = d.getMonth() - 11
+      var newDate = newDate(d.getFullYear()+1, num, i)
+    } else {
+      var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    }
     if(newDate.getDay()==6){   //if Saturday
         sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
-        sat_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year format
+        sat_value.push(newDate.getFullYear() + "-" + (newDate.getMonth()+1) + "-" + i) //  day/month/year format
     }
   }
 
+  for(var i=1;i<=getTotNext2;i++){ //looping through days in 2 months away
+    if (d.getMonth() + 2 > 11) {
+      var num = d.getMonth() - 10
+      var newDate = newDate(d.getFullYear()+1, num, i)
+    } else {
+      var newDate = new Date(d.getFullYear(),d.getMonth()+2,i)
+    }
+    if(newDate.getDay()==6){   //if Saturday
+        sat_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
+        sat_value.push(newDate.getFullYear() + "-" + (newDate.getMonth()+1) + "-" + i) //  day/month/year format
+    }
+  }
+
+// TO FIND TUESDAYS
   for(var i=1;i<=getTot;i++){    //looping through days in current month
     var newDate = new Date(d.getFullYear(),d.getMonth(),i)
-    if(newDate.getDay()==2){   //if Tuesday
-        tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
-        + " - " + (i+2));
+    if(i >= d.getDate() && newDate.getDay()==2){   //if Tuesday
+        tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
         tues_value.push(d.getFullYear() + "-" + (d.getMonth()+1) + "-" + i)
         //  day/month/year
     }
   }
 
   for(var i=1;i<=getTotNext;i++){    //looping through days in following month
-    var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    if (d.getMonth() + 1 > 11) {
+      var num = d.getMonth() - 11
+      var newDate = newDate(d.getFullYear()+1, num, i)
+    } else {
+      var newDate = new Date(d.getFullYear(),d.getMonth()+1,i)
+    }
     if(newDate.getDay()==2){   //if Tuesday
-      tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i
-      + " - " + (i+2));
+      tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
       tues_value.push(d.getFullYear() + "-" + (d.getMonth()+2) + "-" + i) //  day/month/year
     }
   }
 
-  // set color of checkbox to grey if the day has already passed!
-  function crossOut(str) {
-    const arr = str.split(" ")
-    const num = parseInt(arr[arr.length - 1]);
-    if (num < d.getDate()) {
-      return "line-through";
+    for(var i=1;i<=getTotNext2;i++) {    //looping through days in following month
+    var newDate = new Date(d.getFullYear(),d.getMonth()+2,i)
+    if (d.getMonth() + 2 > 11) {
+      var num = d.getMonth() - 10
+      var newDate = newDate(d.getFullYear()+1, num, i)
     } else {
-      return ""
+      var newDate = new Date(d.getFullYear(),d.getMonth()+2,i)
+    }
+    if(newDate.getDay()==2){   //if Tuesday
+      tues_label.push(newDate.toLocaleString("en-US", { month: "long" }) + " " + i);
+      tues_value.push(d.getFullYear() + "-" + (d.getMonth()+3) + "-" + i) //  day/month/year
     }
   }
 
+  // set color of checkbox to grey if the day has already passed!
+  // function disable(str) {
+  //   const arr = str.split(" ")
+  //   const num = parseInt(arr[arr.length - 1]);
+  //   if (num < d.getDate()) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   // driver selections
   const [driverDay1, setDriverDay1] = useState("");
@@ -236,25 +279,25 @@ export default function SignUp() {
                       name="driverDay1"
                       label={sat_label[0]}
                       value={sat_value[0]}
-                      style={{textDecorationLine: crossOut(sat_label[0]) }}
+                      // disabled = {disable(sat_label[0])}
                       onChange={(e)=>setDriverDay1(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay2"
                       label={sat_label[1]}
                       value={sat_value[1]}
-                      style={{textDecorationLine: crossOut(sat_label[1]) }}
+                      // disabled = {disable(sat_label[1])}
                       onChange={(e)=>setDriverDay2(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay3"
                       label={sat_label[2]}
                       value={sat_value[2]}
-                      style={{textDecorationLine: crossOut(sat_label[2]) }}
+                      // disabled = {disable(sat_label[2])}
                       onChange={(e)=>setDriverDay3(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay4"
                       label={sat_label[3]}
                       value={sat_value[3]}
-                      style={{textDecorationLine: crossOut(sat_label[3]) }}
+                      // disabled = {disable(sat_label[3])}
                       onChange={(e)=>setDriverDay4(e.target.value)}/>
                   <FormControlLabel control={<Checkbox />}
                       name="driverDay5"
@@ -376,25 +419,25 @@ export default function SignUp() {
                         name="packerDay1"
                         label={sat_label[0]}
                         value={sat_value[0]}
-                        style={{textDecorationLine: crossOut(sat_label[0]) }}
+                        // disabled = {disable(sat_label[0])}
                         onChange={(e)=>setPackerDay1(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay2"
                         label={sat_label[1]}
                         value={sat_value[1]}
-                        style={{textDecorationLine: crossOut(sat_label[1]) }}
+                        // disabled = {disable(sat_label[1])}
                         onChange={(e)=>setPackerDay2(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay3"
                         label={sat_label[2]}
                         value={sat_value[2]}
-                        style={{textDecorationLine: crossOut(sat_label[2]) }}
+                        // disabled = {disable(sat_label[2])}
                         onChange={(e)=>setPackerDay3(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />}
                         name="packerDay4"
                         label={sat_label[3]}
                         value={sat_value[3]}
-                        style={{textDecorationLine: crossOut(sat_label[3]) }}
+                        // disabled = {disable(sat_label[3])}
                         onChange={(e)=>setPackerDay4(e.target.value)}/>
                     <FormControlLabel control={<Checkbox />} 
                         name="packerDay5"
@@ -455,28 +498,28 @@ export default function SignUp() {
                         name="callerDay1" 
                         label={tues_label[0]}
                         value={tues_value[0]}
-                        style={{textDecorationLine: crossOut(tues_label[0]) }}
+                        // disabled = {disable(tues_label[0])}
                         onChange={(e)=>setCallerDay1(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay2" 
                         label= {tues_label[1]}
                         value= {tues_value[1]}
-                        style={{textDecorationLine: crossOut(tues_label[1]) }}
+                        // disabled = {disable(tues_label[1])}
                         onChange={(e)=>setCallerDay2(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay3" 
                         label= {tues_label[2]}
                         value= {tues_value[2]}
-                        style={{textDecorationLine: crossOut(tues_label[2]) }}
+                        // disabled = {disable(tues_label[2])}
                         onChange={(e)=>setCallerDay3(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 
                         name="callerDay4" 
                         label= {tues_label[3]}
                         value= {tues_value[3]}
-                        style={{textDecorationLine: crossOut(tues_label[3]) }}
+                        // disabled = {disable(tues_label[3])}
                         onChange={(e)=>setCallerDay4(e.target.value)}
                         />
                     <FormControlLabel control={<Checkbox />} 

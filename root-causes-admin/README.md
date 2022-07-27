@@ -1,6 +1,18 @@
 # Root Causes- Admin 
 
-Hello team! Welcome to our repository. This is a tool we will use to work on the project together. 
+Welcome to the Root Causes Admin Application. 
+
+To successfully run the application, you must first follow the installation instructions included in our App.js and app.py files.
+All the instructions are in the commented section under the import statements.
+
+When running, you must start the front end by running "npm start" in my-app. Then you must use the command "flask run" in the root-causes-backend directory. In order for the backend to work, you must be connected to Duke's VPN- Cisco AnyConnect Secure Mobility Client.
+
+Here is a guide for installing the VPN (on Mac):
+https://oit.duke.edu/help/articles/kb0014020
+
+Here is the link to the documentation that we wrote up explaining all of the features of our web-app:
+https://docs.google.com/document/d/1cBmYjlVjw4VZeICnXZbUI_Gaq7NxA1hnGbBKxkggdr0/edit?usp=sharing
+
 
 ## Getting started
 

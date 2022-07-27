@@ -18,6 +18,7 @@ from twilio.rest import Client
 # from twilio.twiml.messaging_response import MessagingResponse
 from datetime import date
 import math 
+import cgi
 # import needed for file upload
 from werkzeug.utils import secure_filename
 import numpy as np
@@ -1024,15 +1025,17 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
     existing_volunteer = Volunteer.query.filter_by(email=email).first()
+    register_link = '<a href=http://127.0.0.1:3000/profile> Please register here! </a>'
+    login_link = '<a href=http://127.0.0.1:3000> Please try again! </a>'
 
     if not existing_volunteer:
         return make_response(
-                f'{email} is not registered! Please register here instead: http://127.0.0.1:3000/profile'
+                f'{email} is not registered! {register_link}'
         )
 
     if existing_volunteer and not (existing_volunteer.password==password):
         return make_response(
-                f'{email} password is incorrect.'
+                f'{email} password is incorrect. {login_link}'
         )
     
     if existing_volunteer and (existing_volunteer.password==password):

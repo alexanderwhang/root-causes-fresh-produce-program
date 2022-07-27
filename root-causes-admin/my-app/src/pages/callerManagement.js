@@ -3,9 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 // import { Button, cardClasses } from "@mui/material";
 // import { DataDragPractice } from "./dataPractice";
-import { FooterContainer } from "./containers/footer";
+import { FooterContainer } from "../containers/footer";
 import Button from "@mui/material/Button";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
 const baseUrl = "http://127.0.0.1:5000";
 // let users = [];
@@ -16,17 +16,17 @@ let unsortedUserObjs = [];
 let volunteersList = [{}];
 let participantsList = [{}];
 
-
 export const CallAssignments = () => {
   // let userList = [{}];
 
   //   const [userList, setUserList] = useState([]);
-//   const [participantsList, setParticipantsList] = useState([{}]);
-//   const [volunteersList, setVolunteersList] = useState([{}]);
+  //   const [participantsList, setParticipantsList] = useState([{}]);
+  //   const [volunteersList, setVolunteersList] = useState([{}]);
   const [listDefined, setListDefined] = useState(false);
   const [assignmentsGenerated, setAssignmentsGenerated] = useState(false);
   const [list, setList] = useState(unsortedUserObjs);
   const [dragging, setDragging] = useState(false);
+  const [confirmed, setConfirmed] = useState(false)
   const dragItem = useRef();
   const dragNode = useRef();
 
@@ -50,7 +50,6 @@ export const CallAssignments = () => {
     // console.log("DATA1: ", data);
     participantsList = data.data.participants;
     console.log("participantsList: ", participantsList);
-    
 
     getInitUserList();
   };
@@ -82,16 +81,20 @@ export const CallAssignments = () => {
     console.log("volunteersList.length: ", volunteersList.length);
     console.log("participantsList.length: ", participantsList.length);
 
-    if (volunteersList.length > 0 && participantsList.length > 0) {
-        console.log("passed if statement");
-      unsortedUserObjs[0] = { vol: {first_name:"Participants"}, pts: participantsList };
+    if (volunteersList.length > 1 && participantsList.length > 1) {
+      console.log("passed if statement");
 
-      let i = 1;
+      let i = 0;
       volunteersList.map((vol) => {
-        unsortedUserObjs[i] = ({ vol: vol, pts: [] });
+        unsortedUserObjs[i] = { vol: vol, pts: [] };
         setList(unsortedUserObjs);
         i++;
       });
+      unsortedUserObjs.push({
+        vol: { first_name: "Participants" },
+        pts: participantsList,
+      });
+
       setListDefined(true);
     }
     console.log("unsortedUserObjs: ", unsortedUserObjs);
@@ -167,6 +170,7 @@ export const CallAssignments = () => {
       console.log("data: ", data);
       const response = await axios.post(`${baseUrl}/callassignment`, data);
       console.log("response: ", response);
+      setConfirmed(true);
     }
   };
   const handleDragStart = (e, params) => {
@@ -235,74 +239,87 @@ export const CallAssignments = () => {
     return (
       <div>
         <Navbar />
-        <div className="caller">
-          <h2>Caller Management</h2>
-          <header className="caller-header">
-            <div className="drag-n-drop">
-              {list.map((grp, grpI) => (
-                <div
-                  key={grp.vol.id}
-                  className={
-                    `${grp.vol.first_name}`=="Participants"
-                      ? "participants"
-                      : "dnd-group"
-                  }
-                  onDragEnter={
-                    dragging && !grp.pts.length
-                      ? (e) => handleDragEnter(e, { grpI, itemI: 0 })
-                      : null
-                  }
-                >
-                  <div className="group-title">{grp.vol.first_name === "Participants"? `${grp.vol.first_name}` : `${grp.vol.first_name} ${grp.vol.last_name} (${grp.vol.language})`}</div>
+        <div className="callerManagement">
+          <div className="caller">
+            <h2>Caller Management</h2>
+            <header className="caller-header">
+              <div className="drag-n-drop">
+                {list.map((grp, grpI) => (
+                  <div
+                    key={grp.vol.id}
+                    className={
+                      `${grp.vol.first_name}` == "Participants"
+                        ? "participants"
+                        : "dnd-group"
+                    }
+                    id={
+                      `${grp.pts.length}` < 1
+                        ? "pre-click-grps"
+                        : "post-click-grps"
+                    }
+                    onDragEnter={
+                      dragging && !grp.pts.length
+                        ? (e) => handleDragEnter(e, { grpI, itemI: 0 })
+                        : null
+                    }
+                  >
+                    <div className="group-title">{grp.vol.first_name === "Participants"? `${grp.vol.first_name}` : `${grp.vol.first_name} ${grp.vol.last_name} (${grp.vol.language})`}</div>
 
-                  {grp.pts.map((item, itemI) => (
-                    <div
-                      draggable={true}
-                      onDragStart={(e) => {
-                        handleDragStart(e, { grpI, itemI });
-                      }}
-                      onDragEnter={
-                        dragging
-                          ? (e) => {
-                              handleDragEnter(e, { grpI, itemI });
-                            }
-                          : null
-                      }
-                      key={item.id}
-                      className={
-                        dragging ? getStyles({ grpI, itemI }) : "dnd-item"
-                      }
-                    >
-                      <ul className="ptInfo">
-                        <li id="ptName">
-                          {item.first_name} {item.last_name}{" "}
-                        </li>
-                        <li>{item.address}</li>
-                        <li>{item.phone} </li>
-                        <li>{item.language} </li>
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </header>
-        </div>
-        {/* buttons */}
-        <section id="call_assign">
-          <div className="call_buttons">
-            <Button variant="contained" onClick={handleGenerateAssignments}>
-              Generate Assignments
-            </Button>
-            <Button
-              color="success"
-              variant="contained"
-              onClick={handleConfirmAssignments}
-            >
-              Confirm Assignments{" "}
-            </Button>
+                    {grp.pts.map((item, itemI) => (
+                      <div
+                        draggable={true}
+                        onDragStart={(e) => {
+                          handleDragStart(e, { grpI, itemI });
+                        }}
+                        onDragEnter={
+                          dragging
+                            ? (e) => {
+                                handleDragEnter(e, { grpI, itemI });
+                              }
+                            : null
+                        }
+                        key={item.id}
+                        className={
+                          dragging ? getStyles({ grpI, itemI }) : "dnd-item"
+                        }
+                      >
+                        <ul className="ptInfo">
+                          <li id="ptName">
+                            {item.first_name} {item.last_name}{" "}
+                          </li>
+                          <li>{item.address}</li>
+                          <li>{item.phone} </li>
+                          <li>{item.language} </li>
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </header>
           </div>
-        </section>
+          {/* buttons */}
+          <section id="call_assign">
+            <div className="call_buttons">
+              <Button
+                variant="contained"
+                onClick={handleGenerateAssignments}
+                className="callerButton"
+              >
+                Generate Assignments
+              </Button>
+              <Button
+                color="success"
+                variant="contained"
+                onClick={handleConfirmAssignments}
+                className="callerButton"
+              >
+                Confirm Assignments{" "}
+              </Button>
+              <h4 hidden={!confirmed}>Call Assignments Posted!</h4>
+            </div>
+          </section>
+        </div>
         <FooterContainer />
       </div>
     );
